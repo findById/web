@@ -1,0 +1,6 @@
+rootProject.name = 'web'
+include 'web-core'
+include 'web-rbac'
+include 'generator'
+include 'web-admin'
+
