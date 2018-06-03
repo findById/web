@@ -8,6 +8,7 @@ import ${packageName}.${moduleName}.web.vo.${ClassName}Bean;
 import ${packageName}.${moduleName}.web.request.${ClassName}Req;
 import ${packageName}.${moduleName}.web.response.${ClassName}Resp;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +48,7 @@ public class ${ClassName}Controller {
         ${className}Service.save(${className});
 
         ${ClassName}Resp resp = new ${ClassName}Resp();
-        // TODO copy resp
+        BeanUtils.copyProperties(${className}, resp);
 
         builder.statusCode(200);
         builder.message("success");
@@ -107,8 +108,7 @@ public class ${ClassName}Controller {
         if (list.hasContent()) {
             for (${ClassName} ${className} : list.getContent()) {
                 ${ClassName}Resp item = new ${ClassName}Resp();
-                // item.setId(${className}.getId());
-                // TODO copy
+                BeanUtils.copyProperties(${className}, item);
                 beanList.add(item);
             }
         }
