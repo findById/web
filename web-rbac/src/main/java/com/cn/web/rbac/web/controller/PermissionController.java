@@ -1,5 +1,6 @@
 package com.cn.web.rbac.web.controller;
 
+import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.Permission;
 import com.cn.web.rbac.service.PermissionService;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "permission")
-public class PermissionController {
+public class PermissionController extends DefaultController {
 
     @Autowired
     PermissionService permissionService;

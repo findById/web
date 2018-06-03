@@ -1,6 +1,7 @@
 package com.cn.web.rbac.web.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.Department;
 import com.cn.web.rbac.service.DepartmentService;
@@ -20,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "department")
-public class DepartmentController {
+public class DepartmentController extends DefaultController {
 
     @Resource
     DepartmentService departmentService;

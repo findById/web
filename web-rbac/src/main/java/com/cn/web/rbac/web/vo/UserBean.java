@@ -10,8 +10,9 @@ public class UserBean implements Serializable {
     private Short gender;
     private String avatar;
     private String department;
-    private Long lastVisit;
-    private Long updateTime;
+    private long lastVisit;
+    private long loginCount;
+    private long updateTime;
     private String description;
 
     public String getId() {
@@ -75,7 +76,15 @@ public class UserBean implements Serializable {
     }
 
     public void setLastVisit(Long lastVisit) {
-        this.lastVisit = lastVisit;
+        this.lastVisit = lastVisit == null ? 0 : lastVisit;
+    }
+
+    public long getLoginCount() {
+        return loginCount;
+    }
+
+    public void setLoginCount(Long loginCount) {
+        this.loginCount = loginCount == null ? 0 : loginCount;
     }
 
     public Long getUpdateTime() {
@@ -83,7 +92,7 @@ public class UserBean implements Serializable {
     }
 
     public void setUpdateTime(Long updateTime) {
-        this.updateTime = updateTime;
+        this.updateTime = updateTime == null ? 0 : updateTime;
     }
 
     public String getDescription() {

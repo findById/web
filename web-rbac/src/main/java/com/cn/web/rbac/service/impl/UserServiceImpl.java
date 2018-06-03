@@ -30,11 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User save(User user) {
-
-        String password = user.getPassword();
-        user.setSalt(AuthUtils.initSalt());
-        user.setPassword(AuthUtils.encode(password, user.getSalt()));
-
+        encryptPassword(user);
         return userDao.save(user);
     }
 
@@ -90,5 +86,31 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         return list.get(0);
+    }
+
+    @Override
+    public boolean checkPassword(User user, String password) {
+        return AuthUtils.verify(user.getPassword(), user.getSalt(), password);
+    }
+
+    @Override
+    public void updatePassword(User user) {
+        encryptPassword(user);
+        userDao.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserLogin(User user) {
+        user.setLoginCount((user.getLoginCount() == null ? 0 : user.getLoginCount()) + 1);
+        user.setLastVisit(System.currentTimeMillis());
+        update(user);
+    }
+
+    private void encryptPassword(User user) {
+        user.setSalt(AuthUtils.randomSalt());
+
+        String password = user.getPassword();
+        user.setPassword(AuthUtils.encode(password, user.getSalt()));
     }
 }

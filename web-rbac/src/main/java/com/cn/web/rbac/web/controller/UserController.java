@@ -1,11 +1,15 @@
 package com.cn.web.rbac.web.controller;
 
+import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.User;
 import com.cn.web.rbac.service.UserService;
 import com.cn.web.rbac.util.PageUtils;
 import com.cn.web.rbac.web.interceptor.PermissionRequired;
+import com.cn.web.rbac.web.interceptor.SessionContext;
+import com.cn.web.rbac.web.request.UserLoginReq;
 import com.cn.web.rbac.web.request.UserReq;
+import com.cn.web.rbac.web.request.UserUpdatePasswdReq;
 import com.cn.web.rbac.web.vo.UserBean;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "user")
-public class UserController {
+public class UserController extends DefaultController {
 
     @Autowired
     UserService userService;
@@ -190,17 +194,32 @@ public class UserController {
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public String login(@RequestBody UserReq req) {
+    public String login(@RequestBody UserLoginReq req) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
         try {
             if (req == null) {
                 builder.statusCode(201);
-                builder.message("Email and password must not be null.");
+                builder.message("loginName and password must not be null.");
                 return builder.buildJSONString();
             }
-            if (req.getEmail() == null && req.getMobile() == null && req.getUsername() == null) {
+            if (req.getType() == 0 && (req.getLoginName() == null || req.getLoginName().isEmpty())) {
                 builder.statusCode(201);
-                builder.message("Email must not be null.");
+                builder.message("'loginName' must not be null.");
+                return builder.buildJSONString();
+            }
+            if (req.getType() == 1 && (req.getUsername() == null || req.getUsername().isEmpty())) {
+                builder.statusCode(201);
+                builder.message("'username' must not be null.");
+                return builder.buildJSONString();
+            }
+            if (req.getType() == 2 && (req.getEmail() == null || req.getEmail().isEmpty())) {
+                builder.statusCode(201);
+                builder.message("'email' must not be null.");
+                return builder.buildJSONString();
+            }
+            if (req.getType() == 3 && (req.getMobile() == null || req.getMobile().isEmpty())) {
+                builder.statusCode(201);
+                builder.message("'mobile' must not be null.");
                 return builder.buildJSONString();
             }
 
@@ -223,6 +242,9 @@ public class UserController {
             UserBean bean = new UserBean();
             BeanUtils.copyProperties(user, bean);
 
+            // update login history
+            userService.updateUserLogin(user);
+
             builder.statusCode(200);
             builder.message("success");
             builder.result(bean);
@@ -231,4 +253,55 @@ public class UserController {
         }
         return builder.buildJSONString();
     }
+
+    @RequestMapping(value = "updatePwd", method = {RequestMethod.POST})
+    public String updatePassword(@RequestBody UserUpdatePasswdReq req) {
+        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+
+        if (req == null || req.getUserId() == null) {
+            builder.statusCode(201);
+            builder.message("user not exists");
+            return builder.buildJSONString();
+        }
+
+        Object session = SessionContext.getAttribute(SessionContext.ACCESS_SESSION);
+        if (session == null || !(session instanceof User) || !req.getUserId().equals(((User) session).getId())) {
+            builder.statusCode(201);
+            builder.message("Must be own operation");
+            return builder.buildJSONString();
+        }
+
+        User user = userService.get(req.getUserId());
+        if (user == null) {
+            builder.statusCode(201);
+            builder.message("user not exists");
+            return builder.buildJSONString();
+        }
+        if (req.getOldPassword() == null || req.getOldPassword().isEmpty()) {
+            builder.statusCode(201);
+            builder.message("'userId' must not be null");
+            return builder.buildJSONString();
+        }
+        if (req.getOldPassword() == null || req.getOldPassword().isEmpty()) {
+            builder.statusCode(201);
+            builder.message("'oldPassword' must not be null");
+            return builder.buildJSONString();
+        }
+        if (req.getNewPassword() == null || req.getNewPassword().isEmpty()) {
+            builder.statusCode(201);
+            builder.message("'newPassword' must not be null");
+            return builder.buildJSONString();
+        }
+        if (!userService.checkPassword(user, req.getOldPassword())) {
+            builder.statusCode(201);
+            builder.message("failure");
+            return builder.buildJSONString();
+        }
+        userService.update(user);
+
+        builder.statusCode(200);
+        builder.message("success");
+        return builder.buildJSONString();
+    }
+
 }

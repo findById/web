@@ -6,8 +6,9 @@ import java.util.Random;
 import java.util.UUID;
 
 public class AuthUtils {
+    private static final String ALGORITHM = "SHA-1";
 
-    public static String initPassword(int length) {
+    public static String randomPassword(int length) {
         String template = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-.";
         Random random = new Random();
         StringBuilder result = new StringBuilder();
@@ -17,8 +18,8 @@ public class AuthUtils {
         return result.toString();
     }
 
-    public static String initSalt() {
-        return UUID.randomUUID().toString();
+    public static String randomSalt() {
+        return digest(UUID.randomUUID().toString(), ALGORITHM);
     }
 
     public static String encode(String password, String salt) {
@@ -28,7 +29,7 @@ public class AuthUtils {
         if (salt == null) {
             salt = "";
         }
-        return digest(password + "_SALT_" + salt, "SHA-1");
+        return digest(password + "_SALT_" + salt, ALGORITHM);
     }
 
     private static String digest(String input, String algorithm) {

@@ -11,7 +11,7 @@ public class GeneratorTest {
 
     @Test
     public void test() {
-        String projectRootDir = "/home/work/dev/java/web/web-admin";
+        String projectRootDir = "/Users/chenning/dev/java/workspace/web/web-admin";
         Module module = new Module();
         module.setTemplateId("jpa");
         module.setBasePackage("org.cn.web");

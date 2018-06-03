@@ -28,6 +28,8 @@ public class User extends BaseEntity {
     private String state;
     @Column(name = "last_visit")
     private Long lastVisit;
+    @Column(name = "login_count")
+    private Long loginCount;
 
     public String getUsername() {
         return username;
@@ -107,5 +109,13 @@ public class User extends BaseEntity {
 
     public void setLastVisit(Long lastVisit) {
         this.lastVisit = lastVisit;
+    }
+
+    public Long getLoginCount() {
+        return loginCount;
+    }
+
+    public void setLoginCount(Long loginCount) {
+        this.loginCount = loginCount;
     }
 }

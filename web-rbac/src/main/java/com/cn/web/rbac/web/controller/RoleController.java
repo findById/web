@@ -1,5 +1,6 @@
 package com.cn.web.rbac.web.controller;
 
+import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.Role;
 import com.cn.web.rbac.service.RoleService;
@@ -7,6 +8,7 @@ import com.cn.web.rbac.util.PageUtils;
 import com.cn.web.rbac.web.interceptor.PermissionRequired;
 import com.cn.web.rbac.web.request.RoleReq;
 import com.cn.web.rbac.web.vo.RoleBean;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "role")
-public class RoleController {
+public class RoleController extends DefaultController {
 
     @Autowired
     RoleService roleService;
@@ -49,9 +51,12 @@ public class RoleController {
 
         roleService.save(role);
 
+        RoleBean bean = new RoleBean();
+        BeanUtils.copyProperties(role, bean);
+
         builder.statusCode(200);
         builder.message("success");
-        builder.result(role);
+        builder.result(bean);
         return builder.buildJSONString();
     }
 
@@ -83,6 +88,7 @@ public class RoleController {
         }
 
         roleService.update(role);
+
         builder.statusCode(200);
         builder.message("success");
         return builder.buildJSONString();

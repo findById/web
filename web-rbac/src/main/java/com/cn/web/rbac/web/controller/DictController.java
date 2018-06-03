@@ -1,6 +1,7 @@
 package com.cn.web.rbac.web.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.rbac.domain.Dict;
 import com.cn.web.rbac.service.DictService;
 import com.cn.web.rbac.web.interceptor.PermissionRequired;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "dict")
-public class DictController {
+public class DictController extends DefaultController {
 
     @Autowired
     DictService dictService;

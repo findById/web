@@ -25,4 +25,10 @@ public interface UserService {
 
     User isExists(String username, String email, String mobile);
 
+    boolean checkPassword(User user, String password);
+
+    void updatePassword(User user);
+
+    void updateUserLogin(User user);
+
 }
