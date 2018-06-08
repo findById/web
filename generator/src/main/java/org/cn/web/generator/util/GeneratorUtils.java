@@ -28,25 +28,6 @@ public class GeneratorUtils {
         return false;
     }
 
-    public static String uncapitalize(String str) {
-        int strLen;
-        if (str == null || (strLen = str.length()) == 0) {
-            return str;
-        }
-        return new StringBuilder(strLen).append(Character.toLowerCase(str.charAt(0))).append(str.substring(1))
-                .toString();
-    }
-
-    public static String capitalize(String str) {
-        int strLen;
-        if (str == null || (strLen = str.length()) == 0) {
-            return str;
-        }
-        return new StringBuilder(strLen).append(Character.toTitleCase(str.charAt(0))).append(str.substring(1))
-                .toString();
-    }
-
-
     /**
      * @param content
      * @param path
@@ -60,7 +41,6 @@ public class GeneratorUtils {
                 bw.write(content);
                 bw.close();
                 osw.close();
-                System.out.println("success.");
             } else {
                 System.out.println("file is exists.");
             }

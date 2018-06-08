@@ -1,6 +1,5 @@
 package ${packageName}.${moduleName}.web.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import ${packageName}.${moduleName}.domain.${ClassName};
 import ${packageName}.${moduleName}.service.${ClassName}Service;
@@ -10,6 +9,7 @@ import ${packageName}.${moduleName}.web.response.${ClassName}Resp;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,6 +30,35 @@ public class ${ClassName}Controller {
 
     @Resource
     ${ClassName}Service ${className}Service;
+
+    // @PermissionRequired(value = "${moduleName}:${className}:view")
+    @RequestMapping(value = "search", method = {RequestMethod.POST})
+    public String search(String keyword, String page, String size) {
+        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+
+        int[] temp = new int[]{0, 10}; // PageUtils.of(page, size);
+
+        Page<${ClassName}> list = ${className}Service.search(keyword, PageRequest.of(temp[0], temp[1]));
+
+        List<${ClassName}Resp> beanList = new ArrayList<>();
+        if (list.hasContent()) {
+            for (${ClassName} ${className} : list.getContent()) {
+                ${ClassName}Resp item = new ${ClassName}Resp();
+                BeanUtils.copyProperties(${className}, item);
+                beanList.add(item);
+            }
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("page", temp[0]);
+        result.put("total", list.getTotalElements());
+        result.put("list", beanList);
+
+        builder.statusCode(200);
+        builder.message("success");
+        builder.result(result);
+        return builder.buildJSONString();
+    }
 
     // @PermissionRequired(value = "${moduleName}:${className}:save")
     @RequestMapping(value = "save", method = {RequestMethod.POST})
@@ -99,8 +128,7 @@ public class ${ClassName}Controller {
     public String list(String page, String size) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
-        // int[] temp = PageUtil.of(page, size);
-        int[] temp = pageOf(page, size);
+        int[] temp = new int[]{0, 10}; // PageUtils.of(page, size);
 
         Page<${ClassName}> list = ${className}Service.list(temp[0], temp[1]);
 
@@ -113,7 +141,7 @@ public class ${ClassName}Controller {
             }
         }
 
-        HashMap<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         result.put("page", temp[0]);
         result.put("total", list.getTotalElements());
         result.put("list", beanList);
@@ -129,29 +157,4 @@ public class ${ClassName}Controller {
     public String view() {
         return "unimplemented";
     }
-
-    private static int[] pageOf(String page, String size) {
-        int offset, length;
-        try {
-            offset = Integer.parseInt(page);
-        } catch (Throwable e) {
-            offset = 0;
-        }
-        if (offset <= 0) {
-            offset = 0;
-        }
-        try {
-            length = Integer.parseInt(size);
-        } catch (Throwable e) {
-            length = 50;
-        }
-        if (length <= 0) {
-            length = 10;
-        }
-        if (length > 50) {
-            length = 50;
-        }
-        return new int[]{offset, length};
-    }
-
 }

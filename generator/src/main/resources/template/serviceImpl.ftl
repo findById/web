@@ -6,6 +6,7 @@ import ${packageName}.${moduleName}.service.${ClassName}Service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,14 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
 
     @Resource
     ${ClassName}Repository ${className}Repository;
+
+    @Override
+    public Page<${ClassName}> search(String keyword, Pageable page) {
+
+        System.out.println(keyword);
+
+        return ${className}Repository.findAll(page);
+    }
 
     @Override
     public ${ClassName} get(Serializable id) {

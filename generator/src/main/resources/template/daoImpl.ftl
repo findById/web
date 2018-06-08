@@ -8,9 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by ${author!""} on ${date!""}.

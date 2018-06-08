@@ -22,7 +22,7 @@ public class User extends BaseEntity {
     private Short gender;
     @Column(name = "avatar", length = 200)
     private String avatar;
-    @Column(name = "department", length = 20)
+    @Column(name = "department", length = 200)
     private String department;
     @Column(name = "state", length = 1)
     private String state;

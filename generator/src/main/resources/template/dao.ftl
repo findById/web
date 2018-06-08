@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by ${author!""} on ${date!""}.
@@ -15,9 +14,9 @@ public interface ${ClassName}Dao {
 
     ${ClassName} get(Serializable id);
 
-    ${ClassName} save(${ClassName} user);
+    ${ClassName} save(${ClassName} ${className});
 
-    ${ClassName} update(${ClassName} user);
+    ${ClassName} update(${ClassName} ${className});
 
     void delete(Serializable id);
 

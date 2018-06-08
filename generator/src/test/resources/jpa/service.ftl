@@ -3,6 +3,7 @@ package ${packageName}.${moduleName}.service;
 import ${packageName}.${moduleName}.domain.${ClassName};
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,11 +13,13 @@ import java.util.List;
  */
 public interface ${ClassName}Service {
 
+    Page<${ClassName}> search(String keyword, Pageable page);
+
     ${ClassName} get(Serializable id);
 
-    ${ClassName} save(${ClassName} user);
+    ${ClassName} save(${ClassName} ${className});
 
-    ${ClassName} update(${ClassName} user);
+    ${ClassName} update(${ClassName} ${className});
 
     void delete(Serializable id);
 

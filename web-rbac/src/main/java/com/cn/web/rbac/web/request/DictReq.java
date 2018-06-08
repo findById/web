@@ -1,15 +1,14 @@
-package com.cn.web.rbac.web.vo;
+package com.cn.web.rbac.web.request;
 
 import java.io.Serializable;
 
-public class DictBean implements Serializable {
+public class DictReq implements Serializable {
 
     private String label;
     private String value;
     private String type;
     private Integer position;
     private String remark;
-    private String description;
 
     public String getLabel() {
         return label;
@@ -49,13 +48,5 @@ public class DictBean implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

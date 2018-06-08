@@ -5,6 +5,7 @@ import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.Department;
 import com.cn.web.rbac.service.DepartmentService;
+import com.cn.web.rbac.util.PageUtils;
 import com.cn.web.rbac.web.request.DepartmentReq;
 import com.cn.web.rbac.web.response.DepartmentResp;
 import org.springframework.beans.BeanUtils;
@@ -100,8 +101,7 @@ public class DepartmentController extends DefaultController {
     public String list(String page, String size) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
-        // int[] temp = PageUtil.of(page, size);
-        int[] temp = pageOf(page, size);
+        int[] temp = PageUtils.of(page, size);
 
         Page<Department> list = departmentService.list(temp[0], temp[1]);
 
@@ -129,30 +129,6 @@ public class DepartmentController extends DefaultController {
     @RequestMapping(value = "view")
     public String view() {
         return "unimplemented";
-    }
-
-    private static int[] pageOf(String page, String size) {
-        int offset, length;
-        try {
-            offset = Integer.parseInt(page);
-        } catch (Throwable e) {
-            offset = 0;
-        }
-        if (offset <= 0) {
-            offset = 0;
-        }
-        try {
-            length = Integer.parseInt(size);
-        } catch (Throwable e) {
-            length = 50;
-        }
-        if (length <= 0) {
-            length = 10;
-        }
-        if (length > 50) {
-            length = 50;
-        }
-        return new int[]{offset, length};
     }
 
 }

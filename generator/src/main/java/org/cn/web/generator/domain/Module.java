@@ -1,13 +1,19 @@
 package org.cn.web.generator.domain;
 
+import java.util.List;
+
 public class Module {
     private String type;
     private String templateId;
 
+    private String author;
+    private String email;
+
     private String basePackage;
     private String moduleName;
     private String className;
-    private String author;
+
+    private List<ModuleColumn> columns;
 
     public String getType() {
         return type;
@@ -23,6 +29,22 @@ public class Module {
 
     public void setTemplateId(String templateId) {
         this.templateId = templateId;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getBasePackage() {
@@ -49,11 +71,11 @@ public class Module {
         this.className = className;
     }
 
-    public String getAuthor() {
-        return author;
+    public List<ModuleColumn> getColumns() {
+        return columns;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setColumns(List<ModuleColumn> columns) {
+        this.columns = columns;
     }
 }

@@ -9,63 +9,30 @@ import java.io.Serializable;
 @Entity
 @Table(name = "${entityName}")
 public class ${ClassName} implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
-    @Version
-    @Column(name = "version")
-    private Integer version;
-
-    @Column(name = "del_flg")
-    private Integer delFlg = 0;
-
-    @Column(name = "update_time")
-    private Long updateTime = System.currentTimeMillis();
-
-    @Column(name = "description", length = 200)
-    private String description;
+<#if columns??>
+    <#list columns as item>
+    /**
+     * ${item.desc!""}
+     */
+    @Column(name = "${item.name}")
+    private ${item.type} ${item.name};
+    </#list>
+</#if>
 
     public ${ClassName}() {
     }
 
-    public Long getId() {
-        return id;
+<#if columns??>
+    <#list columns as item>
+    public ${item.type!"String"} get${item.name?capitalize}() {
+        return ${item.name!""};
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void set${item.name?capitalize}(${item.type!"String"} ${item.name!""}) {
+        this.${item.name!""} = ${item.name!""};
     }
 
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public Integer getDelFlg() {
-        return delFlg;
-    }
-
-    public void setDelFlg(Integer delFlg) {
-        this.delFlg = delFlg;
-    }
-
-    public Long getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Long updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    </#list>
+</#if>
 }

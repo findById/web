@@ -31,11 +31,11 @@ public class SiteController extends DefaultController {
         binder.registerCustomEditor(String.class, new PropertyEditorSupport() {
             @Override
             public void setAsText(String text) {
-                System.out.println("in: " + text);
+                // System.out.println("in: " + text);
                 // JavaScriptUtils.javaScriptEscape(text);
                 // HtmlUtils.htmlEscape(text);
                 setValue(text == null ? null : HtmlUtils.htmlEscape(text));
-                System.out.println("out: " + getValue());
+                // System.out.println("out: " + getValue());
             }
         });
     }
