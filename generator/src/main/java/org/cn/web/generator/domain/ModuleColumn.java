@@ -5,6 +5,15 @@ public class ModuleColumn {
     private String type;
     private String desc;
 
+    public ModuleColumn() {
+    }
+
+    public ModuleColumn(String name, String type, String desc) {
+        this.name = name;
+        this.type = type;
+        this.desc = desc;
+    }
+
     public String getName() {
         return name;
     }

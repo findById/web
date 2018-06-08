@@ -8,6 +8,7 @@ public class Module {
 
     private String author;
     private String email;
+    private String desc;
 
     private String basePackage;
     private String moduleName;
@@ -45,6 +46,14 @@ public class Module {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public String getBasePackage() {
