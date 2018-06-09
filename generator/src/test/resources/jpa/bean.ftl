@@ -6,15 +6,9 @@ import java.io.Serializable;
  * Created by ${author!""} on ${date!""}.
  */
 public class ${ClassName}Bean implements Serializable {
-    /**
-     * id
-     */
     private String id;
 <#if columns??>
     <#list columns as item>
-    /**
-     * ${item.desc!""}
-     */
     private ${item.type} ${item.name};
     </#list>
 </#if>

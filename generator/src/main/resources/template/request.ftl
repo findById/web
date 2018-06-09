@@ -6,20 +6,22 @@ import java.io.Serializable;
  * Created by ${author!""} on ${date!""}.
  */
 public class ${ClassName}Req implements Serializable {
-    /**
-     * id
-     */
     private String id;
 <#if columns??>
     <#list columns as item>
-    /**
-     * ${item.desc!""}
-     */
     private ${item.type} ${item.name};
     </#list>
 </#if>
 
     public ${ClassName}Req() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
 <#if columns??>

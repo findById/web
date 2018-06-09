@@ -3,7 +3,7 @@ package org.cn.web.generator.util;
 import org.cn.web.generator.domain.Module;
 import org.cn.web.generator.service.impl.GeneratorServiceImpl;
 
-import java.io.File;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,21 +12,67 @@ import java.util.Map;
 
 public class GenUtils {
 
-    public static String uncapitalize(String str) {
+    private static String uncapitalize(String str) {
         if (str == null || str.length() == 0) {
             return str;
         }
         return String.valueOf(Character.toLowerCase(str.charAt(0))) + str.substring(1);
     }
 
-    public static String capitalize(String str) {
+    private static String capitalize(String str) {
         if (str == null || str.length() == 0) {
             return str;
         }
         return String.valueOf(Character.toTitleCase(str.charAt(0))) + str.substring(1);
     }
 
-    public static List<String> getTemplateList(String templateId) {
+    private static boolean createFile(String path) {
+        /* --- createFile --- */
+        File file = createParentFile(path);
+        if (file != null && !file.exists()) {
+            try {
+                return file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private static File createParentFile(String path) {
+        /* --- createFolder --- */
+        try {
+            File file = new File(path);
+            File parent = new File(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(File.separator)));
+            if (!parent.exists()) {
+                createParentFile(parent.getPath());
+                parent.mkdirs();
+            }
+            return file;
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
+    private static void writeFile(String content, String path) {
+        try {
+            if (createFile(path)) {
+                FileOutputStream fos = new FileOutputStream(path);
+                OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+                BufferedWriter bw = new BufferedWriter(osw);
+                bw.write(content);
+                bw.close();
+                osw.close();
+            } else {
+                System.out.println("file is exists.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static List<String> getJavaTemplateList(String templateId) {
         List<String> list = new ArrayList<>();
         list.add("entity.ftl");
         list.add("dao.ftl");
@@ -41,7 +87,7 @@ public class GenUtils {
         return list;
     }
 
-    public static String getFilePath(String template, String basePackage, String module, String clazz) {
+    private static String getJavaFilePath(String template, String basePackage, String module, String clazz) {
         String javaPath = ("/src/main/java/" + basePackage).replaceAll("[\\/\\.]", "\\/");
 
         if (template.endsWith("entity.ftl")) {
@@ -119,18 +165,17 @@ public class GenUtils {
 
         // FreeMarker initial
         FreeMarkerImpl freeMarker = new FreeMarkerImpl(templateDir);
-
-        List<String> temp = getTemplateList("jpa");
+        // generate java code
+        List<String> temp = getJavaTemplateList("jpa");
         for (String t : temp) {
-            String path = root + getFilePath(t, model.get("packageName").toString(), model.get("moduleName").toString(), model.get("ClassName").toString());
+            String path = root + getJavaFilePath(t, model.get("packageName").toString(), model.get("moduleName").toString(), model.get("ClassName").toString());
             System.out.println(t);
             String content = freeMarker.renderTemplate(t, model);
             if (content != null) {
-                GeneratorUtils.writeFile(content, path);
+                writeFile(content, path);
                 System.out.println(">>" + path);
             }
         }
-
         System.out.println("Generate Success.");
         return true;
     }
