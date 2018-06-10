@@ -33,4 +33,8 @@ public class DefaultAppConfig {
         return new MonitorManager();
     }
 
+//    @Bean
+//    ErrorHandler errorHandler() {
+//        return new ErrorHandler();
+//    }
 }

@@ -12,6 +12,8 @@ public class Role extends BaseEntity {
     private String name;
     @Column(name = "code", length = 50)
     private String code;
+    @Column(name = "type", length = 20)
+    private String type;
 
     public Role() {
     }
@@ -36,5 +38,13 @@ public class Role extends BaseEntity {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

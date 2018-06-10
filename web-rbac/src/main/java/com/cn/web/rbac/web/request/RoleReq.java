@@ -7,6 +7,7 @@ public class RoleReq {
     private String description;
     private String name;
     private String code;
+    private String type;
 
     public String getId() {
         return id;
@@ -54,5 +55,13 @@ public class RoleReq {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
