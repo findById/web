@@ -44,7 +44,7 @@ public class UserRoleController extends DefaultController {
         // clear permission cache first
         // TODO Clear permission cache
 
-        // need delete?
+        // need to delete?
         if (oldRoleIds == null) {
             oldRoleIds = new ArrayList<>(0);
         }
@@ -53,7 +53,7 @@ public class UserRoleController extends DefaultController {
                 userRoleService.deleteByUserIdAndRoleId(req.getUserId(), roleId);
             }
         }
-        // need save?
+        // need to save?
         for (String roleId : newRoleIds) {
             if (!oldRoleIds.contains(roleId)) {
                 UserRole userRole = new UserRole();

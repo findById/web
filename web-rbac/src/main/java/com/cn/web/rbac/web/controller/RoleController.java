@@ -42,6 +42,11 @@ public class RoleController extends DefaultController {
             builder.message("'name' must not be null.");
             return builder.buildJSONString();
         }
+        if (req.getCode() == null || req.getCode().isEmpty()) {
+            builder.statusCode(201);
+            builder.message("'code' must not be null.");
+            return builder.buildJSONString();
+        }
 
         Role role = new Role();
         role.setId(req.getId());

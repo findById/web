@@ -44,7 +44,7 @@ public class RolePermissionController extends DefaultController {
         // clear permission cache first
         // TODO Clear permission cache
 
-        // need delete?
+        // need to delete?
         if (oldPermIdList == null) {
             oldPermIdList = new ArrayList<>(0);
         }
@@ -53,7 +53,7 @@ public class RolePermissionController extends DefaultController {
                 rolePermissionService.deleteByRoleIdAndPermissionId(req.getRoleId(), permId);
             }
         }
-        // need save?
+        // need to save?
         for (String permId : newPermIds) {
             if (!oldPermIdList.contains(permId)) {
                 RolePermission rolePermission = new RolePermission();

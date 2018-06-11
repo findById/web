@@ -6,7 +6,7 @@ public class PageUtils {
         int offset = Integer.parseInt(page);
         int length = Integer.parseInt(size);
         if (offset > 0) {
-            offset -= 0;
+            offset -= 1;
         }
         if (length > 50) {
             length = 50;

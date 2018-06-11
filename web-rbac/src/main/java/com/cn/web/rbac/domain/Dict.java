@@ -18,6 +18,8 @@ public class Dict extends BaseEntity {
     private Integer position;
     @Column(name = "remark", length = 200)
     private String remark;
+    @Column(name = "parent_id", length = 50)
+    private String parentId;
 
     public Dict() {
     }
@@ -60,5 +62,13 @@ public class Dict extends BaseEntity {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 }
