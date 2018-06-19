@@ -4,7 +4,6 @@ import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.Role;
 import com.cn.web.rbac.service.RoleService;
-import com.cn.web.rbac.util.PageUtils;
 import com.cn.web.rbac.web.interceptor.PermissionRequired;
 import com.cn.web.rbac.web.request.RoleReq;
 import com.cn.web.rbac.web.vo.RoleBean;
@@ -113,11 +112,16 @@ public class RoleController extends DefaultController {
 
     @PermissionRequired("sys:role:view")
     @RequestMapping(value = "list")
-    public String list(String page, String size) {
+    public String list(int page, /* @Max(20) */ int size) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
-        int[] temp = PageUtils.of(page, size);
+        if (page < 0) {
+            page = 0;
+        }
+        if (size > 20) {
+            size = 20;
+        }
 
-        Page<Role> list = roleService.list(temp[0], temp[1]);
+        Page<Role> list = roleService.list(page - 1, size);
 
         List<RoleBean> beanList = new ArrayList<>();
         if (list.hasContent()) {
@@ -132,7 +136,7 @@ public class RoleController extends DefaultController {
         }
 
         HashMap<String, Object> result = new HashMap<>();
-        result.put("page", temp[0]);
+        result.put("page", page);
         result.put("total", list.getTotalElements());
         result.put("list", beanList);
 

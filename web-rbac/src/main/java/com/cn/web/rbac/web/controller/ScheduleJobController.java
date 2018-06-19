@@ -4,7 +4,6 @@ import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.ScheduleJob;
 import com.cn.web.rbac.service.ScheduleJobService;
-import com.cn.web.rbac.util.PageUtils;
 import com.cn.web.rbac.web.request.ScheduleJobReq;
 import com.cn.web.rbac.web.response.ScheduleJobResp;
 import org.springframework.beans.BeanUtils;
@@ -30,12 +29,16 @@ public class ScheduleJobController extends DefaultController {
 
     // @PermissionRequired(value = "sys:task:view")
     @RequestMapping(value = "search", method = {RequestMethod.POST})
-    public String search(String keyword, String page, String size) {
+    public String search(String keyword, int page, /* @Max(20) */ int size) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        if (page < 0) {
+            page = 0;
+        }
+        if (size > 20) {
+            size = 20;
+        }
 
-        int[] temp = PageUtils.of(page, size);
-
-        Page<ScheduleJob> list = scheduleJobService.search(keyword, PageRequest.of(temp[0], temp[1]));
+        Page<ScheduleJob> list = scheduleJobService.search(keyword, PageRequest.of(page - 1, size));
 
         List<ScheduleJobResp> beanList = new ArrayList<>();
         if (list.hasContent()) {
@@ -47,7 +50,7 @@ public class ScheduleJobController extends DefaultController {
         }
 
         Map<String, Object> result = new HashMap<>();
-        result.put("page", temp[0]);
+        result.put("page", page);
         result.put("total", list.getTotalElements());
         result.put("list", beanList);
 
@@ -122,12 +125,16 @@ public class ScheduleJobController extends DefaultController {
 
     // @PermissionRequired(value = "sys:task:view")
     @RequestMapping(value = "list")
-    public String list(String page, String size) {
+    public String list(int page, /* @Max(20) */ int size) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        if (page < 0) {
+            page = 0;
+        }
+        if (size > 20) {
+            size = 20;
+        }
 
-        int[] temp = PageUtils.of(page, size);
-
-        Page<ScheduleJob> list = scheduleJobService.list(temp[0], temp[1]);
+        Page<ScheduleJob> list = scheduleJobService.list(page - 1, size);
 
         List<ScheduleJobResp> beanList = new ArrayList<>();
         if (list.hasContent()) {
@@ -139,7 +146,7 @@ public class ScheduleJobController extends DefaultController {
         }
 
         Map<String, Object> result = new HashMap<>();
-        result.put("page", temp[0]);
+        result.put("page", page);
         result.put("total", list.getTotalElements());
         result.put("list", beanList);
 

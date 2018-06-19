@@ -4,7 +4,6 @@ import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.User;
 import com.cn.web.rbac.service.UserService;
-import com.cn.web.rbac.util.PageUtils;
 import com.cn.web.rbac.web.interceptor.PermissionRequired;
 import com.cn.web.rbac.web.interceptor.SessionContext;
 import com.cn.web.rbac.web.request.UserLoginReq;
@@ -134,12 +133,16 @@ public class UserController extends DefaultController {
 
     @PermissionRequired(value = "sys:user:view")
     @RequestMapping(value = "list")
-    public String list(String page, String size) {
+    public String list(int page, /* @Max(20) */ int size) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        if (page < 0) {
+            page = 0;
+        }
+        if (size > 20) {
+            size = 20;
+        }
 
-        int[] temp = PageUtils.of(page, size);
-
-        Page<User> list = userService.list(temp[0], temp[1]);
+        Page<User> list = userService.list(page - 1, size);
 
         List<UserBean> beanList = new ArrayList<>();
         if (list.hasContent()) {
@@ -156,7 +159,7 @@ public class UserController extends DefaultController {
         }
 
         HashMap<String, Object> result = new HashMap<>();
-        result.put("page", temp[0]);
+        result.put("page", page);
         result.put("total", list.getTotalElements());
         result.put("list", beanList);
 

@@ -33,12 +33,16 @@ public class ${ClassName}Controller {
 
     // @PermissionRequired(value = "${moduleName}:${className}:view")
     @RequestMapping(value = "search", method = {RequestMethod.POST})
-    public String search(String keyword, String page, String size) {
+    public String search(String keyword, int page, int size) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        if (page < 0) {
+            page = 0;
+        }
+        if (size > 20) {
+            size = 20;
+        }
 
-        int[] temp = new int[]{0, 10}; // PageUtils.of(page, size);
-
-        Page<${ClassName}> list = ${className}Service.search(keyword, PageRequest.of(temp[0], temp[1]));
+        Page<${ClassName}> list = ${className}Service.search(keyword, PageRequest.of(page - a, size));
 
         List<${ClassName}Resp> beanList = new ArrayList<>();
         if (list.hasContent()) {
@@ -125,12 +129,16 @@ public class ${ClassName}Controller {
 
     // @PermissionRequired(value = "${moduleName}:${className}:view")
     @RequestMapping(value = "list")
-    public String list(String page, String size) {
+    public String list(int page, int size) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        if (page < 0) {
+            page = 0;
+        }
+        if (size > 20) {
+            size = 20;
+        }
 
-        int[] temp = new int[]{0, 10}; // PageUtils.of(page, size);
-
-        Page<${ClassName}> list = ${className}Service.list(temp[0], temp[1]);
+        Page<${ClassName}> list = ${className}Service.list(page - 1, size);
 
         List<${ClassName}Resp> beanList = new ArrayList<>();
         if (list.hasContent()) {
@@ -142,7 +150,7 @@ public class ${ClassName}Controller {
         }
 
         Map<String, Object> result = new HashMap<>();
-        result.put("page", temp[0]);
+        result.put("page", page);
         result.put("total", list.getTotalElements());
         result.put("list", beanList);
 
