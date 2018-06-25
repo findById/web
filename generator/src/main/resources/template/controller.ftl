@@ -35,8 +35,8 @@ public class ${ClassName}Controller {
     @RequestMapping(value = "search", method = {RequestMethod.POST})
     public String search(String keyword, int page, int size) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
-        if (page < 0) {
-            page = 0;
+        if (page < 1) {
+            page = 1;
         }
         if (size > 20) {
             size = 20;
@@ -54,7 +54,7 @@ public class ${ClassName}Controller {
         }
 
         Map<String, Object> result = new HashMap<>();
-        result.put("page", temp[0]);
+        result.put("page", page);
         result.put("total", list.getTotalElements());
         result.put("list", beanList);
 
@@ -131,8 +131,8 @@ public class ${ClassName}Controller {
     @RequestMapping(value = "list")
     public String list(int page, int size) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
-        if (page < 0) {
-            page = 0;
+        if (page < 1) {
+            page = 1;
         }
         if (size > 20) {
             size = 20;

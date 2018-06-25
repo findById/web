@@ -1,33 +1,25 @@
-package com.cn.web.rbac.web.controller;
+package com.cn.web.rbac.web.handler;
 
-import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.Permission;
 import com.cn.web.rbac.service.PermissionService;
 import com.cn.web.rbac.web.converter.PermissionConverter;
-import com.cn.web.rbac.web.interceptor.PermissionRequired;
 import com.cn.web.rbac.web.request.PermissionReq;
 import com.cn.web.rbac.web.vo.PermissionBean;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequestMapping(value = "permission")
-public class PermissionController extends DefaultController {
+@Service("permissionHandler")
+public class PermissionHandler {
 
     @Autowired
     PermissionService permissionService;
 
-    @PermissionRequired(value = "sys:permission:save")
-    @RequestMapping(value = "save", method = RequestMethod.POST)
-    public String save(@RequestBody PermissionReq req) {
+    public String save(PermissionReq req) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
         if (req == null) {
@@ -73,9 +65,7 @@ public class PermissionController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    @PermissionRequired(value = "sys:permission:update")
-    @RequestMapping(value = "update", method = RequestMethod.POST)
-    public String update(@RequestBody PermissionReq req) {
+    public String update(PermissionReq req) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
         if (req == null || req.getId() == null) {
@@ -108,8 +98,6 @@ public class PermissionController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    @PermissionRequired(value = "sys:permission:delete")
-    @RequestMapping(value = "delete")
     public String delete(String id) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
@@ -120,8 +108,6 @@ public class PermissionController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    @PermissionRequired(value = "sys:permission:view")
-    @RequestMapping(value = "list")
     public String list() {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
@@ -135,8 +121,6 @@ public class PermissionController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    @PermissionRequired(value = "sys:permission:view")
-    @RequestMapping(value = "find")
     public String findById(String id) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
@@ -151,8 +135,6 @@ public class PermissionController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    @PermissionRequired(value = "sys:permission:view")
-    @RequestMapping(value = "findOperation")
     public String findOperationPermissionByParentId(String parentId) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
@@ -166,8 +148,6 @@ public class PermissionController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    @PermissionRequired(value = "sys:permission:view")
-    @RequestMapping(value = "findByUserId")
     public String findByUserId(String userId) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 

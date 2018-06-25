@@ -1,7 +1,7 @@
 package com.cn.web.rbac.aspect;
 
 import com.alibaba.fastjson.JSON;
-import com.cn.web.rbac.annotation.Log;
+import com.cn.web.rbac.annotation.AopLog;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -13,14 +13,14 @@ import java.text.SimpleDateFormat;
 
 @Aspect
 @Component
-public class LogAspect {
+public class ApoLogAspect {
     private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
-    @Pointcut("@annotation(com.cn.web.rbac.annotation.Log)")
-    public void logPointCut() {
+    @Pointcut("@annotation(com.cn.web.rbac.annotation.AopLog)")
+    public void logPointcut() {
     }
 
-    @Around("logPointCut()")
+    @Around("logPointcut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         long beginTime = System.currentTimeMillis();
 
@@ -31,12 +31,12 @@ public class LogAspect {
         return result;
     }
 
-    @Before("logPointCut()&&@annotation(ann)")
-    public void before(JoinPoint joinPoint, Log ann) {
+    @Before("logPointcut()&&@annotation(ann)")
+    public void before(JoinPoint joinPoint, AopLog ann) {
     }
 
-    @After("logPointCut()&&@annotation(ann)")
-    public void after(JoinPoint joinPoint, Log ann) {
+    @After("logPointcut()&&@annotation(ann)")
+    public void after(JoinPoint joinPoint, AopLog ann) {
     }
 
     private void saveLog(ProceedingJoinPoint joinPoint, long costTime) {
@@ -46,7 +46,7 @@ public class LogAspect {
         StringBuilder sb = new StringBuilder();
         sb.append('[').append(format.format(System.currentTimeMillis())).append(']'); // time
 
-        Log ann = method.getAnnotation(Log.class);
+        AopLog ann = method.getAnnotation(AopLog.class);
         sb.append('[').append(ann != null ? ann.value() : "").append(']'); // key
 
         String className = joinPoint.getTarget().getClass().getName();

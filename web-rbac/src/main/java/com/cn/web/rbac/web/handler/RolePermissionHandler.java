@@ -1,30 +1,22 @@
-package com.cn.web.rbac.web.controller;
+package com.cn.web.rbac.web.handler;
 
-import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.RolePermission;
 import com.cn.web.rbac.service.RolePermissionService;
-import com.cn.web.rbac.web.interceptor.Logical;
-import com.cn.web.rbac.web.interceptor.PermissionRequired;
 import com.cn.web.rbac.web.request.RolePermReq;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequestMapping(value = "role/permission")
-public class RolePermissionController extends DefaultController {
+@Service("rolePermissionHandler")
+public class RolePermissionHandler {
 
     @Autowired
     RolePermissionService rolePermissionService;
 
-    @PermissionRequired(value = {"sys:role:update", "sys:permission:update"}, logical = Logical.AND)
-    @RequestMapping(value = "update")
-    public String update(@RequestBody RolePermReq req) {
+    public String update(RolePermReq req) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
         if (req == null || req.getRoleId() == null || req.getRoleId().isEmpty()) {
@@ -67,8 +59,6 @@ public class RolePermissionController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    @PermissionRequired(value = {"sys:role:view", "sys:permission:view"}, logical = Logical.AND)
-    @RequestMapping(value = "list")
     public String list(String roleId) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 

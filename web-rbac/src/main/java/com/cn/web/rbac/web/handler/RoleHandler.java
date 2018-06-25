@@ -1,34 +1,26 @@
-package com.cn.web.rbac.web.controller;
+package com.cn.web.rbac.web.handler;
 
-import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.Role;
 import com.cn.web.rbac.service.RoleService;
-import com.cn.web.rbac.web.interceptor.PermissionRequired;
 import com.cn.web.rbac.web.request.RoleReq;
 import com.cn.web.rbac.web.vo.RoleBean;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@RestController
-@RequestMapping(value = "role")
-public class RoleController extends DefaultController {
+@Service("roleHandler")
+public class RoleHandler {
 
     @Autowired
     RoleService roleService;
 
-    @PermissionRequired("sys:role:save")
-    @RequestMapping(value = "save", method = {RequestMethod.POST})
-    public String save(@RequestBody RoleReq req) {
+    public String save(RoleReq req) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
         if (req == null) {
@@ -64,9 +56,7 @@ public class RoleController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    @PermissionRequired("sys:role:update")
-    @RequestMapping(value = "update", method = {RequestMethod.POST})
-    public String update(@RequestBody RoleReq req) {
+    public String update(RoleReq req) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
         if (req == null || req.getId() == null) {
@@ -98,8 +88,6 @@ public class RoleController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    @PermissionRequired("sys:role:delete")
-    @RequestMapping(value = "delete")
     public String delete(String id) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
@@ -110,8 +98,6 @@ public class RoleController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    @PermissionRequired("sys:role:view")
-    @RequestMapping(value = "list")
     public String list(int page, /* @Max(20) */ int size) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
         if (page < 0) {

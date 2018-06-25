@@ -1,16 +1,10 @@
 package com.cn.web.rbac.util;
 
+import org.springframework.data.domain.PageRequest;
+
 public class PageUtils {
 
-    public static int[] of(String page, String size) {
-        int offset = Integer.parseInt(page);
-        int length = Integer.parseInt(size);
-        if (offset > 0) {
-            offset -= 1;
-        }
-        if (length > 50) {
-            length = 50;
-        }
-        return new int[]{offset, length};
+    public static PageRequest of(int page, int size) {
+        return PageRequest.of(page, size);
     }
 }

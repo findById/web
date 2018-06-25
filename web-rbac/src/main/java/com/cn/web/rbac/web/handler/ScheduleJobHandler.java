@@ -1,18 +1,15 @@
-package com.cn.web.rbac.web.controller;
+package com.cn.web.rbac.web.handler;
 
-import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.ScheduleJob;
 import com.cn.web.rbac.service.ScheduleJobService;
 import com.cn.web.rbac.web.request.ScheduleJobReq;
 import com.cn.web.rbac.web.response.ScheduleJobResp;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -20,15 +17,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
-@RequestMapping(value = "scheduleJob")
-public class ScheduleJobController extends DefaultController {
+@Service("scheduleJobHandler")
+public class ScheduleJobHandler {
 
-    @Resource
+    @Autowired
     ScheduleJobService scheduleJobService;
 
-    // @PermissionRequired(value = "sys:task:view")
-    @RequestMapping(value = "search", method = {RequestMethod.POST})
     public String search(String keyword, int page, /* @Max(20) */ int size) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
         if (page < 0) {
@@ -60,9 +54,7 @@ public class ScheduleJobController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    // @PermissionRequired(value = "sys:task:save")
-    @RequestMapping(value = "save", method = {RequestMethod.POST})
-    public String save(@RequestBody ScheduleJobReq req) {
+    public String save(ScheduleJobReq req) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
         if (req == null) {
@@ -85,9 +77,7 @@ public class ScheduleJobController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    // @PermissionRequired(value = "sys:task:update")
-    @RequestMapping(value = "update", method = {RequestMethod.POST})
-    public String update(@RequestBody ScheduleJobReq req) {
+    public String update(ScheduleJobReq req) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
         if (req == null || req.getId() == null) {
@@ -111,8 +101,6 @@ public class ScheduleJobController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    // @PermissionRequired(value = "sys:task:delete")
-    @RequestMapping(value = "delete")
     public String delete(String ids) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
@@ -123,8 +111,6 @@ public class ScheduleJobController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    // @PermissionRequired(value = "sys:task:view")
-    @RequestMapping(value = "list")
     public String list(int page, /* @Max(20) */ int size) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
         if (page < 0) {
@@ -156,9 +142,27 @@ public class ScheduleJobController extends DefaultController {
         return builder.buildJSONString();
     }
 
-    // @PermissionRequired(value = "sys:task:view")
-    @RequestMapping(value = "view")
-    public String view() {
-        return "unimplemented";
+    public String start(String id) {
+        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+
+        builder.statusCode(200);
+        builder.message("success");
+        return builder.buildJSONString();
+    }
+
+    public String pause(String id) {
+        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+
+        builder.statusCode(200);
+        builder.message("success");
+        return builder.buildJSONString();
+    }
+
+    public String resume(String id) {
+        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+
+        builder.statusCode(200);
+        builder.message("success");
+        return builder.buildJSONString();
     }
 }
