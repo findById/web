@@ -1,5 +1,6 @@
 package com.cn.web.rbac.web.handler;
 
+import com.cn.web.core.platform.exception.HandlerException;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.User;
 import com.cn.web.rbac.service.UserService;
@@ -11,7 +12,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,30 +23,21 @@ public class UserHandler {
     @Autowired
     UserService userService;
 
-    public String save(UserReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public UserBean save(UserReq req) {
 
         if (req == null) {
-            builder.statusCode(201);
-            builder.message("Email and password must not be null.");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "Email and password must not be null.");
         }
         if (req.getEmail() == null) {
-            builder.statusCode(201);
-            builder.message("Email must not be null.");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "Email must not be null.");
         }
         if (req.getPassword() == null) {
-            builder.statusCode(201);
-            builder.message("Password must not be null.");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "Password must not be null.");
         }
 
         User temp = userService.findByEmail(req.getEmail());
         if (temp != null) {
-            builder.statusCode(201);
-            builder.message("Email already exists");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "Email already exists.");
         }
 
         User user = new User();
@@ -63,26 +54,18 @@ public class UserHandler {
         UserBean bean = new UserBean();
         BeanUtils.copyProperties(user, bean);
 
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(bean);
-        return builder.buildJSONString();
+        return bean;
     }
 
-    public String update(UserReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public boolean update(UserReq req) {
 
         if (req == null || req.getId() == null) {
-            builder.statusCode(201);
-            builder.message("user not exists");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "user not exists");
         }
 
         User user = userService.get(req.getId());
         if (user == null) {
-            builder.statusCode(201);
-            builder.message("user not exists");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "user not exists");
         }
         if (req.getEmail() != null && !req.getEmail().isEmpty()) {
             user.setEmail(req.getEmail());
@@ -104,23 +87,17 @@ public class UserHandler {
         }
         userService.update(user);
 
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+        return true;
     }
 
-    public String delete(String ids) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public boolean delete(String ids) {
 
         userService.delete(ids);
 
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+        return true;
     }
 
-    public String list(int page, /* @Max(20) */ int size) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public HashMap<String, Object> list(int page, /* @Max(20) */ int size) {
         if (page < 0) {
             page = 0;
         }
@@ -149,21 +126,14 @@ public class UserHandler {
         result.put("total", list.getTotalElements());
         result.put("list", beanList);
 
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(result);
-
-        return builder.buildJSONString();
+        return result;
     }
 
-    public String findById(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public UserBean findById(String id) {
 
         User user = userService.get(id);
         if (user == null) {
-            builder.statusCode(201);
-            builder.message("Not existed.");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "user not exists");
         }
 
         UserBean bean = new UserBean();
@@ -174,118 +144,78 @@ public class UserHandler {
         bean.setUpdateTime(user.getUpdateTime());
         bean.setDescription(user.getDescription());
 
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(bean);
-        return builder.buildJSONString();
+        return bean;
     }
 
-    public String login(@RequestBody UserLoginReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
-        try {
-            if (req == null) {
-                builder.statusCode(201);
-                builder.message("loginName and password must not be null.");
-                return builder.buildJSONString();
-            }
-            if (req.getType() == 0 && (req.getLoginName() == null || req.getLoginName().isEmpty())) {
-                builder.statusCode(201);
-                builder.message("'loginName' must not be null.");
-                return builder.buildJSONString();
-            }
-            if (req.getType() == 1 && (req.getUsername() == null || req.getUsername().isEmpty())) {
-                builder.statusCode(201);
-                builder.message("'username' must not be null.");
-                return builder.buildJSONString();
-            }
-            if (req.getType() == 2 && (req.getEmail() == null || req.getEmail().isEmpty())) {
-                builder.statusCode(201);
-                builder.message("'email' must not be null.");
-                return builder.buildJSONString();
-            }
-            if (req.getType() == 3 && (req.getMobile() == null || req.getMobile().isEmpty())) {
-                builder.statusCode(201);
-                builder.message("'mobile' must not be null.");
-                return builder.buildJSONString();
-            }
-
-            String email = req.getEmail();
-            if (email == null) {
-                if (req.getUsername() != null) {
-                    email = req.getUsername();
-                } else if (req.getMobile() != null) {
-                    email = req.getMobile();
-                }
-            }
-
-            User user = userService.login(email, req.getPassword());
-            if (user == null) {
-                builder.statusCode(201);
-                builder.message("Authentication failure");
-                return builder.buildJSONString();
-            }
-
-            UserBean bean = new UserBean();
-            BeanUtils.copyProperties(user, bean);
-
-            // update login history
-            userService.updateUserLogin(user);
-
-            builder.statusCode(200);
-            builder.message("success");
-            builder.result(bean);
-        } catch (Throwable e) {
-            e.printStackTrace();
+    public UserBean login(UserLoginReq req) {
+        if (req == null) {
+            throw new HandlerException(201, "'loginName' and 'password' must not be null.");
         }
-        return builder.buildJSONString();
+        if (req.getType() == 0 && (req.getLoginName() == null || req.getLoginName().isEmpty())) {
+            throw new HandlerException(201, "'loginName' must not be null.");
+        }
+        if (req.getType() == 1 && (req.getUsername() == null || req.getUsername().isEmpty())) {
+            throw new HandlerException(201, "'username' must not be null.");
+        }
+        if (req.getType() == 2 && (req.getEmail() == null || req.getEmail().isEmpty())) {
+            throw new HandlerException(201, "'email' must not be null.");
+        }
+        if (req.getType() == 3 && (req.getMobile() == null || req.getMobile().isEmpty())) {
+            throw new HandlerException(201, "'mobile' must not be null.");
+        }
+
+        String email = req.getEmail();
+        if (email == null) {
+            if (req.getUsername() != null) {
+                email = req.getUsername();
+            } else if (req.getMobile() != null) {
+                email = req.getMobile();
+            }
+        }
+
+        User user = userService.login(email, req.getPassword());
+        if (user == null) {
+            throw new HandlerException(201, "Authentication failure");
+        }
+
+        UserBean bean = new UserBean();
+        BeanUtils.copyProperties(user, bean);
+
+        // update login history
+        userService.updateUserLogin(user);
+
+        return bean;
     }
 
-    public String updatePassword(String userId, UserUpdatePasswdReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public boolean updatePassword(String userId, UserUpdatePasswdReq req) {
 
         if (req == null || req.getUserId() == null) {
-            builder.statusCode(201);
-            builder.message("user not exists");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "user not exists");
         }
 
         if (!userId.equals(req.getUserId())) {
-            builder.statusCode(201);
-            builder.message("Must be own operation");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "owner operating only");
         }
 
         User user = userService.get(req.getUserId());
         if (user == null) {
-            builder.statusCode(201);
-            builder.message("user not exists");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "user not exists");
         }
         if (req.getOldPassword() == null || req.getOldPassword().isEmpty()) {
-            builder.statusCode(201);
-            builder.message("'userId' must not be null");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "'userId' must not be null");
         }
         if (req.getOldPassword() == null || req.getOldPassword().isEmpty()) {
-            builder.statusCode(201);
-            builder.message("'oldPassword' must not be null");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "'oldPassword' must not be null");
         }
         if (req.getNewPassword() == null || req.getNewPassword().isEmpty()) {
-            builder.statusCode(201);
-            builder.message("'newPassword' must not be null");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "'newPassword' must not be null");
         }
         if (!userService.checkPassword(user, req.getOldPassword())) {
-            builder.statusCode(201);
-            builder.message("failure");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "Authentication failure");
         }
         userService.update(user);
 
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+        return true;
     }
 
 }

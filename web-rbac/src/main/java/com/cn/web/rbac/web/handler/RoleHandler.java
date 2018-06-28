@@ -1,6 +1,6 @@
 package com.cn.web.rbac.web.handler;
 
-import com.cn.web.core.platform.web.ResponseBuilder;
+import com.cn.web.core.platform.exception.HandlerException;
 import com.cn.web.rbac.domain.Role;
 import com.cn.web.rbac.service.RoleService;
 import com.cn.web.rbac.web.request.RoleReq;
@@ -20,23 +20,13 @@ public class RoleHandler {
     @Autowired
     RoleService roleService;
 
-    public String save(RoleReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public RoleBean save(RoleReq req) {
 
-        if (req == null) {
-            builder.statusCode(201);
-            builder.message("Request body must not be null.");
-            return builder.buildJSONString();
-        }
-        if (req.getName() == null || req.getName().isEmpty()) {
-            builder.statusCode(201);
-            builder.message("'name' must not be null.");
-            return builder.buildJSONString();
+        if (req == null || req.getName() == null || req.getName().isEmpty()) {
+            throw new HandlerException(201, "'name' must not be null.");
         }
         if (req.getCode() == null || req.getCode().isEmpty()) {
-            builder.statusCode(201);
-            builder.message("'code' must not be null.");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "'code' must not be null.");
         }
 
         Role role = new Role();
@@ -50,26 +40,18 @@ public class RoleHandler {
         RoleBean bean = new RoleBean();
         BeanUtils.copyProperties(role, bean);
 
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(bean);
-        return builder.buildJSONString();
+        return bean;
     }
 
-    public String update(RoleReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public boolean update(RoleReq req) {
 
         if (req == null || req.getId() == null) {
-            builder.statusCode(201);
-            builder.message("role not exists");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "role not exists");
         }
 
         Role role = roleService.get(req.getId());
         if (role == null) {
-            builder.statusCode(201);
-            builder.message("role not exists");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "role not exists");
         }
         if (req.getName() != null && !req.getName().isEmpty()) {
             role.setName(req.getName());
@@ -83,23 +65,17 @@ public class RoleHandler {
 
         roleService.update(role);
 
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+        return true;
     }
 
-    public String delete(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public boolean delete(String id) {
 
         roleService.delete(id);
 
-        builder.statusCode(200);
-        builder.message("ok");
-        return builder.buildJSONString();
+        return true;
     }
 
-    public String list(int page, /* @Max(20) */ int size) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public HashMap<String, Object> list(int page, /* @Max(20) */ int size) {
         if (page < 0) {
             page = 0;
         }
@@ -126,10 +102,6 @@ public class RoleHandler {
         result.put("total", list.getTotalElements());
         result.put("list", beanList);
 
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(result);
-
-        return builder.buildJSONString();
+        return result;
     }
 }

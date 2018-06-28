@@ -1,6 +1,6 @@
 package com.cn.web.rbac.web.handler;
 
-import com.cn.web.core.platform.web.ResponseBuilder;
+import com.cn.web.core.platform.exception.HandlerException;
 import com.cn.web.rbac.domain.ScheduleJob;
 import com.cn.web.rbac.service.ScheduleJobService;
 import com.cn.web.rbac.web.request.ScheduleJobReq;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,8 +22,7 @@ public class ScheduleJobHandler {
     @Autowired
     ScheduleJobService scheduleJobService;
 
-    public String search(String keyword, int page, /* @Max(20) */ int size) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public Map<String, Object> search(String keyword, int page, /* @Max(20) */ int size) {
         if (page < 0) {
             page = 0;
         }
@@ -48,19 +46,12 @@ public class ScheduleJobHandler {
         result.put("total", list.getTotalElements());
         result.put("list", beanList);
 
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(result);
-        return builder.buildJSONString();
+        return result;
     }
 
-    public String save(ScheduleJobReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
-
+    public ScheduleJobResp save(ScheduleJobReq req) {
         if (req == null) {
-            builder.statusCode(201);
-            builder.message("Request body must not be null.");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "Request body must not be null.");
         }
 
         ScheduleJob scheduleJob = new ScheduleJob();
@@ -71,48 +62,34 @@ public class ScheduleJobHandler {
         ScheduleJobResp resp = new ScheduleJobResp();
         BeanUtils.copyProperties(scheduleJob, resp);
 
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(resp);
-        return builder.buildJSONString();
+        return resp;
     }
 
-    public String update(ScheduleJobReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public boolean update(ScheduleJobReq req) {
 
         if (req == null || req.getId() == null) {
-            builder.statusCode(201);
-            builder.message("ScheduleJob not exists");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "ScheduleJob not exists");
         }
 
         ScheduleJob scheduleJob = scheduleJobService.get(req.getId());
         if (scheduleJob == null) {
-            builder.statusCode(201);
-            builder.message("ScheduleJob not exists");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "ScheduleJob not exists");
         }
         // TODO copy value
 
         scheduleJobService.update(scheduleJob);
 
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+        return true;
     }
 
-    public String delete(String ids) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public boolean delete(String ids) {
 
         scheduleJobService.delete(ids);
 
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+        return true;
     }
 
-    public String list(int page, /* @Max(20) */ int size) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public Map<String, Object> list(int page, /* @Max(20) */ int size) {
         if (page < 0) {
             page = 0;
         }
@@ -136,33 +113,18 @@ public class ScheduleJobHandler {
         result.put("total", list.getTotalElements());
         result.put("list", beanList);
 
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(result);
-        return builder.buildJSONString();
+        return result;
     }
 
-    public String start(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
-
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+    public boolean start(String id) {
+        return true;
     }
 
-    public String pause(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
-
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+    public boolean pause(String id) {
+        return true;
     }
 
-    public String resume(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
-
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+    public boolean resume(String id) {
+        return true;
     }
 }

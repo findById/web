@@ -1,6 +1,6 @@
 package com.cn.web.rbac.web.handler;
 
-import com.cn.web.core.platform.web.ResponseBuilder;
+import com.cn.web.core.platform.exception.HandlerException;
 import com.cn.web.rbac.domain.RolePermission;
 import com.cn.web.rbac.service.RolePermissionService;
 import com.cn.web.rbac.web.request.RolePermReq;
@@ -16,18 +16,13 @@ public class RolePermissionHandler {
     @Autowired
     RolePermissionService rolePermissionService;
 
-    public String update(RolePermReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public boolean update(RolePermReq req) {
 
         if (req == null || req.getRoleId() == null || req.getRoleId().isEmpty()) {
-            builder.statusCode(201);
-            builder.message("'roleId' must not be null");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "'roleId' must not be null.");
         }
         if (req.getPermIds() == null || req.getPermIds().isEmpty()) {
-            builder.statusCode(201);
-            builder.message("'permIds' must not be null");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "'permIds' must not be null");
         }
 
         List<String> oldPermIdList = rolePermissionService.findPermissionIdListByRoleId(req.getRoleId());
@@ -54,19 +49,10 @@ public class RolePermissionHandler {
                 rolePermissionService.save(rolePermission);
             }
         }
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+        return true;
     }
 
-    public String list(String roleId) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
-
-        List<String> roleIds = rolePermissionService.findPermissionIdListByRoleId(roleId);
-
-        builder.result(roleIds);
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+    public List<String> list(String roleId) {
+        return rolePermissionService.findPermissionIdListByRoleId(roleId);
     }
 }

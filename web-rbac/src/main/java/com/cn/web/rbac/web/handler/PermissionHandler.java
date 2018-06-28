@@ -1,6 +1,6 @@
 package com.cn.web.rbac.web.handler;
 
-import com.cn.web.core.platform.web.ResponseBuilder;
+import com.cn.web.core.platform.exception.HandlerException;
 import com.cn.web.rbac.domain.Permission;
 import com.cn.web.rbac.service.PermissionService;
 import com.cn.web.rbac.web.converter.PermissionConverter;
@@ -19,33 +19,21 @@ public class PermissionHandler {
     @Autowired
     PermissionService permissionService;
 
-    public String save(PermissionReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
-
+    public PermissionBean save(PermissionReq req) {
         if (req == null) {
-            builder.statusCode(201);
-            builder.message("Request body must not be null.");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "Request body must not be null.");
         }
         if (req.getName() == null || req.getName().isEmpty()) {
-            builder.statusCode(201);
-            builder.message("'name' must not be null.");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "'name' must not be null.");
         }
         if (req.getType() == null || req.getType().isEmpty()) {
-            builder.statusCode(201);
-            builder.message("'type' must not be null.");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "'type' must not be null.");
         }
         if (req.getLink() == null || req.getLink().isEmpty()) {
-            builder.statusCode(201);
-            builder.message("'link' must not be null.");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "'link' must not be null.");
         }
         if (req.getParentId() == null || req.getParentId().isEmpty()) {
-            builder.statusCode(201);
-            builder.message("'parentId' must not be null.");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "'parentId' must not be null.");
         }
 
         Permission permission = new Permission();
@@ -58,27 +46,17 @@ public class PermissionHandler {
 
         PermissionBean bean = new PermissionBean();
         BeanUtils.copyProperties(permission, bean);
-
-        builder.statusCode(200);
-        builder.message("ok");
-        builder.result(bean);
-        return builder.buildJSONString();
+        return bean;
     }
 
-    public String update(PermissionReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
-
+    public boolean update(PermissionReq req) {
         if (req == null || req.getId() == null) {
-            builder.statusCode(201);
-            builder.message("Permission not exists");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "Permission not exists");
         }
 
         Permission permission = permissionService.get(req.getId());
         if (permission == null) {
-            builder.statusCode(201);
-            builder.message("Permission not exists");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "Permission not exists");
         }
 
         if (req.getName() != null && !req.getName().isEmpty()) {
@@ -93,63 +71,41 @@ public class PermissionHandler {
 
         permissionService.update(permission);
 
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+        return true;
     }
 
-    public String delete(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public boolean delete(String id) {
 
         permissionService.delete(id);
 
-        builder.statusCode(200);
-        builder.message("ok");
-        return builder.buildJSONString();
+        return true;
     }
 
-    public String list() {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public PermissionBean list() {
 
         List<Permission> list = permissionService.list();
 
-        PermissionBean result = PermissionConverter.convertToMenu(list);
-
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(result);
-        return builder.buildJSONString();
+        return PermissionConverter.convertToMenu(list);
     }
 
-    public String findById(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public PermissionBean findById(String id) {
 
         Permission permission = permissionService.get(id);
 
         PermissionBean bean = new PermissionBean();
         BeanUtils.copyProperties(permission, bean);
 
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(bean);
-        return builder.buildJSONString();
+        return bean;
     }
 
-    public String findOperationPermissionByParentId(String parentId) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public PermissionBean findOperationPermissionByParentId(String parentId) {
 
         List<Permission> list = permissionService.findOperationPermissionByParentId(parentId);
 
-        PermissionBean result = PermissionConverter.convertToMenu(list);
-
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(result);
-        return builder.buildJSONString();
+        return PermissionConverter.convertToMenu(list);
     }
 
-    public String findByUserId(String userId) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public List<PermissionBean> findByUserId(String userId) {
 
         List<Permission> list = permissionService.findByUserId(userId);
 
@@ -162,9 +118,6 @@ public class PermissionHandler {
             }
         }
 
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(result);
-        return builder.buildJSONString();
+        return result;
     }
 }

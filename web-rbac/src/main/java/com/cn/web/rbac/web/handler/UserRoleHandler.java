@@ -1,7 +1,7 @@
 package com.cn.web.rbac.web.handler;
 
+import com.cn.web.core.platform.exception.HandlerException;
 import com.cn.web.core.platform.web.DefaultController;
-import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.domain.UserRole;
 import com.cn.web.rbac.service.UserRoleService;
 import com.cn.web.rbac.web.request.UserRoleReq;
@@ -17,18 +17,13 @@ public class UserRoleHandler extends DefaultController {
     @Autowired
     UserRoleService userRoleService;
 
-    public String update(UserRoleReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public boolean update(UserRoleReq req) {
 
         if (req == null || req.getUserId() == null || req.getUserId().isEmpty()) {
-            builder.statusCode(201);
-            builder.message("'userId' must not be null");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "'userId' must not be null");
         }
         if (req.getRoleIds() == null || req.getRoleIds().isEmpty()) {
-            builder.statusCode(201);
-            builder.message("'roleIds' must not be null");
-            return builder.buildJSONString();
+            throw new HandlerException(201, "'roleIds' must not be null");
         }
 
         List<String> oldRoleIds = userRoleService.findByUserId(req.getUserId());
@@ -55,19 +50,11 @@ public class UserRoleHandler extends DefaultController {
                 userRoleService.save(userRole);
             }
         }
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+        return true;
     }
 
-    public String list(String userId) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public List<String> list(String userId) {
 
-        List<String> roleIds = userRoleService.findByUserId(userId);
-
-        builder.result(roleIds);
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+        return userRoleService.findByUserId(userId);
     }
 }
