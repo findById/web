@@ -14,7 +14,9 @@ import java.beans.PropertyEditorSupport;
 
 public class SiteController extends DefaultController {
 
+    private static final int DEFAULT_PAGE_NO = 1;
     private static final int DEFAULT_PAGE_SIZE = 20;
+    private static final int MAX_PAGE_SIZE = 50;
 
     @Autowired
     protected HttpServletRequest request;
@@ -31,11 +33,10 @@ public class SiteController extends DefaultController {
         binder.registerCustomEditor(String.class, new PropertyEditorSupport() {
             @Override
             public void setAsText(String text) {
-                // System.out.println("in: " + text);
                 // JavaScriptUtils.javaScriptEscape(text);
                 // HtmlUtils.htmlEscape(text);
                 setValue(text == null ? null : HtmlUtils.htmlEscape(text));
-                // System.out.println("out: " + getValue());
+                // System.out.println("in: " + text + ", out: " + getValue());
             }
         });
     }
@@ -48,15 +49,23 @@ public class SiteController extends DefaultController {
         String orderBy = request.getParameter("sort");
         String order = request.getParameter("order");
         if (page != null && !page.isEmpty()) {
-            pageNo = Integer.valueOf(page);
-            if (pageNo < 0) {
-                pageNo = 0;
-            } else if (pageNo > 0) {
-                pageNo -= 1;
+            try {
+                pageNo = Integer.parseInt(page);
+            } catch (Throwable ignored) {
             }
         }
         if (size != null && !size.isEmpty()) {
-            pageSize = Integer.valueOf(size);
+            try {
+                pageSize = Integer.parseInt(size);
+            } catch (Throwable e) {
+                pageSize = DEFAULT_PAGE_SIZE;
+            }
+        }
+        if (pageNo <= 0) {
+            pageNo = DEFAULT_PAGE_NO;
+        }
+        if (pageSize > MAX_PAGE_SIZE) {
+            pageSize = MAX_PAGE_SIZE;
         }
         if (orderBy == null || orderBy.isEmpty()) {
             orderBy = "id";
