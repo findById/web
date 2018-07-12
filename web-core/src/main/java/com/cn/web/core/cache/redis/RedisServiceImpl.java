@@ -24,9 +24,9 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public String put(Serializable key, String value, long timeout) {
+    public String put(Serializable key, String value, long timeout, TimeUnit unit) {
         ValueOperations<String, String> ops = redisTemplate.opsForValue();
-        ops.set(String.valueOf(key), value == null ? "" : value, timeout, TimeUnit.MILLISECONDS);
+        ops.set(String.valueOf(key), value == null ? "" : value, timeout, unit);
         return value;
     }
 
@@ -49,6 +49,11 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public boolean exists(Serializable key) {
         return redisTemplate.hasKey(String.valueOf(key));
+    }
+
+    @Override
+    public void expire(Serializable key, long timeout, TimeUnit unit) {
+        redisTemplate.expire(String.valueOf(key), timeout, unit);
     }
 
     @Override
