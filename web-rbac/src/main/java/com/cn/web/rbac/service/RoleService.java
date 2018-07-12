@@ -18,4 +18,6 @@ public interface RoleService {
     List<Role> list();
 
     Page<Role> list(int page, int size);
+
+    Page<Role> search(String keywords, int page, int size);
 }

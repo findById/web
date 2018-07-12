@@ -18,7 +18,7 @@
 //
 //    @Test
 //    public void save() {
-//        String password = AuthUtils.initPassword(6);
+//        String password = AuthUtils.randomPassword(6);
 //        System.out.println("password: " + password);
 //        User item = new User();
 //        item.setEmail("admin@admin.com");

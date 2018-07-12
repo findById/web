@@ -5,9 +5,7 @@ import com.cn.web.rbac.domain.User;
 import com.cn.web.rbac.service.UserService;
 import com.cn.web.rbac.util.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -53,7 +51,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> list(int page, int size) {
-        return userDao.findAll(PageRequest.of(page, size, Sort.by("id")));
+        return userDao.findAll(PageRequest.of(page, size, Sort.by("updateTime").descending()));
+    }
+
+    @Override
+    public Page<User> search(String keywords, int page, int size) {
+        User user = new User();
+        user.setId(keywords);
+        user.setUsername(keywords);
+        user.setEmail(keywords);
+        user.setMobile(keywords);
+        user.setDepartment(keywords);
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("mobile", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("department", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withIgnorePaths("password", "updateTime", "delFlg");
+        Example<User> example = Example.of(user, matcher);
+        return userDao.findAll(example, PageRequest.of(page, size, Sort.by("updateTime").descending()));
     }
 
     @Override

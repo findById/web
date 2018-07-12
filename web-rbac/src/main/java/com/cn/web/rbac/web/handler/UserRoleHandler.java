@@ -54,7 +54,6 @@ public class UserRoleHandler extends DefaultController {
     }
 
     public List<String> list(String userId) {
-
         return userRoleService.findByUserId(userId);
     }
 }

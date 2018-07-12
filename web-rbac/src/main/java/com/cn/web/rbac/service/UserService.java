@@ -19,6 +19,8 @@ public interface UserService {
 
     Page<User> list(int page, int size);
 
+    Page<User> search(String keywords, int page, int size);
+
     User login(String email, String password);
 
     User findByEmail(String email);

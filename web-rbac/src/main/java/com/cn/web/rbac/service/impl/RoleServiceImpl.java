@@ -4,9 +4,7 @@ import com.cn.web.rbac.dao.RoleDao;
 import com.cn.web.rbac.domain.Role;
 import com.cn.web.rbac.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -50,5 +48,20 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Page<Role> list(int page, int size) {
         return roleDao.findAll(PageRequest.of(page, size, Sort.by("id")));
+    }
+
+    @Override
+    public Page<Role> search(String keywords, int page, int size) {
+        Role role = new Role();
+        role.setId(keywords);
+        role.setName(keywords);
+        role.setCode(keywords);
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("code", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withIgnorePaths("updateTime", "delFlg");
+        Example<Role> example = Example.of(role, matcher);
+        return roleDao.findAll(example, PageRequest.of(page, size, Sort.by("id")));
     }
 }

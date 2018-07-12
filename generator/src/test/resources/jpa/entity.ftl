@@ -15,7 +15,7 @@ public class ${ClassName} implements Serializable {
     /**
      * ${item.desc!""}
      */
-    @Column(name = "${item.name}", columnDefinition = "${item.desc!""}")
+    @Column(name = "${item.name}")
     private ${item.type} ${item.name};
     </#list>
 </#if>

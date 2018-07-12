@@ -1,6 +1,7 @@
 package com.cn.web.rbac.web.request;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class UserReq implements Serializable {
     private String id;
@@ -8,9 +9,7 @@ public class UserReq implements Serializable {
     private String password;
     private String email;
     private String mobile;
-    private Short gender;
-    private String avatar;
-    private String department;
+    private List<String> roleIds;
     private String description;
 
     public String getId() {
@@ -53,28 +52,12 @@ public class UserReq implements Serializable {
         this.mobile = mobile;
     }
 
-    public Short getGender() {
-        return gender;
+    public List<String> getRoleIds() {
+        return roleIds;
     }
 
-    public void setGender(Short gender) {
-        this.gender = gender;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setRoleIds(List<String> roleIds) {
+        this.roleIds = roleIds;
     }
 
     public String getDescription() {

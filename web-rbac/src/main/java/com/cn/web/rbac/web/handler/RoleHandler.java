@@ -1,6 +1,7 @@
 package com.cn.web.rbac.web.handler;
 
 import com.cn.web.core.platform.exception.HandlerException;
+import com.cn.web.rbac.domain.BaseEntity;
 import com.cn.web.rbac.domain.Role;
 import com.cn.web.rbac.service.RoleService;
 import com.cn.web.rbac.web.request.RoleReq;
@@ -19,6 +20,30 @@ public class RoleHandler {
 
     @Autowired
     RoleService roleService;
+
+    public HashMap<String, Object> search(String keywords, int page, int size) {
+
+        Page<Role> list = roleService.search(keywords, page - 1, size);
+
+        List<RoleBean> beanList = new ArrayList<>();
+        if (list.hasContent()) {
+            for (Role item : list.getContent()) {
+                if (item.getDelFlg() != BaseEntity.FLAG_NORMAL && item.getDelFlg() != BaseEntity.FLAG_ENABLE) {
+                    continue;
+                }
+                RoleBean bean = new RoleBean();
+                BeanUtils.copyProperties(item, bean);
+                beanList.add(bean);
+            }
+        }
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("page", page);
+        result.put("total", list.getTotalElements());
+        result.put("list", beanList);
+
+        return result;
+    }
 
     public RoleBean save(RoleReq req) {
 
@@ -75,9 +100,13 @@ public class RoleHandler {
         return true;
     }
 
-    public HashMap<String, Object> list(int page, /* @Max(20) */ int size) {
-        if (page < 0) {
-            page = 0;
+    public Role findById(String id) {
+        return roleService.get(id);
+    }
+
+    public HashMap<String, Object> list(int page, int size) {
+        if (page <= 0) {
+            page = 1;
         }
         if (size > 20) {
             size = 20;
