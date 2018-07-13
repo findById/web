@@ -4,10 +4,7 @@ import ${packageName}.${moduleName}.repository.${ClassName}Repository;
 import ${packageName}.${moduleName}.domain.${ClassName};
 import ${packageName}.${moduleName}.service.${ClassName}Service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,14 +21,6 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
 
     @Resource
     ${ClassName}Repository ${className}Repository;
-
-    @Override
-    public Page<${ClassName}> search(String keyword, Pageable page) {
-
-        System.out.println(keyword);
-
-        return ${className}Repository.findAll(page);
-    }
 
     @Override
     public ${ClassName} get(Serializable id) {
@@ -63,6 +52,17 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
     }
 
     @Override
+    @Transactional
+    public void logicDelete(Serializable id) {
+        ${ClassName} ${className} = get(id);
+        if (${className} != null) {
+            // ${className}.setDelFlg(1);
+            ${className}Repository.save(${className});
+            throw new RuntimeException("unimplemented");
+        }
+    }
+
+    @Override
     public List<${ClassName}> list() {
         return ${className}Repository.findAll();
     }
@@ -73,4 +73,14 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
         return ${className}Repository.findAll(PageRequest.of(page, size, Sort.by("id")));
     }
 
+    @Override
+    public Page<${ClassName}> search(String keyword, Pageable page) {
+        ${ClassName} ${className} = new ${ClassName}();
+        // TODO set keywords
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("fieldName", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withIgnorePaths("updateTime", "delFlg");
+        Example<${ClassName}> example = Example.of(${className}, matcher);
+        return ${className}Repository.findAll(example, page);
+    }
 }

@@ -13,8 +13,6 @@ import java.util.List;
  */
 public interface ${ClassName}Service {
 
-    Page<${ClassName}> search(String keyword, Pageable page);
-
     ${ClassName} get(Serializable id);
 
     ${ClassName} save(${ClassName} ${className});
@@ -23,8 +21,12 @@ public interface ${ClassName}Service {
 
     void delete(Serializable id);
 
+    void logicDelete(Serializable id);
+
     List<${ClassName}> list();
 
     Page<${ClassName}> list(int offset, int size);
+
+    Page<${ClassName}> search(String keyword, Pageable page);
 
 }

@@ -10,12 +10,13 @@ import ${packageName}.${moduleName}.web.response.${ClassName}Resp;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,39 +31,6 @@ public class ${ClassName}Controller {
 
     @Resource
     ${ClassName}Service ${className}Service;
-
-    // @PermissionRequired(value = "${moduleName}:${className}:view")
-    @RequestMapping(value = "search", method = {RequestMethod.POST})
-    public String search(String keyword, int page, int size) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
-        if (page < 1) {
-            page = 1;
-        }
-        if (size > 20) {
-            size = 20;
-        }
-
-        Page<${ClassName}> list = ${className}Service.search(keyword, PageRequest.of(page - a, size));
-
-        List<${ClassName}Resp> beanList = new ArrayList<>();
-        if (list.hasContent()) {
-            for (${ClassName} ${className} : list.getContent()) {
-                ${ClassName}Resp item = new ${ClassName}Resp();
-                BeanUtils.copyProperties(${className}, item);
-                beanList.add(item);
-            }
-        }
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("page", page);
-        result.put("total", list.getTotalElements());
-        result.put("list", beanList);
-
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(result);
-        return builder.buildJSONString();
-    }
 
     // @PermissionRequired(value = "${moduleName}:${className}:save")
     @RequestMapping(value = "save", method = {RequestMethod.POST})
@@ -116,8 +84,8 @@ public class ${ClassName}Controller {
     }
 
     // @PermissionRequired(value = "${moduleName}:${className}:delete")
-    @RequestMapping(value = "delete")
-    public String delete(String ids) {
+    @RequestMapping(value = "delete", method = {RequestMethod.POST})
+    public String delete(@RequestBody String ids) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
 
         ${className}Service.delete(ids);
@@ -128,17 +96,20 @@ public class ${ClassName}Controller {
     }
 
     // @PermissionRequired(value = "${moduleName}:${className}:view")
-    @RequestMapping(value = "list")
-    public String list(int page, int size) {
+    @RequestMapping(value = "list", method = {RequestMethod.GET})
+    public String list(@RequestParam(name = "page", defaultValue = "1") @Min(1) int page,
+                       @RequestParam(name = "size", defaultValue = "20") @Max(50) int size,
+                       @RequestParam(name = "sort", required = false) String sortBy,
+                       @RequestParam(name = "order", required = false) String orderBy,
+                       @RequestParam(name = "keywords", required = false) String keywords) {
         ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
-        if (page < 1) {
-            page = 1;
-        }
-        if (size > 20) {
-            size = 20;
-        }
 
-        Page<${ClassName}> list = ${className}Service.list(page - 1, size);
+        Page<${ClassName}> list;
+        if (!StringUtils.isEmpty(keywords)) {
+            list = ${className}Service.search(keywords, PageRequest.of(page - 1, size));
+        } else {
+            list = ${className}Service.list(page - 1, size);
+        }
 
         List<${ClassName}Resp> beanList = new ArrayList<>();
         if (list.hasContent()) {
@@ -161,7 +132,7 @@ public class ${ClassName}Controller {
     }
 
     // @PermissionRequired(value = "${moduleName}:${className}:view")
-    @RequestMapping(value = "view")
+    @RequestMapping(value = "view", method = {RequestMethod.GET})
     public String view() {
         return "unimplemented";
     }
