@@ -15,18 +15,13 @@ public class GeneratorTest {
         String projectRootDir = "/home/work/dev/java/web/generator";
         Module module = new Module();
         module.setTemplateId("jpa");
-        module.setBasePackage("com.cn.web");
-        module.setModuleName("test");
-        module.setClassName("test");
-
+        module.setDesc("user");
+        module.setBasePackage("org.cn.web");
+        module.setModuleName("sys");
+        module.setClassName("user");
         module.setColumns(new ArrayList<>());
-        for (int i = 0; i < 3; i++) {
-            ModuleColumn column = new ModuleColumn();
-            column.setName("column" + i);
-            column.setType("String");
-            column.setDesc("column comment" + i);
-            module.getColumns().add(column);
-        }
+        module.getColumns().add(new ModuleColumn("username", "String", "username"));
+        module.getColumns().add(new ModuleColumn("password", "String", "password"));
         GenUtils.generator(new File(projectRootDir), module);
     }
 
