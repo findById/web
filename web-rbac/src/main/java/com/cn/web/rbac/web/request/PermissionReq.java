@@ -9,6 +9,7 @@ public class PermissionReq {
     private String type;
     private Integer position;
     private String link;
+    private String icon;
     private String permCode;
     private String method;
     private String state;
@@ -76,6 +77,14 @@ public class PermissionReq {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public String getPermCode() {

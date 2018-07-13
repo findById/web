@@ -4,11 +4,21 @@ import java.io.Serializable;
 
 public class DictReq implements Serializable {
 
+    private String id;
     private String label;
     private String value;
     private String type;
     private Integer position;
     private String remark;
+    private String parentId;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getLabel() {
         return label;
@@ -48,5 +58,13 @@ public class DictReq implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 }

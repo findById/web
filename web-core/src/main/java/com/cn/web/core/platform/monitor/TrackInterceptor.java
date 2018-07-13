@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 
 public class TrackInterceptor implements HandlerInterceptor {
 
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z");
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -32,7 +32,7 @@ public class TrackInterceptor implements HandlerInterceptor {
         return "";
     }
 
-    public String getRemoteAddr(HttpServletRequest request) {
+    private String getRemoteAddr(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
         if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Http_X_Forwarded_For");

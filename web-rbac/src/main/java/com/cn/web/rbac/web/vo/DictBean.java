@@ -1,15 +1,27 @@
 package com.cn.web.rbac.web.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DictBean implements Serializable {
 
+    private String id;
     private String label;
     private String value;
     private String type;
     private Integer position;
     private String remark;
-    private String description;
+    private String parentId;
+    private List<DictBean> children = new ArrayList<>();
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getLabel() {
         return label;
@@ -51,11 +63,19 @@ public class DictBean implements Serializable {
         this.remark = remark;
     }
 
-    public String getDescription() {
-        return description;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public List<DictBean> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<DictBean> children) {
+        this.children = children;
     }
 }

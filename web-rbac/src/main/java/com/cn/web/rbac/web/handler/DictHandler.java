@@ -27,6 +27,9 @@ public class DictHandler {
         dict.setType(req.getType());
         dict.setPosition(req.getPosition());
         dict.setRemark(req.getRemark());
+        if (req.getParentId() != null) {
+            dict.setParentId(req.getParentId());
+        }
 
         dictService.save(dict);
 

@@ -16,6 +16,8 @@ public class Permission extends BaseEntity {
     private Integer position;
     @Column(name = "link", length = 100)
     private String link;
+    @Column(name = "icon", length = 50)
+    private String icon;
     @Column(name = "perm_code", length = 100)
     private String permCode;
     @Column(name = "method", length = 5)
@@ -68,6 +70,14 @@ public class Permission extends BaseEntity {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public String getPermCode() {

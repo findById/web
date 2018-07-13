@@ -40,6 +40,8 @@ public class PermissionHandler {
         permission.setName(req.getName());
         permission.setType(req.getType());
         permission.setLink(req.getLink());
+        permission.setIcon(req.getIcon());
+        permission.setPermCode(req.getPermCode());
         permission.setParentId(req.getParentId());
 
         permissionService.save(permission);
@@ -64,6 +66,12 @@ public class PermissionHandler {
         }
         if (req.getLink() != null && !req.getLink().isEmpty()) {
             permission.setLink(req.getLink());
+        }
+        if (req.getIcon() != null && !req.getIcon().isEmpty()) {
+            permission.setIcon(req.getIcon());
+        }
+        if (req.getPermCode() != null && !req.getPermCode().isEmpty()) {
+            permission.setPermCode(req.getPermCode());
         }
         if (req.getParentId() != null && !req.getParentId().isEmpty()) {
             permission.setParentId(req.getParentId());

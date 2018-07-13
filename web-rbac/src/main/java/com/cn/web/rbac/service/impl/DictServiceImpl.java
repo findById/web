@@ -25,13 +25,13 @@ public class DictServiceImpl implements DictService {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT * FROM dict WHERE del_flag=0");
         if (!StringUtils.isEmpty(label)) {
-            sql.append(" AND label LIKE &").append(label).append('%');
+            sql.append(" AND label LIKE %").append(label).append('%');
         }
         if (!StringUtils.isEmpty(value)) {
-            sql.append(" AND value LIKE &").append(value).append('%');
+            sql.append(" AND value LIKE %").append(value).append('%');
         }
         if (!StringUtils.isEmpty(type)) {
-            sql.append(" AND type LIKE &").append(type).append('%');
+            sql.append(" AND type LIKE %").append(type).append('%');
         }
         System.out.println(sql.toString());
 
