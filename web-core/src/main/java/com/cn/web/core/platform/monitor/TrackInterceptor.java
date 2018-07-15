@@ -1,5 +1,6 @@
 package com.cn.web.core.platform.monitor;
 
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +14,18 @@ public class TrackInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         StringBuffer sb = new StringBuffer();
+        // access time
         sb.append("[").append(format.format(System.currentTimeMillis())).append("]");
+        // address
         sb.append("[").append(getRemoteAddr(request)).append("]");
+        // method
+        sb.append('[');
+        if ((handler instanceof HandlerMethod)) {
+            HandlerMethod method = (HandlerMethod) handler;
+            sb.append(method.getBeanType().getName()).append(".").append(method.getMethod().getName()).append("()");
+        }
+        sb.append(']');
+        // url
         sb.append("[").append(request.getScheme()).append("://")
                 .append(request.getServerName()).append(":")
                 .append(request.getServerPort())
