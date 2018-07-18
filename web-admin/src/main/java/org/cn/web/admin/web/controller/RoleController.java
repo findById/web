@@ -24,7 +24,7 @@ public class RoleController extends DefaultController {
     @PermissionRequired("sys:role:save")
     @RequestMapping(value = "save", method = {RequestMethod.POST})
     public String save(@RequestBody RoleReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             RoleBean bean = roleHandler.save(req);
@@ -42,7 +42,7 @@ public class RoleController extends DefaultController {
     @PermissionRequired("sys:role:update")
     @RequestMapping(value = "update", method = {RequestMethod.POST})
     public String update(@RequestBody RoleReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             roleHandler.update(req);
@@ -59,7 +59,7 @@ public class RoleController extends DefaultController {
     @PermissionRequired("sys:role:delete")
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     public String delete(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             roleHandler.delete(id);
@@ -78,7 +78,7 @@ public class RoleController extends DefaultController {
     public String list(@RequestParam(name = "page", defaultValue = "1") int page,
                        @RequestParam(name = "size", defaultValue = "20") @Max(50) int size,
                        @RequestParam(name = "keywords", required = false) String keywords) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             HashMap<String, Object> result;

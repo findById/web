@@ -27,7 +27,7 @@ public class UserController extends DefaultController {
     @PermissionRequired(value = "sys:user:save")
     @RequestMapping(value = "save", method = {RequestMethod.POST})
     public String save(@RequestBody UserReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             UserBean bean = userHandler.save(req);
@@ -45,7 +45,7 @@ public class UserController extends DefaultController {
     @PermissionRequired(value = "sys:user:update")
     @RequestMapping(value = "update", method = {RequestMethod.POST})
     public String update(@RequestBody UserReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             userHandler.update(req);
@@ -62,7 +62,7 @@ public class UserController extends DefaultController {
     @PermissionRequired(value = "sys:user:delete")
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     public String delete(@RequestBody UserDeleteReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
             if (req == null || req.getIds() == null) {
                 builder.message("'ids' must not be null");
@@ -86,7 +86,7 @@ public class UserController extends DefaultController {
     public String list(@RequestParam(name = "page", defaultValue = "1") int page,
                        @RequestParam(name = "size", defaultValue = "20") @Max(50) int size,
                        @RequestParam(name = "keywords", required = false) String keywords) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
             HashMap<String, Object> result;
             if (!StringUtils.isEmpty(keywords)) {
@@ -114,7 +114,7 @@ public class UserController extends DefaultController {
     @PermissionRequired(value = "sys:user:view")
     @RequestMapping(value = "findById", method = {RequestMethod.GET})
     public String findById(String userId) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
             if (StringUtils.isEmpty(userId)) {
                 builder.message("'userId' must not be null");
@@ -136,7 +136,7 @@ public class UserController extends DefaultController {
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public String login(@RequestBody UserLoginReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             UserBean bean = userHandler.login(req);
@@ -154,7 +154,7 @@ public class UserController extends DefaultController {
     @PermissionRequired(value = {"owner", "sys:user:password"})
     @RequestMapping(value = "updatePwd", method = {RequestMethod.POST})
     public String updatePassword(@RequestHeader("userId") String userId, @RequestBody UserUpdatePasswdReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             userHandler.updatePassword(userId, req);

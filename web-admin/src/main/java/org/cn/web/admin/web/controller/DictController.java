@@ -25,7 +25,7 @@ public class DictController extends DefaultController {
     @PermissionRequired(value = "sys:dict:save")
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public String save(DictReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             DictBean bean = dictHandler.save(req);
@@ -43,7 +43,7 @@ public class DictController extends DefaultController {
     @PermissionRequired(value = "sys:dict:update")
     @RequestMapping(value = "update", method = RequestMethod.POST)
     public String update(Dict dict) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             dictHandler.update(dict);
@@ -60,7 +60,7 @@ public class DictController extends DefaultController {
     @PermissionRequired(value = "sys:dict:delete")
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     public String delete(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             dictHandler.delete(id);
@@ -77,7 +77,7 @@ public class DictController extends DefaultController {
     @PermissionRequired(value = "sys:dict:view")
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public String list() {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             List<Dict> result = dictHandler.list();

@@ -14,7 +14,7 @@ public class UploadController {
 
     @RequestMapping(value = "upload", method = {RequestMethod.POST})
     public String upload(HttpServletRequest request) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
 
 //        DiskFileItemFactory factory = new DiskFileItemFactory();
 //        factory.setSizeThreshold(10 << 20 /* 10M */);

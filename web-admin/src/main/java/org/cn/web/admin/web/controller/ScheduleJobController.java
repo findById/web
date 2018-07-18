@@ -24,7 +24,7 @@ public class ScheduleJobController extends DefaultController {
     // @PermissionRequired(value = "sys:task:view")
     @RequestMapping(value = "search", method = {RequestMethod.POST})
     public String search(String keyword, int page, /* @Max(20) */ int size) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             Map<String, Object> result = scheduleJobHandler.search(keyword, page, size);
@@ -42,7 +42,7 @@ public class ScheduleJobController extends DefaultController {
     // @PermissionRequired(value = "sys:task:save")
     @RequestMapping(value = "save", method = {RequestMethod.POST})
     public String save(@RequestBody ScheduleJobReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             ScheduleJobResp bean = scheduleJobHandler.save(req);
@@ -60,7 +60,7 @@ public class ScheduleJobController extends DefaultController {
     // @PermissionRequired(value = "sys:task:update")
     @RequestMapping(value = "update", method = {RequestMethod.POST})
     public String update(@RequestBody ScheduleJobReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             scheduleJobHandler.update(req);
@@ -77,7 +77,7 @@ public class ScheduleJobController extends DefaultController {
     // @PermissionRequired(value = "sys:task:delete")
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     public String delete(String ids) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             scheduleJobHandler.delete(ids);
@@ -94,7 +94,7 @@ public class ScheduleJobController extends DefaultController {
     // @PermissionRequired(value = "sys:task:view")
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public String list(int page, /* @Max(20) */ int size) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             Map<String, Object> result = scheduleJobHandler.list(page, size);
@@ -112,7 +112,7 @@ public class ScheduleJobController extends DefaultController {
     // @PermissionRequired(value = "sys:task:start")
     @RequestMapping(value = "start", method = RequestMethod.POST)
     public String start(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             scheduleJobHandler.start(id);
@@ -129,7 +129,7 @@ public class ScheduleJobController extends DefaultController {
     // @PermissionRequired(value = "sys:task:pause")
     @RequestMapping(value = "pause", method = RequestMethod.POST)
     public String pause(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             scheduleJobHandler.pause(id);
@@ -146,7 +146,7 @@ public class ScheduleJobController extends DefaultController {
     // @PermissionRequired(value = "sys:task:resume")
     @RequestMapping(value = "resume", method = RequestMethod.POST)
     public String resume(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             scheduleJobHandler.resume(id);
@@ -163,7 +163,7 @@ public class ScheduleJobController extends DefaultController {
     // @PermissionRequired(value = "sys:task:view")
     @RequestMapping(value = "view", method = RequestMethod.GET)
     public String view() {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             builder.result("unimplemented");

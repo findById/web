@@ -25,7 +25,7 @@ public class PermissionController extends DefaultController {
     @PermissionRequired(value = "sys:permission:save")
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public String save(@RequestBody PermissionReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             PermissionBean bean = permissionHandler.save(req);
@@ -43,7 +43,7 @@ public class PermissionController extends DefaultController {
     @PermissionRequired(value = "sys:permission:update")
     @RequestMapping(value = "update", method = RequestMethod.POST)
     public String update(@RequestBody PermissionReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             permissionHandler.update(req);
@@ -60,7 +60,7 @@ public class PermissionController extends DefaultController {
     @PermissionRequired(value = "sys:permission:delete")
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     public String delete(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             permissionHandler.delete(id);
@@ -77,7 +77,7 @@ public class PermissionController extends DefaultController {
     @PermissionRequired(value = "sys:permission:view")
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public String list() {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             PermissionBean bean = permissionHandler.list();
@@ -95,7 +95,7 @@ public class PermissionController extends DefaultController {
     @PermissionRequired(value = "sys:permission:view")
     @RequestMapping(value = "find", method = RequestMethod.GET)
     public String findById(String id) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             PermissionBean bean = permissionHandler.findById(id);
@@ -113,7 +113,7 @@ public class PermissionController extends DefaultController {
     @PermissionRequired(value = "sys:permission:view")
     @RequestMapping(value = "findOperation", method = RequestMethod.GET)
     public String findOperationPermissionByParentId(String parentId) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             PermissionBean bean = permissionHandler.findOperationPermissionByParentId(parentId);
@@ -131,7 +131,7 @@ public class PermissionController extends DefaultController {
     @PermissionRequired(value = "sys:permission:view")
     @RequestMapping(value = "findByUserId", method = RequestMethod.GET)
     public String findByUserId(String userId) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             List<PermissionBean> list = permissionHandler.findByUserId(userId);

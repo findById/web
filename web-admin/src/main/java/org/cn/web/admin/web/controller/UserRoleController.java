@@ -25,7 +25,7 @@ public class UserRoleController extends DefaultController {
     @PermissionRequired(value = {"sys:user:update", "sys:role:update"}, logical = Logical.AND)
     @RequestMapping(value = "update", method = RequestMethod.POST)
     public String update(@RequestBody UserRoleReq req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             userRoleHandler.update(req);
@@ -42,7 +42,7 @@ public class UserRoleController extends DefaultController {
     @PermissionRequired(value = {"sys:user:view", "sys:role:view"}, logical = Logical.AND)
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public String list(String userId) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
             List<String> list = userRoleHandler.list(userId);

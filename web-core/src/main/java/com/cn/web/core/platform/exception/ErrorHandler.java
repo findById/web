@@ -22,7 +22,7 @@ public class ErrorHandler {
     @ExceptionHandler(Throwable.class)
     @ResponseBody
     public String handler(Throwable ex) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         builder.statusCode(500);
         builder.message(ex.getMessage());
 
@@ -42,7 +42,7 @@ public class ErrorHandler {
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public String methodArgument(MethodArgumentNotValidException ex) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         builder.statusCode(400);
         builder.message(ex.getMessage());
 
@@ -59,7 +59,7 @@ public class ErrorHandler {
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
     public String notFound(NoHandlerFoundException ex) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
         builder.statusCode(404);
         builder.message(ex.getMessage());
         return builder.buildJSONString();
