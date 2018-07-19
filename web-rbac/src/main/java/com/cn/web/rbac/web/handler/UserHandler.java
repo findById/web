@@ -35,12 +35,12 @@ public class UserHandler {
 
         List<UserBean> beanList = new ArrayList<>();
         if (list.hasContent()) {
-            for (User user : list.getContent()) {
-                if (user.getDelFlg() != BaseEntity.FLAG_NORMAL && user.getDelFlg() != BaseEntity.FLAG_ENABLE) {
+            for (User item : list.getContent()) {
+                if (item.getDelFlg() != BaseEntity.FLAG_NORMAL && item.getState() != BaseEntity.STATE_ENABLE) {
                     continue;
                 }
                 UserBean bean = new UserBean();
-                BeanUtils.copyProperties(user, bean);
+                BeanUtils.copyProperties(item, bean);
                 beanList.add(bean);
             }
         }
