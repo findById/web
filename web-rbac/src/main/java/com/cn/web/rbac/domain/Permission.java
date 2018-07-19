@@ -22,8 +22,6 @@ public class Permission extends BaseEntity {
     private String permCode;
     @Column(name = "method", length = 5)
     private String method;
-    @Column(name = "state", length = 1)
-    private String state;
     @Column(name = "parent_id", length = 50)
     private String parentId;
 
@@ -94,14 +92,6 @@ public class Permission extends BaseEntity {
 
     public void setMethod(String method) {
         this.method = method;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
     }
 
     public String getParentId() {

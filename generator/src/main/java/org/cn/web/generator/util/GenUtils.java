@@ -4,11 +4,14 @@ import org.cn.web.generator.domain.Module;
 import org.cn.web.generator.service.impl.GeneratorServiceImpl;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class GenUtils {
 
@@ -72,7 +75,7 @@ public class GenUtils {
         }
     }
 
-    private static List<String> getJavaTemplateList(String templateId) {
+    private static List<String> getTemplateList(String templateId) {
         List<String> list = new ArrayList<>();
         list.add("entity.ftl");
         list.add("dao.ftl");
@@ -87,7 +90,7 @@ public class GenUtils {
         return list;
     }
 
-    private static String getJavaFilePath(String template, String basePackage, String module, String clazz) {
+    private static String getFilePath(String template, String basePackage, String module, String clazz) {
         String javaPath = ("/src/main/java/" + basePackage).replaceAll("[\\/\\.]", "\\/");
 
         if (template.endsWith("entity.ftl")) {
@@ -123,7 +126,26 @@ public class GenUtils {
         return null;
     }
 
+    public static byte[] genToZipFile(Module module) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ZipOutputStream zos = new ZipOutputStream(baos);
+        boolean result = generator(null, module, zos);
+        try {
+            zos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (result) {
+            return baos.toByteArray();
+        }
+        return null;
+    }
+
     public static boolean generator(File root, Module module) {
+        return generator(root, module, null);
+    }
+
+    private static boolean generator(File root, Module module, ZipOutputStream zos) {
         if (module.getBasePackage() == null) {
             System.out.println("'basePackage' must not be null.");
             return false;
@@ -143,7 +165,7 @@ public class GenUtils {
         String templateDir = new File(GeneratorServiceImpl.class.getResource("/").getPath(), "../resources/" + module.getTemplateId()).getPath();
 
         // module path
-        while (root.getPath().contains("/src/main") || root.getPath().contains("/src")) {
+        while (root != null && (root.getPath().contains("/src/main") || root.getPath().contains("/src"))) {
             root = root.getParentFile();
         }
         System.out.println("Project Path: " + root);
@@ -166,14 +188,25 @@ public class GenUtils {
         // FreeMarker initial
         FreeMarkerImpl freeMarker = new FreeMarkerImpl(templateDir);
         // generate java code
-        List<String> temp = getJavaTemplateList("jpa");
+        List<String> temp = getTemplateList("jpa");
         for (String t : temp) {
-            String path = root + getJavaFilePath(t, model.get("packageName").toString(), model.get("moduleName").toString(), model.get("ClassName").toString());
+            String path = getFilePath(t, model.get("packageName").toString(), model.get("moduleName").toString(), model.get("ClassName").toString());
             System.out.println(t);
             String content = freeMarker.renderTemplate(t, model);
-            if (content != null) {
-                writeFile(content, path);
-                System.out.println(">>" + path);
+            if (content != null && path != null) {
+                if (zos == null) {
+                    writeFile(content, root + path);
+                    System.out.println(">>" + root + path);
+                } else {
+                    try {
+                        zos.putNextEntry(new ZipEntry(path));
+                        zos.write(content.getBytes(Charset.forName("UTF-8")));
+                        zos.closeEntry();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        System.out.println(e.getMessage() + " >> " + path);
+                    }
+                }
             }
         }
         System.out.println("Generate Success.");

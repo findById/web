@@ -10,7 +10,6 @@ public class RolePermission extends BaseEntity {
 
     @Column(name = "role_id", length = 50)
     private String roleId;
-
     @Column(name = "permission_id", length = 50)
     private String permissionId;
 

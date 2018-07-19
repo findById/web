@@ -28,7 +28,7 @@ public class RoleHandler {
         List<RoleBean> beanList = new ArrayList<>();
         if (list.hasContent()) {
             for (Role item : list.getContent()) {
-                if (item.getDelFlg() != BaseEntity.FLAG_NORMAL && item.getDelFlg() != BaseEntity.FLAG_ENABLE) {
+                if (item.getDelFlg() != BaseEntity.FLAG_NORMAL && item.getState() != BaseEntity.STATE_ENABLE) {
                     continue;
                 }
                 RoleBean bean = new RoleBean();

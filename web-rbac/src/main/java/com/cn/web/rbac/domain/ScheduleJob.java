@@ -26,7 +26,7 @@ public class ScheduleJob extends BaseEntity {
      * cron expression
      */
     @Column(name = "cron", length = 100)
-    private Short cron;
+    private String cron;
     /**
      * 0:Standby 1:Running 2:Paused 3:Stopped
      */
@@ -65,11 +65,11 @@ public class ScheduleJob extends BaseEntity {
         this.params = params;
     }
 
-    public Short getCron() {
+    public String getCron() {
         return cron;
     }
 
-    public void setCron(Short cron) {
+    public void setCron(String cron) {
         this.cron = cron;
     }
 

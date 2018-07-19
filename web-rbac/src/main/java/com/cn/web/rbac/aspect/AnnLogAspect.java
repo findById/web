@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 @Aspect
 @Component
-public class AopLogAspect {
+public class AnnLogAspect {
     private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
     @Pointcut("@annotation(com.cn.web.rbac.annotation.AopLog)")
@@ -71,9 +71,10 @@ public class AopLogAspect {
         sb.append("[");
         if (names != null && names.length > 0 && args != null && args.length > 0) {
             HashMap<String, Object> param = new HashMap<>();
-            for (int i = 0; i < Math.min(names.length, args.length); i++) {
+            int len = Math.min(names.length, args.length);
+            for (int i = 0; i < len; i++) {
                 Object obj = args[i];
-                if (obj != null && obj.getClass().getName().contains("org.springframework.web.multipart")) {
+                if (obj != null && ignoreParamValue(obj.getClass().getName())) {
                     param.put(names[i], obj.getClass().getName());
                     continue;
                 }
@@ -86,5 +87,19 @@ public class AopLogAspect {
         sb.append('[').append(costTime).append("ms]");
 
         System.out.println(sb.toString());
+    }
+
+    private String[] ignoreList = new String[]{
+            "org.springframework.web.multipart",
+            "javax.servlet.http",
+    };
+
+    private boolean ignoreParamValue(String className) {
+        for (String item : ignoreList) {
+            if (className.contains(item)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

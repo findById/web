@@ -10,7 +10,6 @@ public class UserRole extends BaseEntity {
 
     @Column(name = "user_id", length = 50)
     private String userId;
-
     @Column(name = "role_id", length = 50)
     private String roleId;
 

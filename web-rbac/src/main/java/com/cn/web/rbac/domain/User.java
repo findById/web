@@ -22,8 +22,6 @@ public class User extends BaseEntity {
     private Short gender;
     @Column(name = "avatar", length = 200)
     private String avatar;
-    @Column(name = "state", length = 1)
-    private String state;
     @Column(name = "last_visit")
     private Long lastVisit;
     @Column(name = "login_count")
@@ -93,14 +91,6 @@ public class User extends BaseEntity {
 
     public void setDepartment(String department) {
         this.department = department;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
     }
 
     public Long getLastVisit() {
