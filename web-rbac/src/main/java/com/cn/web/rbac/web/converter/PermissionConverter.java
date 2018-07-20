@@ -8,20 +8,26 @@ import java.util.List;
 
 public class PermissionConverter {
 
-    public static PermissionBean convertToMenu(List<Permission> permissionList) {
+    public static PermissionBean convertToTree(List<Permission> permissionList) {
         PermissionBean bean = null;
         for (Permission permission : permissionList) {
-            bean = convert(bean, permission);
+            bean = convertToTree(bean, permission);
         }
         return bean;
     }
 
-    private static PermissionBean convert(PermissionBean bean, Permission permission) {
+    private static PermissionBean convertToTree(PermissionBean bean, Permission permission) {
         if (bean == null) { // root node
             bean = new PermissionBean();
             bean.setId(permission.getId());
             bean.setName(permission.getName());
+            bean.setPosition(permission.getPosition());
+            bean.setType(permission.getType());
             bean.setLink(permission.getLink());
+            bean.setPermCode(permission.getPermCode());
+            bean.setMethod(permission.getMethod());
+            bean.setIcon(permission.getIcon());
+            bean.setParentId(permission.getParentId());
             bean.setState("opened");
         } else {
             String cId = bean.getId();
@@ -29,12 +35,16 @@ public class PermissionConverter {
                 PermissionBean spb = new PermissionBean();
                 spb.setId(permission.getId());
                 spb.setName(permission.getName());
+                spb.setPosition(permission.getPosition());
                 spb.setType(permission.getType());
                 if ("permission".equals(spb.getType())) {
                     spb.setType("btn");
                 }
-                spb.setMethod(permission.getMethod());
                 spb.setLink(permission.getLink());
+                spb.setPermCode(permission.getPermCode());
+                spb.setMethod(permission.getMethod());
+                spb.setIcon(permission.getIcon());
+                spb.setParentId(permission.getParentId());
                 spb.setState("closed");
                 if (bean.getChildren() == null) {
                     bean.setChildren(new ArrayList<>());
@@ -42,7 +52,56 @@ public class PermissionConverter {
                 bean.getChildren().add(spb);
             } else {
                 for (PermissionBean children : bean.getChildren()) {
-                    convert(children, permission);
+                    convertToTree(children, permission);
+                }
+            }
+        }
+        return bean;
+    }
+
+    public static PermissionBean convertToMenu(List<Permission> permissionList) {
+        PermissionBean bean = null;
+        for (Permission permission : permissionList) {
+            bean = convertToMenu(bean, permission);
+        }
+        return bean;
+    }
+
+    private static PermissionBean convertToMenu(PermissionBean bean, Permission permission) {
+        if (bean == null) { // root node
+            bean = new PermissionBean();
+            bean.setId(permission.getId());
+            bean.setName(permission.getName());
+            bean.setPosition(permission.getPosition());
+            bean.setType(permission.getType());
+            bean.setLink(permission.getLink());
+            bean.setIcon(permission.getIcon());
+            bean.setParentId(permission.getParentId());
+            bean.setState("opened");
+        } else {
+            String cId = bean.getId();
+            if (permission.getParentId() != null && cId.equals(permission.getParentId())) {
+                PermissionBean spb = new PermissionBean();
+                spb.setId(permission.getId());
+                spb.setName(permission.getName());
+                spb.setPosition(permission.getPosition());
+                spb.setType(permission.getType());
+                if ("permission".equals(spb.getType())) {
+                    spb.setType("btn");
+                }
+                spb.setLink(permission.getLink());
+                spb.setIcon(permission.getIcon());
+                spb.setParentId(permission.getParentId());
+                spb.setState("closed");
+                if (bean.getChildren() == null) {
+                    bean.setChildren(new ArrayList<>());
+                }
+                if (!"btn".equals(spb.getType())) {
+                    bean.getChildren().add(spb);
+                }
+            } else {
+                for (PermissionBean children : bean.getChildren()) {
+                    convertToMenu(children, permission);
                 }
             }
         }

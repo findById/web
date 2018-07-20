@@ -93,7 +93,7 @@ public class PermissionHandler {
 
         List<Permission> list = permissionService.list();
 
-        return PermissionConverter.convertToMenu(list);
+        return PermissionConverter.convertToTree(list);
     }
 
     public PermissionBean findById(String id) {
@@ -110,7 +110,7 @@ public class PermissionHandler {
 
         List<Permission> list = permissionService.findOperationPermissionByParentId(parentId);
 
-        return PermissionConverter.convertToMenu(list);
+        return PermissionConverter.convertToTree(list);
     }
 
     public List<PermissionBean> findByUserId(String userId) {
