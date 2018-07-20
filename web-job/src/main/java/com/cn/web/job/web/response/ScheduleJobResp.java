@@ -1,44 +1,25 @@
-package com.cn.web.rbac.domain;
+package com.cn.web.job.web.response;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.io.Serializable;
 
-@Entity
-@Table(name = "schedule_job")
-public class ScheduleJob extends BaseEntity {
-    /**
-     * job name
-     */
-    @Column(name = "name", length = 50)
+public class ScheduleJobResp implements Serializable {
+    private Long id;
     private String name;
-    /**
-     * job method
-     */
-    @Column(name = "method", length = 50)
     private String method;
-    /**
-     * job parameter
-     */
-    @Column(name = "params", length = 200)
     private String params;
-    /**
-     * cron expression
-     */
-    @Column(name = "cron", length = 100)
     private String cron;
-    /**
-     * 0:Standby 1:Running 2:Paused 3:Stopped
-     */
-    @Column(name = "status", length = 2)
     private Integer status;
-    /**
-     * remark
-     */
-    @Column(name = "remark", length = 200)
     private String remark;
 
-    public ScheduleJob() {
+    public ScheduleJobResp() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

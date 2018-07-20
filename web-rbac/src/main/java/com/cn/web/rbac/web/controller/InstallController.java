@@ -119,7 +119,7 @@ public class InstallController {
             permissions.clear();
 
             // admin role & permissions
-            Role adminRole = new Role("admin", "admin", "", "admin");
+            Role adminRole = new Role("admin", "admin", "", null, "admin");
             roleService.save(adminRole);
 
             List<Permission> list = permissionService.list();

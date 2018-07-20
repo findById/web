@@ -104,6 +104,21 @@ public class RoleHandler {
         return roleService.get(id);
     }
 
+    public List<RoleBean> list() {
+        List<RoleBean> beanList = new ArrayList<>();
+
+        List<Role> list = roleService.list();
+        if (list != null && !list.isEmpty()) {
+            for (Role role : list) {
+                RoleBean bean = new RoleBean();
+                BeanUtils.copyProperties(role, bean);
+                beanList.add(bean);
+            }
+        }
+
+        return beanList;
+    }
+
     public HashMap<String, Object> list(int page, int size) {
         if (page <= 0) {
             page = 1;

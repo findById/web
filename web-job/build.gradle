@@ -1,0 +1,11 @@
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-aop')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
+
+    compile('org.cn.web:web-core:0.0.1-SNAPSHOT')
+    compile('org.quartz-scheduler:quartz:2.3.0')
+}
+
+apply from: '../maven_upload.gradle'

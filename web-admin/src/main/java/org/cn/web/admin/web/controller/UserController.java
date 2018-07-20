@@ -5,7 +5,6 @@ import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.core.platform.web.ResponseBuilder;
 import com.cn.web.rbac.web.handler.UserHandler;
 import com.cn.web.rbac.web.interceptor.PermissionRequired;
-import com.cn.web.rbac.web.request.UserDeleteReq;
 import com.cn.web.rbac.web.request.UserLoginReq;
 import com.cn.web.rbac.web.request.UserReq;
 import com.cn.web.rbac.web.request.UserUpdatePasswdReq;
@@ -61,16 +60,16 @@ public class UserController extends DefaultController {
 
     @PermissionRequired(value = "sys:user:delete")
     @RequestMapping(value = "delete", method = RequestMethod.POST)
-    public String delete(@RequestBody UserDeleteReq req) {
+    public String delete(@RequestBody String ids) {
         ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
-            if (req == null || req.getIds() == null) {
+            if (ids == null || ids.isEmpty()) {
                 builder.message("'ids' must not be null");
                 builder.statusCode(400);
                 return builder.buildJSONString();
             }
 
-            userHandler.delete(req.getIds());
+            userHandler.delete(ids);
 
             builder.message("success");
             builder.statusCode(200);

@@ -42,7 +42,7 @@ public class SiteController extends DefaultController {
     }
 
     public PageRequest getPageRequest() {
-        int pageNo = 0;
+        int pageNo = DEFAULT_PAGE_NO;
         int pageSize = DEFAULT_PAGE_SIZE;
         String page = request.getParameter("page");
         String size = request.getParameter("size");
@@ -57,8 +57,7 @@ public class SiteController extends DefaultController {
         if (size != null && !size.isEmpty()) {
             try {
                 pageSize = Integer.parseInt(size);
-            } catch (Throwable e) {
-                pageSize = DEFAULT_PAGE_SIZE;
+            } catch (Throwable ignored) {
             }
         }
         if (pageNo <= 0) {
