@@ -1,5 +1,7 @@
 package com.cn.web.rbac.web.request;
 
+import java.util.List;
+
 public class RoleReq {
     private String id;
     private Short delFlg;
@@ -8,6 +10,8 @@ public class RoleReq {
     private String name;
     private String code;
     private String type;
+    private String parentId;
+    private List<String> permIds;
 
     public String getId() {
         return id;
@@ -63,5 +67,21 @@ public class RoleReq {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public List<String> getPermIds() {
+        return permIds;
+    }
+
+    public void setPermIds(List<String> permIds) {
+        this.permIds = permIds;
     }
 }

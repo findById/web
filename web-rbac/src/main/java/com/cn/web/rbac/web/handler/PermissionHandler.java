@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service("permissionHandler")
 public class PermissionHandler {
@@ -39,9 +40,16 @@ public class PermissionHandler {
         Permission permission = new Permission();
         permission.setName(req.getName());
         permission.setType(req.getType());
+        permission.setPosition(Optional.of(req.getPosition()).orElse(0));
         permission.setLink(req.getLink());
-        permission.setIcon(req.getIcon());
         permission.setPermCode(req.getPermCode());
+        permission.setMethod(req.getMethod());
+        permission.setIcon(req.getIcon());
+
+        Permission parent = permissionService.get(req.getParentId());
+        if (parent == null) {
+            throw new HandlerException(201, "Parent permission not exists");
+        }
         permission.setParentId(req.getParentId());
 
         permissionService.save(permission);
@@ -64,16 +72,29 @@ public class PermissionHandler {
         if (req.getName() != null && !req.getName().isEmpty()) {
             permission.setName(req.getName());
         }
+        if (req.getType() != null && !req.getType().isEmpty()) {
+            permission.setType(req.getType());
+        }
+        if (req.getPosition() != null) {
+            permission.setPosition(req.getPosition());
+        }
         if (req.getLink() != null && !req.getLink().isEmpty()) {
             permission.setLink(req.getLink());
-        }
-        if (req.getIcon() != null && !req.getIcon().isEmpty()) {
-            permission.setIcon(req.getIcon());
         }
         if (req.getPermCode() != null && !req.getPermCode().isEmpty()) {
             permission.setPermCode(req.getPermCode());
         }
+        if (req.getMethod() != null && !req.getMethod().isEmpty()) {
+            permission.setMethod(req.getMethod());
+        }
+        if (req.getIcon() != null && !req.getIcon().isEmpty()) {
+            permission.setIcon(req.getIcon());
+        }
         if (req.getParentId() != null && !req.getParentId().isEmpty()) {
+            Permission parent = permissionService.get(req.getParentId());
+            if (parent == null) {
+                throw new HandlerException(201, "Parent permission not exists");
+            }
             permission.setParentId(req.getParentId());
         }
 

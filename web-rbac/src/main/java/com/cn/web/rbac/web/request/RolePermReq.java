@@ -7,6 +7,14 @@ public class RolePermReq implements Serializable {
     private String roleId;
     private List<String> permIds;
 
+    public RolePermReq() {
+    }
+
+    public RolePermReq(String roleId, List<String> permIds) {
+        this.roleId = roleId;
+        this.permIds = permIds;
+    }
+
     public String getRoleId() {
         return roleId;
     }

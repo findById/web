@@ -7,6 +7,7 @@ public class RoleBean implements Serializable {
     private String name;
     private String code;
     private String type;
+    private String parentId;
     private String description;
 
     public String getId() {
@@ -39,6 +40,14 @@ public class RoleBean implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
     public String getDescription() {

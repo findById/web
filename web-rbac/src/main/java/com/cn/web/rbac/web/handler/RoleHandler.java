@@ -4,6 +4,7 @@ import com.cn.web.core.platform.exception.HandlerException;
 import com.cn.web.rbac.domain.BaseEntity;
 import com.cn.web.rbac.domain.Role;
 import com.cn.web.rbac.service.RoleService;
+import com.cn.web.rbac.web.request.RolePermReq;
 import com.cn.web.rbac.web.request.RoleReq;
 import com.cn.web.rbac.web.vo.RoleBean;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +21,9 @@ public class RoleHandler {
 
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    RolePermissionHandler rolePermissionHandler;
 
     public HashMap<String, Object> search(String keywords, int page, int size) {
 
@@ -55,12 +59,23 @@ public class RoleHandler {
         }
 
         Role role = new Role();
-        role.setId(req.getId());
         role.setName(req.getName());
         role.setCode(req.getCode());
+        role.setType(req.getType());
+        if (req.getParentId() != null && !req.getParentId().isEmpty()) {
+            Role parent = roleService.get(req.getParentId());
+            if (parent == null) {
+                throw new HandlerException(201, "Parent permission not exists");
+            }
+            role.setParentId(req.getParentId());
+        }
         role.setDescription(req.getDescription());
 
         roleService.save(role);
+
+        if (req.getPermIds() != null && !req.getPermIds().isEmpty()) {
+            rolePermissionHandler.update(new RolePermReq(role.getId(), req.getPermIds()));
+        }
 
         RoleBean bean = new RoleBean();
         BeanUtils.copyProperties(role, bean);
@@ -84,11 +99,18 @@ public class RoleHandler {
         if (req.getCode() != null && !req.getCode().isEmpty()) {
             role.setCode(req.getCode());
         }
+        if (req.getType() != null && !req.getType().isEmpty()) {
+            role.setType(req.getType());
+        }
         if (req.getDescription() != null && !req.getDescription().isEmpty()) {
             role.setDescription(req.getDescription());
         }
 
         roleService.update(role);
+
+        if (req.getPermIds() != null && !req.getPermIds().isEmpty()) {
+            rolePermissionHandler.update(new RolePermReq(role.getId(), req.getPermIds()));
+        }
 
         return true;
     }
@@ -120,12 +142,6 @@ public class RoleHandler {
     }
 
     public HashMap<String, Object> list(int page, int size) {
-        if (page <= 0) {
-            page = 1;
-        }
-        if (size > 20) {
-            size = 20;
-        }
 
         Page<Role> list = roleService.list(page - 1, size);
 
@@ -136,6 +152,8 @@ public class RoleHandler {
                 bean.setId(role.getId());
                 bean.setName(role.getName());
                 bean.setCode(role.getCode());
+                bean.setType(role.getType());
+                bean.setParentId(role.getParentId());
                 bean.setDescription(role.getDescription());
                 beanList.add(bean);
             }
