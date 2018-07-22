@@ -16,4 +16,7 @@ public interface PermissionDao extends JpaRepository<Permission, String> {
 
     @Query(value = "SELECT p.* FROM permission AS p WHERE p.type='operate' AND p.del_flag=0 AND p.parent_id=:parentId ORDER BY p.position", nativeQuery = true)
     List<Permission> findOperationPermissionByParentId(String parentId);
+
+    // @Query(value = "select * from permission where parent_id is NULL", nativeQuery = true)
+    Permission findByParentIdIsNull();
 }

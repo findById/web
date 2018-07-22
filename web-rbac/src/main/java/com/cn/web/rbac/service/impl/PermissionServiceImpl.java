@@ -103,4 +103,9 @@ public class PermissionServiceImpl implements PermissionService {
     public List<Permission> findOperationPermissionByParentId(String parentId) {
         return permissionDao.findOperationPermissionByParentId(parentId);
     }
+
+    @Override
+    public Permission findRoot() {
+        return permissionDao.findByParentIdIsNull();
+    }
 }

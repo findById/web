@@ -25,4 +25,6 @@ public interface PermissionService {
     void saveBaseOperation(String parentId, String name);
 
     List<Permission> findOperationPermissionByParentId(String parentId);
+
+    Permission findRoot();
 }
