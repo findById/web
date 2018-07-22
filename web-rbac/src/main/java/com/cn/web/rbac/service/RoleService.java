@@ -13,11 +13,14 @@ public interface RoleService {
 
     Role update(Role role);
 
-    void delete(Serializable id);
+    void delete(Serializable[] ids);
+
+    void deleteByLogic(Serializable[] ids);
 
     List<Role> list();
 
     Page<Role> list(int page, int size);
 
     Page<Role> search(String keywords, int page, int size);
+
 }

@@ -14,6 +14,8 @@ public interface PermissionService {
 
     void delete(Serializable id);
 
+    void deleteByLogic(Serializable id);
+
     List<Permission> list();
 
     List<Permission> findByUserId(Serializable userId);

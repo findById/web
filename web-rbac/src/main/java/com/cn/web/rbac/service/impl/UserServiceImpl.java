@@ -1,6 +1,7 @@
 package com.cn.web.rbac.service.impl;
 
 import com.cn.web.rbac.dao.UserDao;
+import com.cn.web.rbac.domain.BaseEntity;
 import com.cn.web.rbac.domain.User;
 import com.cn.web.rbac.service.UserService;
 import com.cn.web.rbac.util.AuthUtils;
@@ -40,8 +41,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void delete(Serializable id) {
-        userDao.deleteById(String.valueOf(id));
+    public void delete(Serializable[] ids) {
+        if (ids == null || ids.length <= 0) {
+            return;
+        }
+        for (Serializable id : ids) {
+            userDao.deleteById(String.valueOf(id));
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteByLogic(Serializable[] ids) {
+        if (ids == null || ids.length <= 0) {
+            return;
+        }
+        for (Serializable id : ids) {
+            Optional<User> optional = userDao.findById(String.valueOf(id));
+            User user = optional.orElse(null);
+            if (user != null) {
+                user.setDelFlg(BaseEntity.FLAG_DELETE);
+                userDao.save(user);
+            }
+        }
     }
 
     @Override

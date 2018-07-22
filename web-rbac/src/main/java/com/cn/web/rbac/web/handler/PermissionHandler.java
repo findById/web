@@ -104,9 +104,12 @@ public class PermissionHandler {
     }
 
     public boolean delete(String id) {
-
         permissionService.delete(id);
+        return true;
+    }
 
+    public boolean deleteByLogic(String id) {
+        permissionService.deleteByLogic(id);
         return true;
     }
 

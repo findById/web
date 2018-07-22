@@ -1,6 +1,7 @@
 package com.cn.web.rbac.service.impl;
 
 import com.cn.web.rbac.dao.PermissionDao;
+import com.cn.web.rbac.domain.BaseEntity;
 import com.cn.web.rbac.domain.Permission;
 import com.cn.web.rbac.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,16 @@ public class PermissionServiceImpl implements PermissionService {
     @Transactional
     public void delete(Serializable id) {
         permissionDao.deleteById(String.valueOf(id));
+    }
+
+    @Override
+    public void deleteByLogic(Serializable id) {
+        Optional<Permission> optional = permissionDao.findById(String.valueOf(id));
+        Permission permission = optional.orElse(null);
+        if (permission != null) {
+            permission.setDelFlg(BaseEntity.FLAG_DELETE);
+            permissionDao.save(permission);
+        }
     }
 
     @Override

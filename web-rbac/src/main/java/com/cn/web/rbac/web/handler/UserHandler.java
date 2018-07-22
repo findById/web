@@ -127,23 +127,13 @@ public class UserHandler {
         return true;
     }
 
-    public boolean delete(String ids) {
-        String[] array;
-        if (ids.contains(",")) {
-            array = ids.split(",");
-        } else {
-            array = new String[]{ids};
-        }
-        for (String id : array) {
-            if ("1".equalsIgnoreCase(id)) {
-                continue;
-            }
-            User user = userService.get(id);
-            if (user != null) {
-                userService.delete(id);
-            }
-        }
+    public boolean delete(String[] ids) {
+        userService.delete(ids);
         return true;
+    }
+
+    public void deleteByLogic(String[] ids) {
+        userService.deleteByLogic(ids);
     }
 
     public HashMap<String, Object> list(int page, int size) {

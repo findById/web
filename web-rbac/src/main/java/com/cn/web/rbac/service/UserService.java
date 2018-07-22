@@ -13,7 +13,9 @@ public interface UserService {
 
     User update(User user);
 
-    void delete(Serializable id);
+    void delete(Serializable[] ids);
+
+    void deleteByLogic(Serializable[] ids);
 
     List<User> list();
 

@@ -1,6 +1,7 @@
 package com.cn.web.rbac.service.impl;
 
 import com.cn.web.rbac.dao.RoleDao;
+import com.cn.web.rbac.domain.BaseEntity;
 import com.cn.web.rbac.domain.Role;
 import com.cn.web.rbac.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,30 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void delete(Serializable id) {
-        roleDao.deleteById(String.valueOf(id));
+    @Transactional
+    public void delete(Serializable[] ids) {
+        if (ids == null || ids.length <= 0) {
+            return;
+        }
+        for (Serializable id : ids) {
+            roleDao.deleteById(String.valueOf(id));
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteByLogic(Serializable[] ids) {
+        if (ids == null || ids.length <= 0) {
+            return;
+        }
+        for (Serializable id : ids) {
+            Optional<Role> optional = roleDao.findById(String.valueOf(id));
+            Role role = optional.orElse(null);
+            if (role != null) {
+                role.setDelFlg(BaseEntity.FLAG_DELETE);
+                roleDao.save(role);
+            }
+        }
     }
 
     @Override

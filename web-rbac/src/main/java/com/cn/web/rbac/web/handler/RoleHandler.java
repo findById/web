@@ -115,11 +115,13 @@ public class RoleHandler {
         return true;
     }
 
-    public boolean delete(String id) {
-
-        roleService.delete(id);
-
+    public boolean delete(String[] ids) {
+        roleService.delete(ids);
         return true;
+    }
+
+    public void deleteByLogic(String[] ids) {
+        roleService.deleteByLogic(ids);
     }
 
     public Role findById(String id) {
