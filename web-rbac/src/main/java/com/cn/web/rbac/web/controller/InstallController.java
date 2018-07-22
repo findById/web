@@ -93,6 +93,19 @@ public class InstallController {
             permissionService.saveAll(permissions);
             permissions.clear();
 
+            Permission task = new Permission("Schedule Job", "menu", 4, "task", null, sys.getId(), "");
+            permissionService.save(task);
+
+            permissions.add(new Permission("View", "permission", null, null, "sys:task:view", task.getId(), ""));
+            permissions.add(new Permission("Add", "permission", null, "task/save", "sys:task:save", task.getId(), ""));
+            permissions.add(new Permission("Edit", "permission", null, "task/update", "sys:task:update", task.getId(), ""));
+            permissions.add(new Permission("Del", "permission", null, "task/delete", "sys:task:delete", task.getId(), ""));
+            permissions.add(new Permission("Pause", "permission", null, "task/pause", "sys:task:pause", task.getId(), ""));
+            permissions.add(new Permission("Resume", "permission", null, "task/resume", "sys:task:resume", task.getId(), ""));
+            permissions.add(new Permission("Start", "permission", null, "task/start", "sys:task:start", task.getId(), ""));
+            permissionService.saveAll(permissions);
+            permissions.clear();
+
             Permission monitor = new Permission("Monitor", "menu", 1, null, null, root.getId(), "");
             permissionService.save(monitor);
 
@@ -102,19 +115,6 @@ public class InstallController {
             permissions.add(new Permission("View", "permission", null, null, "monitor:log:view", log.getId(), ""));
             permissions.add(new Permission("Search", "permission", null, "log/search", "monitor:log:search", log.getId(), ""));
             permissions.add(new Permission("Export", "permission", null, "log/export", "monitor:log:export", log.getId(), ""));
-            permissionService.saveAll(permissions);
-            permissions.clear();
-
-            Permission task = new Permission("Schedule Job", "menu", 1, "task", null, monitor.getId(), "");
-            permissionService.save(task);
-
-            permissions.add(new Permission("View", "permission", null, null, "monitor:task:view", task.getId(), ""));
-            permissions.add(new Permission("Add", "permission", null, "task/save", "monitor:task:save", task.getId(), ""));
-            permissions.add(new Permission("Edit", "permission", null, "task/update", "monitor:task:update", task.getId(), ""));
-            permissions.add(new Permission("Del", "permission", null, "task/delete", "monitor:task:delete", task.getId(), ""));
-            permissions.add(new Permission("Pause", "permission", null, "task/pause", "monitor:task:pause", task.getId(), ""));
-            permissions.add(new Permission("Resume", "permission", null, "task/resume", "monitor:task:resume", task.getId(), ""));
-            permissions.add(new Permission("Start", "permission", null, "task/start", "monitor:task:start", task.getId(), ""));
             permissionService.saveAll(permissions);
             permissions.clear();
 
