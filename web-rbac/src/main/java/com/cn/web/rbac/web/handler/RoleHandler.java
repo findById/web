@@ -32,7 +32,7 @@ public class RoleHandler {
         List<RoleBean> beanList = new ArrayList<>();
         if (list.hasContent()) {
             for (Role item : list.getContent()) {
-                if (item.getDelFlg() != BaseEntity.FLAG_NORMAL && item.getState() != BaseEntity.STATE_ENABLE) {
+                if (item.getDelFlg() != BaseEntity.FLAG_NORMAL) {
                     continue;
                 }
                 RoleBean bean = new RoleBean();
@@ -134,6 +134,9 @@ public class RoleHandler {
         List<Role> list = roleService.list();
         if (list != null && !list.isEmpty()) {
             for (Role role : list) {
+                if (role.getDelFlg() == BaseEntity.FLAG_DELETE) {
+                    continue;
+                }
                 RoleBean bean = new RoleBean();
                 BeanUtils.copyProperties(role, bean);
                 beanList.add(bean);
@@ -150,6 +153,9 @@ public class RoleHandler {
         List<RoleBean> beanList = new ArrayList<>();
         if (list.hasContent()) {
             for (Role role : list.getContent()) {
+                if (role.getDelFlg() == BaseEntity.FLAG_DELETE) {
+                    continue;
+                }
                 RoleBean bean = new RoleBean();
                 bean.setId(role.getId());
                 bean.setName(role.getName());

@@ -36,7 +36,7 @@ public class UserHandler {
         List<UserBean> beanList = new ArrayList<>();
         if (list.hasContent()) {
             for (User item : list.getContent()) {
-                if (item.getDelFlg() != BaseEntity.FLAG_NORMAL && item.getState() != BaseEntity.STATE_ENABLE) {
+                if (item.getDelFlg() != BaseEntity.FLAG_NORMAL) {
                     continue;
                 }
                 UserBean bean = new UserBean();
@@ -149,6 +149,9 @@ public class UserHandler {
         List<UserBean> beanList = new ArrayList<>();
         if (list.hasContent()) {
             for (User user : list.getContent()) {
+                if (user.getDelFlg() == BaseEntity.FLAG_DELETE) {
+                    continue;
+                }
                 UserBean bean = new UserBean();
                 BeanUtils.copyProperties(user, bean);
                 beanList.add(bean);
@@ -166,7 +169,7 @@ public class UserHandler {
     public UserBean findById(String userId) {
 
         User user = userService.get(userId);
-        if (user == null) {
+        if (user == null || user.getDelFlg() == BaseEntity.FLAG_DELETE) {
             throw new HandlerException(201, "user not exists");
         }
 

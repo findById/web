@@ -1,6 +1,7 @@
 package com.cn.web.rbac.web.handler;
 
 import com.cn.web.core.platform.exception.HandlerException;
+import com.cn.web.rbac.domain.BaseEntity;
 import com.cn.web.rbac.domain.Permission;
 import com.cn.web.rbac.service.PermissionService;
 import com.cn.web.rbac.web.converter.PermissionConverter;
@@ -121,12 +122,12 @@ public class PermissionHandler {
     }
 
     public PermissionBean findById(String id) {
-
         Permission permission = permissionService.get(id);
-
+        if (permission == null || permission.getDelFlg() == BaseEntity.FLAG_DELETE) {
+            throw new HandlerException(201, "permission not exists");
+        }
         PermissionBean bean = new PermissionBean();
         BeanUtils.copyProperties(permission, bean);
-
         return bean;
     }
 
@@ -144,6 +145,9 @@ public class PermissionHandler {
         List<PermissionBean> result = new ArrayList<>();
         if (list != null && !list.isEmpty()) {
             for (Permission item : list) {
+                if (item.getDelFlg() == BaseEntity.FLAG_DELETE) {
+                    continue;
+                }
                 PermissionBean bean = new PermissionBean();
                 BeanUtils.copyProperties(item, bean);
                 result.add(bean);
