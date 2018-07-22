@@ -58,11 +58,18 @@ public class RoleController extends DefaultController {
 
     @PermissionRequired("sys:role:delete")
     @RequestMapping(value = "delete", method = RequestMethod.POST)
-    public String delete(String id) {
+    public String delete(String ids) {
         ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
-            roleHandler.delete(id);
+            String[] array;
+            if (ids.contains(",")) {
+                array = ids.split(",");
+            } else {
+                array = new String[]{ids};
+            }
+
+            roleHandler.deleteByLogic(array);
 
             builder.message("success");
             builder.statusCode(200);
@@ -83,7 +90,7 @@ public class RoleController extends DefaultController {
 
             HashMap<String, Object> result;
             if (StringUtils.isEmpty(keywords)) {
-                result = roleHandler.search(keywords, page - 1, size);
+                result = roleHandler.search(keywords, page, size);
             } else {
                 result = roleHandler.list(page, size);
             }

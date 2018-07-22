@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.HashMap;
 
 @RestController
@@ -60,16 +61,25 @@ public class UserController extends DefaultController {
 
     @PermissionRequired(value = "sys:user:delete")
     @RequestMapping(value = "delete", method = RequestMethod.POST)
-    public String delete(@RequestBody String ids) {
+    public String delete(@RequestHeader("userId") String userId, @RequestBody String ids) {
         ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
-            if (ids == null || ids.isEmpty()) {
-                builder.message("'ids' must not be null");
-                builder.statusCode(400);
-                return builder.buildJSONString();
+            String[] array;
+            if (ids.contains(",")) {
+                array = ids.split(",");
+            } else {
+                array = new String[]{ids};
             }
 
-            userHandler.delete(ids);
+            for (String id : array) {
+                if (id != null && id.equals(userId)) {
+                    builder.message("failed");
+                    builder.statusCode(400);
+                    return builder.buildJSONString();
+                }
+            }
+
+            userHandler.deleteByLogic(array);
 
             builder.message("success");
             builder.statusCode(200);
@@ -82,7 +92,7 @@ public class UserController extends DefaultController {
 
     @PermissionRequired(value = "sys:user:view")
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public String list(@RequestParam(name = "page", defaultValue = "1") int page,
+    public String list(@RequestParam(name = "page", defaultValue = "1") @Min(1) int page,
                        @RequestParam(name = "size", defaultValue = "20") @Max(50) int size,
                        @RequestParam(name = "keywords", required = false) String keywords) {
         ResponseBuilder builder = ResponseBuilder.newBuilder();

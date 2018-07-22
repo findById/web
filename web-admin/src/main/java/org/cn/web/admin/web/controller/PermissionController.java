@@ -82,7 +82,7 @@ public class PermissionController extends DefaultController {
 
             PermissionBean bean = permissionHandler.list();
 
-            builder.result(bean);
+            builder.result(bean != null ? bean.getChildren() : null);
             builder.message("success");
             builder.statusCode(200);
         } catch (HandlerException e) {
