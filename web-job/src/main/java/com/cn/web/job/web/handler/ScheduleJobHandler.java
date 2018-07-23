@@ -29,6 +29,9 @@ public class ScheduleJobHandler {
         List<ScheduleJobResp> beanList = new ArrayList<>();
         if (list.hasContent()) {
             for (ScheduleJob scheduleJob : list.getContent()) {
+                if (scheduleJob.getDelFlg() == ScheduleJob.FLAG_DELETE) {
+                    continue;
+                }
                 ScheduleJobResp item = new ScheduleJobResp();
                 BeanUtils.copyProperties(scheduleJob, item);
                 beanList.add(item);
@@ -108,6 +111,9 @@ public class ScheduleJobHandler {
         List<ScheduleJobResp> beanList = new ArrayList<>();
         if (list.hasContent()) {
             for (ScheduleJob scheduleJob : list.getContent()) {
+                if (scheduleJob.getDelFlg() == ScheduleJob.FLAG_DELETE) {
+                    continue;
+                }
                 ScheduleJobResp item = new ScheduleJobResp();
                 BeanUtils.copyProperties(scheduleJob, item);
                 beanList.add(item);
@@ -124,7 +130,7 @@ public class ScheduleJobHandler {
 
     public ScheduleJobBean get(Long id) {
         ScheduleJob scheduleJob = scheduleJobService.get(id);
-        if (scheduleJob != null) {
+        if (scheduleJob != null && scheduleJob.getDelFlg() != ScheduleJob.FLAG_DELETE) {
             ScheduleJobBean bean = new ScheduleJobBean();
             BeanUtils.copyProperties(scheduleJob, bean);
             return bean;

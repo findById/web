@@ -15,6 +15,8 @@ public interface ScheduleJobService {
 
     void delete(Long id);
 
+    void deleteByLogic(Long id);
+
     List<ScheduleJob> list();
 
     Page<ScheduleJob> list(int page, int size);

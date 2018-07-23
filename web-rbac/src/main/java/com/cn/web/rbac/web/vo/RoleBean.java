@@ -1,6 +1,7 @@
 package com.cn.web.rbac.web.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class RoleBean implements Serializable {
     private String id;
@@ -9,6 +10,7 @@ public class RoleBean implements Serializable {
     private String type;
     private String parentId;
     private String description;
+    private List<String> permIds;
 
     public String getId() {
         return id;
@@ -56,5 +58,13 @@ public class RoleBean implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<String> getPermIds() {
+        return permIds;
+    }
+
+    public void setPermIds(List<String> permIds) {
+        this.permIds = permIds;
     }
 }

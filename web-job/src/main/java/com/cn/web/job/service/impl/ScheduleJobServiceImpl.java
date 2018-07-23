@@ -59,6 +59,16 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     }
 
     @Override
+    @Transactional
+    public void deleteByLogic(Long id) {
+        ScheduleJob job = this.get(id);
+        if (job != null) {
+            job.setDelFlg(ScheduleJob.FLAG_DELETE);
+            scheduleJobDao.save(job);
+        }
+    }
+
+    @Override
     public List<ScheduleJob> list() {
         return scheduleJobDao.findAll();
     }

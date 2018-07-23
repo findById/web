@@ -124,8 +124,15 @@ public class RoleHandler {
         roleService.deleteByLogic(ids);
     }
 
-    public Role findById(String id) {
-        return roleService.get(id);
+    public RoleBean findById(String id) {
+        Role role = roleService.get(id);
+        if (role != null && role.getDelFlg() == BaseEntity.FLAG_NORMAL) {
+            RoleBean bean = new RoleBean();
+            BeanUtils.copyProperties(role, bean);
+            bean.setPermIds(rolePermissionHandler.list(bean.getId()));
+            return bean;
+        }
+        return null;
     }
 
     public List<RoleBean> list() {

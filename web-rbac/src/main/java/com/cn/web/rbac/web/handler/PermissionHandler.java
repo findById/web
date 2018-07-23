@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service("permissionHandler")
 public class PermissionHandler {
@@ -40,8 +39,14 @@ public class PermissionHandler {
 
         Permission permission = new Permission();
         permission.setName(req.getName());
-        permission.setType(req.getType());
-        permission.setPosition(Optional.of(req.getPosition()).orElse(0));
+        if ("menu".equals(req.getType())) {
+            permission.setType("menu");
+        } else if ("btn".equals(req.getType())) {
+            permission.setType("permission");
+        } else {
+            throw new HandlerException(201, "unsupported type[" + req.getType() + "]");
+        }
+        permission.setPosition(req.getPosition() != null ? req.getPosition() : 0);
         permission.setLink(req.getLink());
         permission.setPermCode(req.getPermCode());
         permission.setMethod(req.getMethod());
@@ -79,6 +84,13 @@ public class PermissionHandler {
             permission.setName(req.getName());
         }
         if (req.getType() != null && !req.getType().isEmpty()) {
+            if ("menu".equals(req.getType())) {
+                permission.setType("menu");
+            } else if ("btn".equals(req.getType())) {
+                permission.setType("permission");
+            } else {
+                throw new HandlerException(201, "unsupported type[" + req.getType() + "]");
+            }
             permission.setType(req.getType());
         }
         if (req.getPosition() != null) {
@@ -119,11 +131,18 @@ public class PermissionHandler {
         return true;
     }
 
-    public PermissionBean list() {
+    public PermissionBean list(String type) {
 
         List<Permission> list = permissionService.list();
 
-        return PermissionConverter.convertToTree(list);
+        switch (type) {
+            case "menu": {
+                return PermissionConverter.convertToMenu(list);
+            }
+            default: {
+                return PermissionConverter.convertToTree(list);
+            }
+        }
     }
 
     public PermissionBean findById(String id) {
