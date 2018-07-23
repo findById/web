@@ -109,7 +109,12 @@ public class PermissionHandler {
             permission.setIcon(req.getIcon());
         }
         if (req.getParentId() != null && !req.getParentId().isEmpty()) {
-            Permission parent = permissionService.get(req.getParentId());
+            Permission parent;
+            if ("root".equalsIgnoreCase(req.getParentId())) {
+                parent = permissionService.findRoot();
+            } else {
+                parent = permissionService.get(req.getParentId());
+            }
             if (parent == null) {
                 throw new HandlerException(201, "Parent permission not exists");
             }
