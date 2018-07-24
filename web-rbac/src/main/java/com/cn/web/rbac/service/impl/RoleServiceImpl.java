@@ -65,7 +65,13 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> list() {
-        return roleDao.findAll();
+        Role item = new Role();
+        item.setDelFlg(BaseEntity.FLAG_NORMAL);
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("delFlg", ExampleMatcher.GenericPropertyMatchers.regex())
+                .withIgnorePaths("updateTime", "state");
+        Example<Role> example = Example.of(item, matcher);
+        return roleDao.findAll(example);
     }
 
     @Override

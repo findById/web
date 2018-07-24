@@ -1,6 +1,7 @@
 package com.cn.web.rbac.service.impl;
 
 import com.cn.web.rbac.dao.DictDao;
+import com.cn.web.rbac.domain.BaseEntity;
 import com.cn.web.rbac.domain.Dict;
 import com.cn.web.rbac.service.DictService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,13 @@ public class DictServiceImpl implements DictService {
 
     @Override
     public List<Dict> list() {
-        return dictDao.findAll();
+        Dict item = new Dict();
+        item.setDelFlg(BaseEntity.FLAG_NORMAL);
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("delFlg", ExampleMatcher.GenericPropertyMatchers.regex())
+                .withIgnorePaths("updateTime", "state");
+        Example<Dict> example = Example.of(item, matcher);
+        return dictDao.findAll(example);
     }
 
     @Override

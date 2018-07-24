@@ -68,7 +68,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> list() {
-        return userDao.findAll();
+        User user = new User();
+        user.setDelFlg(BaseEntity.FLAG_NORMAL);
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("delFlg", ExampleMatcher.GenericPropertyMatchers.regex())
+                .withIgnorePaths("updateTime", "state");
+        Example<User> example = Example.of(user, matcher);
+        return userDao.findAll(example);
     }
 
     @Override

@@ -5,6 +5,9 @@ import com.cn.web.rbac.domain.BaseEntity;
 import com.cn.web.rbac.domain.Permission;
 import com.cn.web.rbac.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -56,7 +59,14 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public List<Permission> list() {
-        return permissionDao.findAll();
+        Permission permission = new Permission();
+        permission.setDelFlg(BaseEntity.FLAG_NORMAL);
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("delFlg", ExampleMatcher.GenericPropertyMatchers.regex())
+                .withIgnorePaths("updateTime", "state");
+        Example<Permission> example = Example.of(permission, matcher);
+        // Sort.by(Sort.Order.asc("parentId"), Sort.Order.desc("position"))
+        return permissionDao.findAll(example, Sort.by("parentId", "position").ascending());
     }
 
     @Override

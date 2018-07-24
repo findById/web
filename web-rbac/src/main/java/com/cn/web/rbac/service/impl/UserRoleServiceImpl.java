@@ -1,9 +1,12 @@
 package com.cn.web.rbac.service.impl;
 
 import com.cn.web.rbac.dao.UserRoleDao;
+import com.cn.web.rbac.domain.BaseEntity;
 import com.cn.web.rbac.domain.UserRole;
 import com.cn.web.rbac.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -41,7 +44,13 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     public List<UserRole> list() {
-        return userRoleDao.findAll();
+        UserRole item = new UserRole();
+        item.setDelFlg(BaseEntity.FLAG_NORMAL);
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("delFlg", ExampleMatcher.GenericPropertyMatchers.regex())
+                .withIgnorePaths("updateTime", "state");
+        Example<UserRole> example = Example.of(item, matcher);
+        return userRoleDao.findAll(example);
     }
 
     @Override

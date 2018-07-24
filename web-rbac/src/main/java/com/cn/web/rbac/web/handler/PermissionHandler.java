@@ -30,9 +30,11 @@ public class PermissionHandler {
         if (req.getType() == null || req.getType().isEmpty()) {
             throw new HandlerException(201, "'type' must not be null.");
         }
-        if (req.getLink() == null || req.getLink().isEmpty()) {
-            throw new HandlerException(201, "'link' must not be null.");
-        }
+//        if (req.getLink() == null || req.getLink().isEmpty()) {
+//            if (!PermissionConverter.TYPE_DIR.equals(req.getType())) {
+//                throw new HandlerException(201, "'link' must not be null.");
+//            }
+//        }
         if (req.getParentId() == null || req.getParentId().isEmpty()) {
             throw new HandlerException(201, "'parentId' must not be null.");
         }
@@ -44,6 +46,7 @@ public class PermissionHandler {
                 !PermissionConverter.TYPE_OPERATE.equals(req.getType())) {
             throw new HandlerException(201, "unsupported type[" + req.getType() + "]");
         }
+        permission.setType(req.getType());
         permission.setPosition(req.getPosition() != null ? req.getPosition() : 0);
         permission.setLink(req.getLink());
         permission.setPermCode(req.getPermCode());
