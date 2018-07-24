@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PermissionConverter {
+    public static final String TYPE_DIR = "0";
+    public static final String TYPE_MENU = "1";
+    public static final String TYPE_OPERATE = "2";
 
     public static PermissionBean convertToTree(List<Permission> permissionList) {
         PermissionBean bean = null;
@@ -37,9 +40,6 @@ public class PermissionConverter {
                 spb.setName(permission.getName());
                 spb.setPosition(permission.getPosition());
                 spb.setType(permission.getType());
-                if ("permission".equals(spb.getType())) {
-                    spb.setType("btn");
-                }
                 spb.setLink(permission.getLink());
                 spb.setPermCode(permission.getPermCode());
                 spb.setMethod(permission.getMethod());
@@ -86,9 +86,6 @@ public class PermissionConverter {
                 spb.setName(permission.getName());
                 spb.setPosition(permission.getPosition());
                 spb.setType(permission.getType());
-                if ("permission".equals(spb.getType())) {
-                    spb.setType("btn");
-                }
                 spb.setLink(permission.getLink());
                 spb.setIcon(permission.getIcon());
                 spb.setParentId(permission.getParentId());
@@ -96,7 +93,7 @@ public class PermissionConverter {
                 if (bean.getChildren() == null) {
                     bean.setChildren(new ArrayList<>());
                 }
-                if (!"btn".equals(spb.getType())) {
+                if (!TYPE_OPERATE.equals(spb.getType())) {
                     bean.getChildren().add(spb);
                 }
             } else {

@@ -22,7 +22,7 @@ public class BaseEntity implements Serializable {
     private String id;
     @Version
     @Column(name = "version")
-    private Short version;
+    private Integer version;
     @Column(name = "del_flg", length = 2)
     private Short delFlg = FLAG_NORMAL;
     @Column(name = "update_time")
@@ -52,11 +52,11 @@ public class BaseEntity implements Serializable {
         this.id = id;
     }
 
-    public Short getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
-    public void setVersion(Short version) {
+    public void setVersion(Integer version) {
         this.version = version;
     }
 

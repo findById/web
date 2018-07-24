@@ -39,11 +39,9 @@ public class PermissionHandler {
 
         Permission permission = new Permission();
         permission.setName(req.getName());
-        if ("menu".equals(req.getType())) {
-            permission.setType("menu");
-        } else if ("btn".equals(req.getType())) {
-            permission.setType("permission");
-        } else {
+        if (!PermissionConverter.TYPE_DIR.equals(req.getType()) &&
+                !PermissionConverter.TYPE_MENU.equals(req.getType()) &&
+                !PermissionConverter.TYPE_OPERATE.equals(req.getType())) {
             throw new HandlerException(201, "unsupported type[" + req.getType() + "]");
         }
         permission.setPosition(req.getPosition() != null ? req.getPosition() : 0);
@@ -84,11 +82,9 @@ public class PermissionHandler {
             permission.setName(req.getName());
         }
         if (req.getType() != null && !req.getType().isEmpty()) {
-            if ("menu".equals(req.getType())) {
-                permission.setType("menu");
-            } else if ("btn".equals(req.getType())) {
-                permission.setType("permission");
-            } else {
+            if (!PermissionConverter.TYPE_DIR.equals(req.getType()) &&
+                    !PermissionConverter.TYPE_MENU.equals(req.getType()) &&
+                    !PermissionConverter.TYPE_OPERATE.equals(req.getType())) {
                 throw new HandlerException(201, "unsupported type[" + req.getType() + "]");
             }
             permission.setType(req.getType());
