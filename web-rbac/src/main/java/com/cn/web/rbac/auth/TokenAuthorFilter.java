@@ -23,8 +23,9 @@ public class TokenAuthorFilter implements Filter {
         StringBuilder sb = new StringBuilder();
         // access time
         sb.append('[').append(format.format(System.currentTimeMillis())).append(']');
-
+        // address
         sb.append("[").append(IPUtils.getRemoteAddr(req)).append("]");
+        // url
         sb.append("[").append(req.getScheme()).append("://")
                 .append(req.getServerName()).append(":")
                 .append(req.getServerPort())

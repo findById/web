@@ -13,7 +13,7 @@ public class TrackInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         // access time
         sb.append("[").append(format.format(System.currentTimeMillis())).append("]");
         // address
