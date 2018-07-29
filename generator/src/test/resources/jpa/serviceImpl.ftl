@@ -47,24 +47,33 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
 
     @Override
     @Transactional
-    public void delete(Serializable id) {
-        ${className}Repository.deleteById(String.valueOf(id));
+    public void delete(Serializable[] ids) {
+        for (Serializable id : ids) {
+            ${className}Repository.deleteById(String.valueOf(id));
+        }
     }
 
     @Override
     @Transactional
-    public void logicDelete(Serializable id) {
-        ${ClassName} ${className} = get(id);
-        if (${className} != null) {
-            // ${className}.setDelFlg(1);
-            ${className}Repository.save(${className});
-            throw new RuntimeException("unimplemented");
+    public void deleteByLogic(Serializable[] ids) {
+        for (Serializable id : ids) {
+            ${ClassName} ${className} = get(id);
+            if (${className} != null) {
+                ${className}.setDelFlg(1);
+                ${className}Repository.save(${className});
+            }
         }
     }
 
     @Override
     public List<${ClassName}> list() {
-        return ${className}Repository.findAll();
+        ${ClassName} ${className} = new ${ClassName}();
+        ${className}.setDelFlg(0);
+        ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                .withMatcher("delFlg", ExampleMatcher.GenericPropertyMatchers.regex())
+                .withIgnorePaths("updateTime", "state");
+        Example<${ClassName}> example = Example.of(${className}, matcher);
+        return ${className}Repository.findAll(example);
     }
 
     @Override

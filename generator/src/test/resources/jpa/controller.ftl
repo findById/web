@@ -35,7 +35,7 @@ public class ${ClassName}Controller {
     // @PermissionRequired(value = "${moduleName}:${className}:save")
     @RequestMapping(value = "save", method = {RequestMethod.POST})
     public String save(@RequestBody ${ClassName}Req req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
 
         if (req == null) {
             builder.statusCode(201);
@@ -60,7 +60,7 @@ public class ${ClassName}Controller {
     // @PermissionRequired(value = "${moduleName}:${className}:update")
     @RequestMapping(value = "update", method = {RequestMethod.POST})
     public String update(@RequestBody ${ClassName}Req req) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
 
         if (req == null || req.getId() == null) {
             builder.statusCode(201);
@@ -85,8 +85,8 @@ public class ${ClassName}Controller {
 
     // @PermissionRequired(value = "${moduleName}:${className}:delete")
     @RequestMapping(value = "delete", method = {RequestMethod.POST})
-    public String delete(@RequestBody String ids) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+    public String delete(@RequestBody String[] ids) {
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
 
         ${className}Service.delete(ids);
 
@@ -102,7 +102,7 @@ public class ${ClassName}Controller {
                        @RequestParam(name = "sort", required = false) String sortBy,
                        @RequestParam(name = "order", required = false) String orderBy,
                        @RequestParam(name = "keywords", required = false) String keywords) {
-        ResponseBuilder.Builder builder = ResponseBuilder.newBuilder();
+        ResponseBuilder builder = ResponseBuilder.newBuilder();
 
         Page<${ClassName}> list;
         if (!StringUtils.isEmpty(keywords)) {

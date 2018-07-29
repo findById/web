@@ -19,9 +19,9 @@ public interface ${ClassName}Service {
 
     ${ClassName} update(${ClassName} ${className});
 
-    void delete(Serializable id);
+    void delete(Serializable[] ids);
 
-    void logicDelete(Serializable id);
+    void deleteByLogic(Serializable[] ids);
 
     List<${ClassName}> list();
 
