@@ -27,6 +27,6 @@ public interface ${ClassName}Service {
 
     Page<${ClassName}> list(int offset, int size);
 
-    Page<${ClassName}> search(String keyword, Pageable page);
+    Page<${ClassName}> search(String keywords, Pageable page);
 
 }

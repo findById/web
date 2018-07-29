@@ -83,7 +83,7 @@ public class ${ClassName}ServiceImpl implements ${ClassName}Service {
     }
 
     @Override
-    public Page<${ClassName}> search(String keyword, Pageable page) {
+    public Page<${ClassName}> search(String keywords, Pageable page) {
         ${ClassName} ${className} = new ${ClassName}();
         // TODO set keywords
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
