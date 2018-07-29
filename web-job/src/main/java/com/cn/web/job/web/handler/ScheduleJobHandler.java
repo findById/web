@@ -97,9 +97,9 @@ public class ScheduleJobHandler {
         return true;
     }
 
-    public boolean delete(Long id) {
+    public boolean delete(Long[] ids) {
 
-        scheduleJobService.delete(id);
+        scheduleJobService.delete(ids);
 
         return true;
     }

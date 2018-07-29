@@ -54,8 +54,10 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 
     @Override
     @Transactional
-    public void delete(Long id) {
-        scheduleJobDao.deleteById(id);
+    public void delete(Long[] ids) {
+        for (Long id : ids) {
+            scheduleJobDao.deleteById(id);
+        }
     }
 
     @Override

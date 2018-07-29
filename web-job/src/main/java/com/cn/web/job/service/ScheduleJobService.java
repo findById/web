@@ -13,7 +13,7 @@ public interface ScheduleJobService {
 
     ScheduleJob update(ScheduleJob scheduleJob);
 
-    void delete(Long id);
+    void delete(Long[] ids);
 
     void deleteByLogic(Long id);
 

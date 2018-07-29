@@ -51,7 +51,7 @@ public class DictHandler {
         if (req == null || req.getId() == null) {
             throw new HandlerException(201, "dict not exists");
         }
-        Dict dict = dictService.get(req.getParentId());
+        Dict dict = dictService.get(req.getId());
         if (dict == null) {
             throw new HandlerException(201, "dict not exists");
         }
@@ -78,8 +78,10 @@ public class DictHandler {
         return true;
     }
 
-    public boolean delete(String id) {
-        dictService.delete(id);
+    public boolean delete(String[] ids) {
+        for (String id : ids) {
+            dictService.delete(id);
+        }
         return true;
     }
 

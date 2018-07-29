@@ -76,11 +76,11 @@ public class PermissionController extends DefaultController {
 
     @PermissionRequired(value = "sys:permission:view")
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public String list() {
+    public String list(String type) {
         ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
-            PermissionBean bean = permissionHandler.list();
+            PermissionBean bean = permissionHandler.list(type);
 
             builder.result(bean != null ? bean.getChildren() : null);
             builder.message("success");

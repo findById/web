@@ -42,11 +42,11 @@ public class DictController extends DefaultController {
 
     @PermissionRequired(value = "sys:dict:update")
     @RequestMapping(value = "update", method = RequestMethod.POST)
-    public String update(Dict dict) {
+    public String update(DictReq req) {
         ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
-            dictHandler.update(dict);
+            dictHandler.update(req);
 
             builder.message("success");
             builder.statusCode(200);
@@ -63,7 +63,7 @@ public class DictController extends DefaultController {
         ResponseBuilder builder = ResponseBuilder.newBuilder();
         try {
 
-            dictHandler.delete(id);
+            dictHandler.delete(new String[]{id});
 
             builder.message("success");
             builder.statusCode(200);
