@@ -135,18 +135,22 @@ public class PermissionHandler {
         return true;
     }
 
-    public PermissionBean list(String type) {
+    public List<Permission> list() {
+        return permissionService.list();
+    }
 
-        List<Permission> list = permissionService.list();
-
-        switch (type) {
-            case "menu": {
-                return PermissionConverter.convertToMenu(list);
-            }
-            default: {
-                return PermissionConverter.convertToTree(list);
-            }
+    public List<PermissionBean> findByParentId(String parentId) {
+        List<Permission> list = permissionService.findByParentId(parentId);
+        if (list == null) {
+            return null;
         }
+        List<PermissionBean> beans = new ArrayList<>();
+        for (Permission item : list) {
+            PermissionBean bean = new PermissionBean();
+            BeanUtils.copyProperties(item, bean);
+            beans.add(bean);
+        }
+        return beans;
     }
 
     public PermissionBean findById(String id) {

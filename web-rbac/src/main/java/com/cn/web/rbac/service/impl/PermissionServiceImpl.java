@@ -77,6 +77,11 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
+    public List<Permission> findByParentId(String parentId) {
+        return permissionDao.findByParentId(parentId);
+    }
+
+    @Override
     @Transactional
     public void saveAll(List<Permission> permissions) {
         for (Permission perm : permissions) {

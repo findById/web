@@ -20,6 +20,8 @@ public interface PermissionService {
 
     List<Permission> findByUserId(Serializable userId);
 
+    List<Permission> findByParentId(String parentId);
+
     void saveAll(List<Permission> permissions);
 
     void saveBaseOperation(String parentId, String name);

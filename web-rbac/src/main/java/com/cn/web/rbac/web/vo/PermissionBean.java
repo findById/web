@@ -1,7 +1,6 @@
 package com.cn.web.rbac.web.vo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PermissionBean implements Serializable {
@@ -16,7 +15,7 @@ public class PermissionBean implements Serializable {
     private String icon;
     private String parentId;
     private String state;
-    private List<PermissionBean> children = new ArrayList<>();
+    private List<PermissionBean> children;
 
     public String getId() {
         return id;
