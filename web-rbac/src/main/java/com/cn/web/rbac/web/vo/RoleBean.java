@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RoleBean implements Serializable {
     private String id;
-    private short state;
+    private Long state;
     private String name;
     private String code;
     private String type;
@@ -21,11 +21,11 @@ public class RoleBean implements Serializable {
         this.id = id;
     }
 
-    public short getState() {
+    public Long getState() {
         return state;
     }
 
-    public void setState(short state) {
+    public void setState(Long state) {
         this.state = state;
     }
 

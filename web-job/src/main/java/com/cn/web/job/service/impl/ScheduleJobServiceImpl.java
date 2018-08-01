@@ -31,6 +31,12 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
         if (list == null || list.isEmpty()) {
             return;
         }
+//        ScheduleJob job = new ScheduleJob();
+//        job.setName("test job");
+//        job.setGroup("test job");
+//        job.setMethod(TestJob.class.getName());
+//        job.setCron("0/10 * * * * ?");
+//        ScheduleJobUtils.createScheduleJob(scheduler, job);
         for (ScheduleJob item : list) {
             System.out.println("schedule job id: " + item.getId() + ", cron: " + item.getCron());
             ScheduleJobUtils.createScheduleJob(scheduler, item);
@@ -104,10 +110,14 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
         ScheduleJob item = new ScheduleJob();
         // item.setId(keywords);
         item.setName(keywords);
+        item.setGroup(keywords);
+        item.setMethod(keywords);
         item.setRemark(keywords);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 //.withMatcher("id", ExampleMatcher.GenericPropertyMatchers.contains())
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("group", ExampleMatcher.GenericPropertyMatchers.contains())
+                .withMatcher("method", ExampleMatcher.GenericPropertyMatchers.contains())
                 .withMatcher("remark", ExampleMatcher.GenericPropertyMatchers.contains())
                 .withIgnorePaths("status", "updateTime", "delFlg");
         Example<ScheduleJob> example = Example.of(item, matcher);

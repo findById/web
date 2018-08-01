@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 public class UserBean implements Serializable {
     private String id;
-    private short state;
+    private Short state;
     private String username;
     private String email;
     private String mobile;
-    private short gender;
+    private Short gender;
     private String avatar;
     private String department;
-    private long lastVisit;
-    private long loginCount;
-    private long updateTime;
+    private Long lastVisit;
+    private Long loginCount;
+    private Long updateTime;
     private String description;
 
     public String getId() {
@@ -24,11 +24,11 @@ public class UserBean implements Serializable {
         this.id = id;
     }
 
-    public short getState() {
+    public Short getState() {
         return state;
     }
 
-    public void setState(short state) {
+    public void setState(Short state) {
         this.state = state;
     }
 
@@ -56,11 +56,11 @@ public class UserBean implements Serializable {
         this.mobile = mobile;
     }
 
-    public short getGender() {
+    public Short getGender() {
         return gender;
     }
 
-    public void setGender(short gender) {
+    public void setGender(Short gender) {
         this.gender = gender;
     }
 
@@ -80,27 +80,27 @@ public class UserBean implements Serializable {
         this.department = department;
     }
 
-    public long getLastVisit() {
+    public Long getLastVisit() {
         return lastVisit;
     }
 
-    public void setLastVisit(long lastVisit) {
+    public void setLastVisit(Long lastVisit) {
         this.lastVisit = lastVisit;
     }
 
-    public long getLoginCount() {
+    public Long getLoginCount() {
         return loginCount;
     }
 
-    public void setLoginCount(long loginCount) {
+    public void setLoginCount(Long loginCount) {
         this.loginCount = loginCount;
     }
 
-    public long getUpdateTime() {
+    public Long getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(long updateTime) {
+    public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;
     }
 

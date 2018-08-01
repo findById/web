@@ -6,7 +6,7 @@ import java.util.List;
 
 public class DictBean implements Serializable {
     private String id;
-    private short state;
+    private Short state;
     private String label;
     private String value;
     private String type;
@@ -23,11 +23,11 @@ public class DictBean implements Serializable {
         this.id = id;
     }
 
-    public short getState() {
+    public Short getState() {
         return state;
     }
 
-    public void setState(short state) {
+    public void setState(Short state) {
         this.state = state;
     }
 
