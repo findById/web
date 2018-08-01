@@ -23,12 +23,18 @@ public class BaseEntity implements Serializable {
     @Version
     @Column(name = "version")
     private Integer version;
+    /**
+     * ${FLAG_NORMAL} ${FLAG_DELETE}
+     */
     @Column(name = "del_flg", length = 2)
     private Short delFlg = FLAG_NORMAL;
     @Column(name = "update_time")
     private Long updateTime = System.currentTimeMillis();
     @Column(name = "description", length = 200)
     private String description;
+    /**
+     * ${STATE_ENABLE} ${STATE_DISABLED} ${STATE_EXPIRED}
+     */
     @Column(name = "state", length = 1)
     private Short state = STATE_ENABLE;
 

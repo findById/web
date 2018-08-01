@@ -20,6 +20,8 @@ public interface DictService {
 
     Page<Dict> list(int page, int size);
 
+    List<Dict> findByType(String type);
+
     Page<Dict> search(String keywords, int page, int size);
 
 }

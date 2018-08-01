@@ -3,23 +3,32 @@ package com.cn.web.job.web.response;
 import java.io.Serializable;
 
 public class ScheduleJobResp implements Serializable {
-    private Long id;
+    private long id;
+    private short state;
     private String name;
     private String method;
     private String params;
     private String cron;
-    private Integer status;
+    private int status;
     private String remark;
 
     public ScheduleJobResp() {
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public short getState() {
+        return state;
+    }
+
+    public void setState(short state) {
+        this.state = state;
     }
 
     public String getName() {
@@ -54,11 +63,11 @@ public class ScheduleJobResp implements Serializable {
         this.cron = cron;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

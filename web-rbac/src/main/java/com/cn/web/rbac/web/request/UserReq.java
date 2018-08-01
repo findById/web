@@ -5,6 +5,7 @@ import java.util.List;
 
 public class UserReq implements Serializable {
     private String id;
+    private Short state;
     private String username;
     private String password;
     private String email;
@@ -18,6 +19,14 @@ public class UserReq implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Short getState() {
+        return state;
+    }
+
+    public void setState(Short state) {
+        this.state = state;
     }
 
     public String getUsername() {

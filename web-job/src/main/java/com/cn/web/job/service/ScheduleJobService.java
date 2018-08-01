@@ -23,7 +23,7 @@ public interface ScheduleJobService {
 
     Page<ScheduleJob> search(String keywords, int page, int size);
 
-    void updateBatch(Long[] ids, int state);
+    void updateBatch(Long[] ids, String state) throws Exception;
 
     boolean start(Long[] ids);
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 public class RoleReq {
     private String id;
+    private Short state;
     private Short delFlg;
     private Long updateTime;
     private String description;
@@ -19,6 +20,14 @@ public class RoleReq {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Short getState() {
+        return state;
+    }
+
+    public void setState(Short state) {
+        this.state = state;
     }
 
     public Short getDelFlg() {

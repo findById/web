@@ -4,10 +4,11 @@ import java.io.Serializable;
 
 public class UserBean implements Serializable {
     private String id;
+    private short state;
     private String username;
     private String email;
     private String mobile;
-    private Short gender;
+    private short gender;
     private String avatar;
     private String department;
     private long lastVisit;
@@ -21,6 +22,14 @@ public class UserBean implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public short getState() {
+        return state;
+    }
+
+    public void setState(short state) {
+        this.state = state;
     }
 
     public String getUsername() {
@@ -47,11 +56,11 @@ public class UserBean implements Serializable {
         this.mobile = mobile;
     }
 
-    public Short getGender() {
+    public short getGender() {
         return gender;
     }
 
-    public void setGender(Short gender) {
+    public void setGender(short gender) {
         this.gender = gender;
     }
 
@@ -71,28 +80,28 @@ public class UserBean implements Serializable {
         this.department = department;
     }
 
-    public Long getLastVisit() {
+    public long getLastVisit() {
         return lastVisit;
     }
 
-    public void setLastVisit(Long lastVisit) {
-        this.lastVisit = lastVisit == null ? 0 : lastVisit;
+    public void setLastVisit(long lastVisit) {
+        this.lastVisit = lastVisit;
     }
 
     public long getLoginCount() {
         return loginCount;
     }
 
-    public void setLoginCount(Long loginCount) {
-        this.loginCount = loginCount == null ? 0 : loginCount;
+    public void setLoginCount(long loginCount) {
+        this.loginCount = loginCount;
     }
 
-    public Long getUpdateTime() {
+    public long getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Long updateTime) {
-        this.updateTime = updateTime == null ? 0 : updateTime;
+    public void setUpdateTime(long updateTime) {
+        this.updateTime = updateTime;
     }
 
     public String getDescription() {

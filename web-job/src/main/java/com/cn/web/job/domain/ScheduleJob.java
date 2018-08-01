@@ -10,10 +10,13 @@ public class ScheduleJob implements Serializable {
     public static final short FLAG_NORMAL = 0;
     public static final short FLAG_DELETE = 1;
 
-    public static final int STATE_STANDBY = 0;
-    public static final int STATE_RUNNING = 1;
-    public static final int STATE_PAUSED = 2;
-    public static final int STATE_STOPPED = 3;
+    public static final short STATE_ENABLE = 0;
+    public static final short STATE_DISABLED = 1;
+
+    public static final String JOB_STATE_STANDBY = "0";
+    public static final String JOB_STATE_RUNNING = "1";
+    public static final String JOB_STATE_PAUSED = "2";
+    public static final String JOB_STATE_STOPPED = "3";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +29,18 @@ public class ScheduleJob implements Serializable {
     private Short delFlg = FLAG_NORMAL;
     @Column(name = "update_time")
     private Long updateTime = System.currentTimeMillis();
+    @Column(name = "state", length = 1)
+    private Short state = STATE_ENABLE;
     /**
      * job name
      */
-    @Column(name = "name", length = 50)
+    @Column(name = "job_name", length = 50)
     private String name;
+    /**
+     * job name
+     */
+    @Column(name = "job_group", length = 50)
+    private String group;
     /**
      * job method
      */
@@ -44,13 +54,13 @@ public class ScheduleJob implements Serializable {
     /**
      * cron expression
      */
-    @Column(name = "cron", length = 100)
+    @Column(name = "cron_expression", length = 100)
     private String cron;
     /**
      * 0:Standby 1:Running 2:Paused 3:Stopped
      */
     @Column(name = "status", length = 2)
-    private Integer status = STATE_STANDBY;
+    private String status = JOB_STATE_STANDBY;
     /**
      * remark
      */
@@ -92,12 +102,28 @@ public class ScheduleJob implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Short getState() {
+        return state;
+    }
+
+    public void setState(Short state) {
+        this.state = state;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     public String getMethod() {
@@ -124,11 +150,11 @@ public class ScheduleJob implements Serializable {
         this.cron = cron;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

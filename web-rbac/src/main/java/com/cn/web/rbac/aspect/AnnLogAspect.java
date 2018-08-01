@@ -44,6 +44,14 @@ public class AnnLogAspect {
     public void after(JoinPoint joinPoint, AopLog ann) {
     }
 
+    @AfterReturning(returning = "result", pointcut = "logPointcut()")
+    public void after(Object result) {
+    }
+
+    @AfterThrowing(pointcut = "logPointcut()")
+    public void after() {
+    }
+
     private void saveLog(ProceedingJoinPoint joinPoint, long costTime) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();

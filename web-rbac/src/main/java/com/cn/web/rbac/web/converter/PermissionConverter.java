@@ -31,7 +31,7 @@ public class PermissionConverter {
             bean.setMethod(permission.getMethod());
             bean.setIcon(permission.getIcon());
             bean.setParentId(permission.getParentId());
-            bean.setState("opened");
+            bean.setState(permission.getState()); // opened
         } else {
             String cId = bean.getId();
             if (permission.getParentId() != null && cId.equals(permission.getParentId())) {
@@ -45,7 +45,7 @@ public class PermissionConverter {
                 spb.setMethod(permission.getMethod());
                 spb.setIcon(permission.getIcon());
                 spb.setParentId(permission.getParentId());
-                spb.setState("closed");
+                spb.setState(permission.getState()); // closed
                 if (bean.getChildren() == null) {
                     bean.setChildren(new ArrayList<>());
                 }
@@ -77,7 +77,7 @@ public class PermissionConverter {
             bean.setLink(permission.getLink());
             bean.setIcon(permission.getIcon());
             bean.setParentId(permission.getParentId());
-            bean.setState("opened");
+            bean.setState(permission.getState()); // opened
         } else {
             String cId = bean.getId();
             if (permission.getParentId() != null && cId.equals(permission.getParentId())) {
@@ -89,7 +89,7 @@ public class PermissionConverter {
                 spb.setLink(permission.getLink());
                 spb.setIcon(permission.getIcon());
                 spb.setParentId(permission.getParentId());
-                spb.setState("closed");
+                spb.setState(permission.getState()); // closed
                 if (bean.getChildren() == null) {
                     bean.setChildren(new ArrayList<>());
                 }

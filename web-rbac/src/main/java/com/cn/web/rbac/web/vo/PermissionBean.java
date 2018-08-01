@@ -8,13 +8,13 @@ public class PermissionBean implements Serializable {
     private String id;
     private String name;
     private String type;
-    private Integer position;
+    private int position;
     private String link;
     private String permCode;
     private String method;
     private String icon;
     private String parentId;
-    private String state;
+    private short state;
     private List<PermissionBean> children;
 
     public String getId() {
@@ -41,11 +41,11 @@ public class PermissionBean implements Serializable {
         this.type = type;
     }
 
-    public Integer getPosition() {
+    public int getPosition() {
         return position;
     }
 
-    public void setPosition(Integer position) {
+    public void setPosition(int position) {
         this.position = position;
     }
 
@@ -89,11 +89,11 @@ public class PermissionBean implements Serializable {
         this.parentId = parentId;
     }
 
-    public String getState() {
+    public short getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(short state) {
         this.state = state;
     }
 

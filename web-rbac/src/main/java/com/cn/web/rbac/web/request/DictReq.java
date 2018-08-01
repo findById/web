@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class DictReq implements Serializable {
 
     private String id;
+    private Short state;
     private String label;
     private String value;
     private String type;
@@ -18,6 +19,14 @@ public class DictReq implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Short getState() {
+        return state;
+    }
+
+    public void setState(Short state) {
+        this.state = state;
     }
 
     public String getLabel() {

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DictBean implements Serializable {
-
     private String id;
+    private short state;
     private String label;
     private String value;
     private String type;
@@ -21,6 +21,14 @@ public class DictBean implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public short getState() {
+        return state;
+    }
+
+    public void setState(short state) {
+        this.state = state;
     }
 
     public String getLabel() {

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class ScheduleJobReq implements Serializable {
     private Long id;
+    private Short state;
     private String name;
     private String method;
     private String params;
@@ -20,6 +21,14 @@ public class ScheduleJobReq implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Short getState() {
+        return state;
+    }
+
+    public void setState(Short state) {
+        this.state = state;
     }
 
     public String getName() {

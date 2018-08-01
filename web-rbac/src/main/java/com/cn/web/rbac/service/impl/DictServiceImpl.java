@@ -61,6 +61,11 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
+    public List<Dict> findByType(String type) {
+        return dictDao.findAllByType(type);
+    }
+
+    @Override
     public Page<Dict> search(String keywords, int page, int size) {
         Dict user = new Dict();
         user.setId(keywords);

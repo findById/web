@@ -2,6 +2,7 @@ package com.cn.web.rbac.web.request;
 
 public class PermissionReq {
     private String id;
+    private Short state;
     private Short delFlg;
     private Long updateTime;
     private String description;
@@ -12,7 +13,6 @@ public class PermissionReq {
     private String icon;
     private String permCode;
     private String method;
-    private String state;
     private String parentId;
 
     public String getId() {
@@ -103,11 +103,11 @@ public class PermissionReq {
         this.method = method;
     }
 
-    public String getState() {
+    public Short getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(Short state) {
         this.state = state;
     }
 
