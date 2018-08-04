@@ -14,4 +14,10 @@ public interface DictDao extends JpaRepository<Dict, String> {
     @Query(value = "SELECT * FROM dict AS d WHERE d.type=:t AND d.del_flg=0 ORDER BY d.type,d.parent_id,d.position", nativeQuery = true)
     List<Dict> findAllByType(@Param("t") String type);
 
+    @Query(value = "SELECT * FROM dict AS d WHERE d.parent_id=:parentId AND d.del_flg=0 ORDER BY d.type,d.parent_id,d.position", nativeQuery = true)
+    List<Dict> findAllByParentId(@Param("parentId") String parentId);
+
+    @Query(value = "SELECT * FROM dict AS d WHERE (d.type=:gt OR d.type=:g) AND d.del_flg=0 ORDER BY d.type,d.parent_id,d.position", nativeQuery = true)
+    List<Dict> findAllByGroupType(@Param("gt") String groupType, @Param("t") String type);
+
 }

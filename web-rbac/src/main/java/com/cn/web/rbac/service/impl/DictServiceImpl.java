@@ -66,6 +66,11 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
+    public List<Dict> findByParentId(String parentId) {
+        return dictDao.findAllByParentId(parentId);
+    }
+
+    @Override
     public Page<Dict> search(String keywords, int page, int size) {
         Dict user = new Dict();
         user.setId(keywords);

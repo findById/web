@@ -22,6 +22,8 @@ public interface DictService {
 
     List<Dict> findByType(String type);
 
+    List<Dict> findByParentId(String parentId);
+
     Page<Dict> search(String keywords, int page, int size);
 
 }

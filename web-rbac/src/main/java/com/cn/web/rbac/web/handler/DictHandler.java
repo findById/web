@@ -116,6 +116,10 @@ public class DictHandler {
         return dictService.findByType(type);
     }
 
+    public List<Dict> findByParentId(String parentId) {
+        return dictService.findByParentId(parentId);
+    }
+
     public HashMap<String, Object> search(String keywords, int page, int size) {
 
         Page<Dict> list = dictService.search(keywords, page - 1, size);
