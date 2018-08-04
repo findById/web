@@ -24,6 +24,16 @@ public class Dict extends BaseEntity {
     public Dict() {
     }
 
+    public Dict(String label, String value, String type, Integer position, String remark, String parentId, String description) {
+        super(description);
+        this.label = label;
+        this.value = value;
+        this.type = type;
+        this.position = position;
+        this.remark = remark;
+        this.parentId = parentId;
+    }
+
     public String getLabel() {
         return label;
     }

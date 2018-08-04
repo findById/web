@@ -13,11 +13,17 @@ public class ScheduleJobUtils {
     public static void createScheduleJob(Scheduler scheduler, ScheduleJob job) {
         try {
             Class<? extends Job> jobClass = (Class<? extends Job>) (Class.forName(job.getMethod()).newInstance().getClass());
-            JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(job.getName(), job.getGroup())
-                    .build();
-            Trigger trigger = TriggerBuilder.newTrigger().withIdentity(job.getName(), job.getGroup())// 触发器key
+            JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(job.getName(), job.getGroup()).build();
+            Trigger trigger = TriggerBuilder.newTrigger()
+                    .withIdentity(job.getName(), job.getGroup())
                     .startAt(DateBuilder.futureDate(1, DateBuilder.IntervalUnit.SECOND))
-                    .withSchedule(CronScheduleBuilder.cronSchedule(job.getCron())).startNow().build();
+                    .withSchedule(CronScheduleBuilder.cronSchedule(job.getCron()))
+                    .usingJobData("group", job.getGroup())
+                    .usingJobData("name", job.getName())
+                    .usingJobData("method", job.getMethod())
+                    .usingJobData("params", job.getParams())
+                    .startNow()
+                    .build();
             scheduler.scheduleJob(jobDetail, trigger);
             if (!scheduler.isShutdown()) {
                 scheduler.start();
@@ -28,6 +34,7 @@ public class ScheduleJobUtils {
     }
 
     private static String getScheduleJobState(String state) {
+        System.out.println("job state: " + state);
         switch (state) {
             case "": {
                 return ScheduleJob.JOB_STATE_STANDBY;

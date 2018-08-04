@@ -1,5 +1,6 @@
 package com.cn.web.job.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.cn.web.job.dao.ScheduleJobDao;
 import com.cn.web.job.domain.ScheduleJob;
 import com.cn.web.job.service.ScheduleJobService;
@@ -31,15 +32,23 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
         if (list == null || list.isEmpty()) {
             return;
         }
-//        ScheduleJob job = new ScheduleJob();
-//        job.setName("test job");
-//        job.setGroup("test job");
-//        job.setMethod(TestJob.class.getName());
-//        job.setCron("0/10 * * * * ?");
-//        ScheduleJobUtils.createScheduleJob(scheduler, job);
         for (ScheduleJob item : list) {
-            System.out.println("schedule job id: " + item.getId() + ", cron: " + item.getCron());
-            ScheduleJobUtils.createScheduleJob(scheduler, item);
+            System.out.println("schedule job id: " + item.getId() + ", method: " + item.getMethod() + ", cron: " + item.getCron());
+            try {
+                ScheduleJobUtils.createScheduleJob(scheduler, item);
+                if (ScheduleJob.JOB_STATE_RUNNING.equals(item.getStatus())) {
+                    ScheduleJobUtils.startScheduleJob(scheduler, item);
+                }
+            } catch (SchedulerException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            System.out.println("job: " + JSON.toJSONString(ScheduleJobUtils.getScheduleJob(scheduler)));
+            System.out.println("running job: " + JSON.toJSONString(ScheduleJobUtils.getRunningJob(scheduler)));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
         }
     }
 

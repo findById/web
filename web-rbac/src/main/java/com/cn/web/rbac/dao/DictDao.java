@@ -11,7 +11,7 @@ import java.util.List;
 @Repository("dictDao")
 public interface DictDao extends JpaRepository<Dict, String> {
 
-    @Query(value = "SELECT * FROM dict AS d WHERE d.type=:t AND d.del_flg=0 ORDER BY d.parent_id,d.position", nativeQuery = true)
+    @Query(value = "SELECT * FROM dict AS d WHERE d.type=:t AND d.del_flg=0 ORDER BY d.type,d.parent_id,d.position", nativeQuery = true)
     List<Dict> findAllByType(@Param("t") String type);
 
 }
