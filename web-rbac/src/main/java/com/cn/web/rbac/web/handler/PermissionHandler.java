@@ -41,17 +41,13 @@ public class PermissionHandler {
 
         Permission permission = new Permission();
         permission.setName(req.getName());
-        if (!PermissionConverter.TYPE_DIR.equals(req.getType()) &&
-                !PermissionConverter.TYPE_MENU.equals(req.getType()) &&
-                !PermissionConverter.TYPE_OPERATE.equals(req.getType())) {
-            throw new HandlerException(201, "unsupported type[" + req.getType() + "]");
-        }
         permission.setType(req.getType());
         permission.setPosition(req.getPosition() != null ? req.getPosition() : 0);
         permission.setLink(req.getLink());
         permission.setPermCode(req.getPermCode());
         permission.setMethod(req.getMethod());
         permission.setIcon(req.getIcon());
+        permission.setVisible(req.getVisible() != null ? req.getVisible() : 0);
 
         Permission parent;
         if ("root".equalsIgnoreCase(req.getParentId())) {
@@ -85,11 +81,6 @@ public class PermissionHandler {
             permission.setName(req.getName());
         }
         if (req.getType() != null && !req.getType().isEmpty()) {
-            if (!PermissionConverter.TYPE_DIR.equals(req.getType()) &&
-                    !PermissionConverter.TYPE_MENU.equals(req.getType()) &&
-                    !PermissionConverter.TYPE_OPERATE.equals(req.getType())) {
-                throw new HandlerException(201, "unsupported type[" + req.getType() + "]");
-            }
             permission.setType(req.getType());
         }
         if (req.getPosition() != null) {
@@ -106,6 +97,9 @@ public class PermissionHandler {
         }
         if (req.getIcon() != null && !req.getIcon().isEmpty()) {
             permission.setIcon(req.getIcon());
+        }
+        if (req.getVisible() != null) {
+            permission.setVisible(req.getVisible());
         }
         if (req.getParentId() != null && !req.getParentId().isEmpty()) {
             Permission parent;

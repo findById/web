@@ -8,6 +8,9 @@ import javax.persistence.Table;
 @Table(name = "permission")
 public class Permission extends BaseEntity {
 
+    public static final short GONE = 0;
+    public static final short VISIBLE = 1;
+
     @Column(name = "name", length = 20)
     private String name;
     @Column(name = "type", length = 20)
@@ -22,6 +25,8 @@ public class Permission extends BaseEntity {
     private String method;
     @Column(name = "icon", length = 50)
     private String icon;
+    @Column(name = "visible", length = 2)
+    private Short visible = VISIBLE;
     @Column(name = "parent_id", length = 50)
     private String parentId;
 
@@ -29,12 +34,17 @@ public class Permission extends BaseEntity {
     }
 
     public Permission(String name, String type, Integer position, String link, String permCode, String parentId, String description) {
+        this(name, type, position, link, permCode, VISIBLE, parentId, description);
+    }
+
+    public Permission(String name, String type, Integer position, String link, String permCode, Short visible, String parentId, String description) {
         super(description);
         this.name = name;
         this.type = type;
         this.position = position;
         this.link = link;
         this.permCode = permCode;
+        this.visible = visible;
         this.parentId = parentId;
     }
 
@@ -92,6 +102,14 @@ public class Permission extends BaseEntity {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public Short getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Short visible) {
+        this.visible = visible;
     }
 
     public String getParentId() {

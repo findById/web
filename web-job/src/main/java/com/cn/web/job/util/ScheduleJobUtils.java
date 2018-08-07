@@ -16,18 +16,18 @@ public class ScheduleJobUtils {
             JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(job.getName(), job.getGroup()).build();
             Trigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity(job.getName(), job.getGroup())
-                    .startAt(DateBuilder.futureDate(1, DateBuilder.IntervalUnit.SECOND))
                     .withSchedule(CronScheduleBuilder.cronSchedule(job.getCron()))
                     .usingJobData("group", job.getGroup())
                     .usingJobData("name", job.getName())
                     .usingJobData("method", job.getMethod())
                     .usingJobData("params", job.getParams())
-                    .startNow()
+//                    .startAt(DateBuilder.futureDate(1, DateBuilder.IntervalUnit.SECOND))
+//                    .startNow()
                     .build();
             scheduler.scheduleJob(jobDetail, trigger);
-            if (!scheduler.isShutdown()) {
-                scheduler.start();
-            }
+//            if (!scheduler.isShutdown()) {
+//                scheduler.start();
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -36,8 +36,11 @@ public class ScheduleJobUtils {
     private static String getScheduleJobState(String state) {
         System.out.println("job state: " + state);
         switch (state) {
-            case "": {
-                return ScheduleJob.JOB_STATE_STANDBY;
+            case "NORMAL": {
+                return ScheduleJob.JOB_STATE_RUNNING;
+            }
+            case "PAUSED": {
+                return ScheduleJob.JOB_STATE_PAUSED;
             }
             default: {
                 return ScheduleJob.JOB_STATE_STOPPED;

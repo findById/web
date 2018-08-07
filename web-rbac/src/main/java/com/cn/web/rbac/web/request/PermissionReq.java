@@ -13,6 +13,7 @@ public class PermissionReq {
     private String icon;
     private String permCode;
     private String method;
+    private Short visible;
     private String parentId;
 
     public String getId() {
@@ -109,6 +110,14 @@ public class PermissionReq {
 
     public void setState(Short state) {
         this.state = state;
+    }
+
+    public Short getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Short visible) {
+        this.visible = visible;
     }
 
     public String getParentId() {

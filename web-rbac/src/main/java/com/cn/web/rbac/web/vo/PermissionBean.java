@@ -14,6 +14,7 @@ public class PermissionBean implements Serializable {
     private String permCode;
     private String method;
     private String icon;
+    private Short visible;
     private String parentId;
     private Short state;
     private List<PermissionBean> children = new ArrayList<>();
@@ -80,6 +81,14 @@ public class PermissionBean implements Serializable {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public Short getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Short visible) {
+        this.visible = visible;
     }
 
     public String getParentId() {
