@@ -38,12 +38,17 @@ public class Permission extends BaseEntity {
     }
 
     public Permission(String name, String type, Integer position, String link, String permCode, Short visible, String parentId, String description) {
+        this(name, type, position, link, permCode, null, visible, parentId, description);
+    }
+
+    public Permission(String name, String type, Integer position, String link, String permCode, String icon, Short visible, String parentId, String description) {
         super(description);
         this.name = name;
         this.type = type;
         this.position = position;
         this.link = link;
         this.permCode = permCode;
+        this.icon = icon;
         this.visible = visible;
         this.parentId = parentId;
     }
