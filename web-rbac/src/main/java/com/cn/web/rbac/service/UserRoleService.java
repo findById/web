@@ -12,6 +12,8 @@ public interface UserRoleService {
 
     UserRole update(UserRole userRole);
 
+    void updateUserRole(String userId, List<String> roleIds);
+
     void delete(Serializable id);
 
     List<UserRole> list();

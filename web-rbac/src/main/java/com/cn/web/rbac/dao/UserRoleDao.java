@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserRoleDao extends JpaRepository<UserRole, String> {
 
     @Modifying
-    @Query(value = "DELETE user_role AS ur WHERE ur.user_id=:userId AND ur.role_id=:roleId", nativeQuery = true)
+    @Query(value = "DELETE FROM user_role WHERE user_id=:userId AND role_id=:roleId", nativeQuery = true)
     void deleteUserRoleByUserIdAndRoleId(@Param("userId") String userId, @Param("roleId") String roleId);
 
     @Query(value = "SELECT ur.role_id FROM user_role AS ur WHERE ur.user_id=:userId", nativeQuery = true)

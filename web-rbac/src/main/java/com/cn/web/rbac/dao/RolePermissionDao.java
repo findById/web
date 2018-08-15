@@ -16,7 +16,7 @@ public interface RolePermissionDao extends JpaRepository<RolePermission, String>
     List<String> findPermissionIdListByRoleId(@Param("roleId") String roleId);
 
     @Modifying
-    @Query(value = "DELETE role_permission AS rp WHERE rp.role_id=:roleId AND rp.permission_id=:permissionId", nativeQuery = true)
-    void deleteByRoleIdAndPermissionId(@Param("roleId") String roleId, @Param("permissionId") String permissionId);
+    @Query(value = "DELETE FROM role_permission WHERE role_id=:roleId AND permission_id=:permissionId", nativeQuery = true)
+    void deleteRolePermissionByRoleIdAndPermissionId(@Param("roleId") String roleId, @Param("permissionId") String permissionId);
 
 }

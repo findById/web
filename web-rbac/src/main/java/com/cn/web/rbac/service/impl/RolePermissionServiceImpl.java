@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,11 +34,38 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     }
 
     @Override
+    @Transactional
     public RolePermission update(RolePermission rolePermission) {
         return rolePermissionDao.save(rolePermission);
     }
 
     @Override
+    @Transactional
+    public void updateRolePermission(String roleId, List<String> permIds) {
+        List<String> oldPermIdList = findPermissionIdListByRoleId(roleId);
+
+        // need to delete?
+        if (oldPermIdList == null) {
+            oldPermIdList = new ArrayList<>(0);
+        }
+        for (String permId : oldPermIdList) {
+            if (permId != null && !permId.isEmpty() && !permIds.contains(permId)) {
+                deleteByRoleIdAndPermissionId(roleId, permId);
+            }
+        }
+        // need to save?
+        for (String permId : permIds) {
+            if (permId != null && !permId.isEmpty() && !oldPermIdList.contains(permId)) {
+                RolePermission rolePermission = new RolePermission();
+                rolePermission.setRoleId(roleId);
+                rolePermission.setPermissionId(permId);
+                save(rolePermission);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
     public void delete(Serializable id) {
         rolePermissionDao.deleteById(String.valueOf(id));
     }
@@ -49,7 +77,7 @@ public class RolePermissionServiceImpl implements RolePermissionService {
 
     @Override
     public void deleteByRoleIdAndPermissionId(String roleId, String permissionId) {
-        rolePermissionDao.deleteByRoleIdAndPermissionId(roleId, permissionId);
+        rolePermissionDao.deleteRolePermissionByRoleIdAndPermissionId(roleId, permissionId);
     }
 
     @Override

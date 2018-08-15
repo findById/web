@@ -12,6 +12,8 @@ public interface RolePermissionService {
 
     RolePermission update(RolePermission rolePermission);
 
+    void updateRolePermission(String roleId, List<String> permIds);
+
     void delete(Serializable id);
 
     List<RolePermission> list();

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +36,31 @@ public class UserRoleServiceImpl implements UserRoleService {
     @Override
     public UserRole update(UserRole userRole) {
         return userRoleDao.save(userRole);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserRole(String userId, List<String> roleIds) {
+        List<String> oldRoleIds = findByUserId(userId);
+
+        // need to delete?
+        if (oldRoleIds == null) {
+            oldRoleIds = new ArrayList<>(0);
+        }
+        for (String roleId : oldRoleIds) {
+            if (!roleIds.contains(roleId)) {
+                deleteByUserIdAndRoleId(userId, roleId);
+            }
+        }
+        // need to save?
+        for (String roleId : roleIds) {
+            if (!oldRoleIds.contains(roleId)) {
+                UserRole userRole = new UserRole();
+                userRole.setUserId(userId);
+                userRole.setRoleId(roleId);
+                save(userRole);
+            }
+        }
     }
 
     @Override
