@@ -63,7 +63,7 @@ public class PermissionServiceImpl implements PermissionService {
         permission.setDelFlg(BaseEntity.FLAG_NORMAL);
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("delFlg", ExampleMatcher.GenericPropertyMatchers.regex())
-                .withIgnorePaths("updateTime", "state");
+                .withIgnorePaths("updateTime", "state", "visible");
         Example<Permission> example = Example.of(permission, matcher);
         // Sort.by(Sort.Order.asc("parentId"), Sort.Order.desc("position"))
         return permissionDao.findAll(example, Sort.by("parentId", "position").ascending());
@@ -120,7 +120,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public Permission findRoot() {
+    public Permission findRootNote() {
         return permissionDao.findByParentIdIsNull();
     }
 }

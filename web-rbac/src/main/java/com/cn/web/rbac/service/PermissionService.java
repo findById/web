@@ -28,5 +28,5 @@ public interface PermissionService {
 
     List<Permission> findOperationPermissionByParentId(String parentId);
 
-    Permission findRoot();
+    Permission findRootNote();
 }

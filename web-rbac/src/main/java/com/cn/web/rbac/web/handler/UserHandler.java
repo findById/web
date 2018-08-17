@@ -116,10 +116,8 @@ public class UserHandler {
             user.setPassword(AuthUtils.encode(req.getPassword(), user.getSalt()));
         }
 
-        if (req.getRoleIds() != null && !req.getRoleIds().isEmpty()) {
-            for (String roleId : req.getRoleIds()) {
-                System.out.println(roleId);
-            }
+        if (req.getRoleIds() != null) {
+            userRoleService.updateUserRole(user.getId(), req.getRoleIds());
         }
 
         userService.update(user);
