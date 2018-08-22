@@ -1,7 +1,9 @@
 package com.cn.web.rbac.service.impl;
 
+import com.cn.web.rbac.dao.PermissionDao;
 import com.cn.web.rbac.dao.RolePermissionDao;
 import com.cn.web.rbac.domain.BaseEntity;
+import com.cn.web.rbac.domain.Permission;
 import com.cn.web.rbac.domain.RolePermission;
 import com.cn.web.rbac.service.RolePermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ import java.util.Optional;
 
 @Service(value = "rolePermissionService")
 public class RolePermissionServiceImpl implements RolePermissionService {
+
+    @Autowired
+    PermissionDao permissionDao;
 
     @Autowired
     RolePermissionDao rolePermissionDao;
@@ -61,6 +66,15 @@ public class RolePermissionServiceImpl implements RolePermissionService {
                 rolePermission.setPermissionId(permId);
                 save(rolePermission);
             }
+        }
+
+        // save root node
+        Permission root = permissionDao.findByParentIdIsNull();
+        if (root != null && !permIds.contains(root.getId())) {
+            RolePermission rolePermission = new RolePermission();
+            rolePermission.setRoleId(roleId);
+            rolePermission.setPermissionId(root.getId());
+            save(rolePermission);
         }
     }
 
