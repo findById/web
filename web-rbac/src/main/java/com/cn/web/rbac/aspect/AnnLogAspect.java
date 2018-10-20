@@ -22,10 +22,10 @@ public class AnnLogAspect {
     private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
     @Pointcut("@annotation(com.cn.web.rbac.annotation.AopLog)")
-    public void logPointcut() {
+    public void pointcut() {
     }
 
-    @Around("logPointcut()")
+    @Around("pointcut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         long beginTime = System.currentTimeMillis();
 
@@ -36,20 +36,22 @@ public class AnnLogAspect {
         return result;
     }
 
-    @Before("logPointcut()&&@annotation(ann)")
+    @Before("pointcut()&&@annotation(ann)")
     public void before(JoinPoint joinPoint, AopLog ann) {
     }
 
-    @After("logPointcut()&&@annotation(ann)")
+    @After("pointcut()&&@annotation(ann)")
     public void after(JoinPoint joinPoint, AopLog ann) {
     }
 
-    @AfterReturning(returning = "result", pointcut = "logPointcut()")
-    public void after(Object result) {
+    @AfterReturning(returning = "result", pointcut = "pointcut()")
+    public void after(JoinPoint joinPoint, Object result) {
+        saveResultLog(joinPoint, result);
     }
 
-    @AfterThrowing(pointcut = "logPointcut()")
-    public void after() {
+    @AfterThrowing(pointcut = "pointcut()", throwing = "throwable")
+    public void after(Throwable throwable) {
+        throwable.printStackTrace();
     }
 
     private void saveLog(ProceedingJoinPoint joinPoint, long costTime) {
@@ -93,6 +95,33 @@ public class AnnLogAspect {
         sb.append("]");
         // cost time
         sb.append('[').append(costTime).append("ms]");
+
+        System.out.println(sb.toString());
+    }
+
+    private void saveResultLog(JoinPoint joinPoint, Object result) {
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        Method method = signature.getMethod();
+
+        StringBuilder sb = new StringBuilder();
+        // access time
+        sb.append('[').append(format.format(System.currentTimeMillis())).append(']');
+        // address
+        sb.append('[');
+        RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+        if (ra instanceof ServletRequestAttributes) {
+            sb.append(IPUtils.getRemoteAddr(((ServletRequestAttributes) ra).getRequest()));
+        }
+        sb.append(']');
+        // key
+        AopLog ann = method.getAnnotation(AopLog.class);
+        sb.append('[').append(ann != null ? ann.value() : "").append(']');
+        // method
+        String className = joinPoint.getTarget().getClass().getName();
+        String methodName = signature.getName();
+        sb.append('[').append(className).append('.').append(methodName).append("()]");
+        // result
+        sb.append("[").append(result).append("]");
 
         System.out.println(sb.toString());
     }
