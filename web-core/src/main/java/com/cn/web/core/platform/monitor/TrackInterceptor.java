@@ -1,5 +1,6 @@
 package com.cn.web.core.platform.monitor;
 
+import com.cn.web.core.util.IPUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -17,7 +18,7 @@ public class TrackInterceptor implements HandlerInterceptor {
         // access time
         sb.append("[").append(format.format(System.currentTimeMillis())).append("]");
         // address
-        sb.append("[").append(getRemoteAddr(request)).append("]");
+        sb.append("[").append(IPUtils.getRemoteAddr(request)).append("]");
         // method
         sb.append('[');
         if ((handler instanceof HandlerMethod)) {
@@ -42,31 +43,4 @@ public class TrackInterceptor implements HandlerInterceptor {
         }
         return "";
     }
-
-    private String getRemoteAddr(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Http_X_Forwarded_For");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Http-Client-IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("X-Real-IP");
-        }
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        if (ip.contains(",")) {
-            ip = ip.split(",")[0];
-        }
-        return ip;
-    }
-
 }

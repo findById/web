@@ -1,17 +1,17 @@
 package com.cn.web.core.cache.redis;
 
 import com.alibaba.fastjson.JSON;
+import com.cn.web.core.cache.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-@Service("redisService")
-public class RedisServiceImpl implements RedisService {
+public class RedisCacheService implements CacheService<String> {
 
     @Autowired
     StringRedisTemplate redisTemplate;
@@ -32,7 +32,14 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     public boolean remove(Serializable key) {
-        return redisTemplate.delete(String.valueOf(key));
+        Boolean res = redisTemplate.delete(String.valueOf(key));
+        return res != null && res;
+    }
+
+    @Override
+    public long removeKeys(String pattern) {
+        Long res = redisTemplate.delete(keys(pattern));
+        return res != null ? res : 0L;
     }
 
     @Override
@@ -42,18 +49,38 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
+    public String getAndSet(Serializable key, String value) {
+        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+        return ops.getAndSet(String.valueOf(key), value);
+    }
+
+    @Override
     public Set<String> keys(String pattern) {
         return redisTemplate.keys(pattern);
     }
 
     @Override
     public boolean exists(Serializable key) {
-        return redisTemplate.hasKey(String.valueOf(key));
+        Boolean res = redisTemplate.hasKey(String.valueOf(key));
+        return res != null && res;
     }
 
     @Override
-    public void expire(Serializable key, long timeout, TimeUnit unit) {
-        redisTemplate.expire(String.valueOf(key), timeout, unit);
+    public long expire(Serializable key, TimeUnit unit) {
+        Long res = redisTemplate.getExpire(String.valueOf(key), unit);
+        return res != null ? res : 0L;
+    }
+
+    @Override
+    public boolean expire(Serializable key, long timeout, TimeUnit unit) {
+        Boolean res = redisTemplate.expire(String.valueOf(key), timeout, unit);
+        return res != null && res;
+    }
+
+    @Override
+    public boolean expireAt(Serializable key, Date date) {
+        Boolean res = redisTemplate.expireAt(String.valueOf(key), date);
+        return res != null && res;
     }
 
     @Override
@@ -73,7 +100,7 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public boolean isConnected() {
-        return false;
+    public String status() {
+        return "connected";
     }
 }

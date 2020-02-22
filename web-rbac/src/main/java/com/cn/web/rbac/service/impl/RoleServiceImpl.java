@@ -55,10 +55,10 @@ public class RoleServiceImpl implements RoleService {
         }
         for (Serializable id : ids) {
             Optional<Role> optional = roleDao.findById(String.valueOf(id));
-            Role role = optional.orElse(null);
-            if (role != null) {
-                role.setDelFlg(BaseEntity.FLAG_DELETE);
-                roleDao.save(role);
+            Role item = optional.orElse(null);
+            if (item != null) {
+                item.setDelFlg(BaseEntity.FLAG_DELETE);
+                roleDao.save(item);
             }
         }
     }

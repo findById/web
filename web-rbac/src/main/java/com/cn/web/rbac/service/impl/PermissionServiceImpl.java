@@ -50,10 +50,10 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public void deleteByLogic(Serializable id) {
         Optional<Permission> optional = permissionDao.findById(String.valueOf(id));
-        Permission permission = optional.orElse(null);
-        if (permission != null) {
-            permission.setDelFlg(BaseEntity.FLAG_DELETE);
-            permissionDao.save(permission);
+        Permission item = optional.orElse(null);
+        if (item != null) {
+            item.setDelFlg(BaseEntity.FLAG_DELETE);
+            permissionDao.save(item);
         }
     }
 

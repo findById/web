@@ -27,6 +27,10 @@ public class DigestUtils {
         return encode(text, "SHA-512", DEFAULT_CHARSET);
     }
 
+    public static String encode(String source, String algorithm) {
+        return encode(source, algorithm, DEFAULT_CHARSET);
+    }
+
     public static String encode(String source, String algorithm, String charset) {
         try {
             MessageDigest md = MessageDigest.getInstance(algorithm);

@@ -1,10 +1,20 @@
-dependencies {
-    compile('org.springframework.boot:spring-boot-starter-aop')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-data-redis')
+//
+//jar {
+//    enabled = true // true 多模块依赖项目(打包不会把SpringBoot依赖导入, 只打包源码)
+//}
+//
+//bootJar {
+//    enabled = false  // 需要打可执行jar包
+//}
 
-    compile('org.bouncycastle:bcprov-jdk16:1.46')
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-aop')
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-data-redis')
+
+    implementation('org.bouncycastle:bcprov-jdk16:1.46')
+//    implementation('org.bouncycastle:bcprov-jdk15to18:1.64')
 }
 
 apply from: '../maven_upload.gradle'

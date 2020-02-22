@@ -52,6 +52,7 @@ public class ScheduleJobHandler {
         }
 
         ScheduleJob scheduleJob = new ScheduleJob();
+        scheduleJob.setGroup(req.getGroup());
         scheduleJob.setName(req.getName());
         scheduleJob.setCron(req.getCron());
         scheduleJob.setMethod(req.getMethod());
@@ -76,6 +77,9 @@ public class ScheduleJobHandler {
         if (scheduleJob == null) {
             throw new HandlerException(201, "ScheduleJob not exists");
         }
+        if (req.getGroup() != null && !req.getGroup().isEmpty()) {
+            scheduleJob.setGroup(req.getGroup());
+        }
         if (req.getName() != null && !req.getName().isEmpty()) {
             scheduleJob.setName(req.getName());
         }
@@ -98,9 +102,12 @@ public class ScheduleJobHandler {
     }
 
     public boolean delete(Long[] ids) {
-
         scheduleJobService.delete(ids);
+        return true;
+    }
 
+    public boolean deleteByLogic(Long[] ids) {
+        scheduleJobService.deleteByLogic(ids);
         return true;
     }
 

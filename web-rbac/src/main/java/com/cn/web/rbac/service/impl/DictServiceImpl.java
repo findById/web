@@ -45,6 +45,22 @@ public class DictServiceImpl implements DictService {
     }
 
     @Override
+    @Transactional
+    public void deleteByLogic(Serializable[] ids) {
+        if (ids == null || ids.length <= 0) {
+            return;
+        }
+        for (Serializable id : ids) {
+            Optional<Dict> optional = dictDao.findById(String.valueOf(id));
+            Dict item = optional.orElse(null);
+            if (item != null) {
+                item.setDelFlg(BaseEntity.FLAG_DELETE);
+                dictDao.save(item);
+            }
+        }
+    }
+
+    @Override
     public List<Dict> list() {
         Dict item = new Dict();
         item.setDelFlg(BaseEntity.FLAG_NORMAL);

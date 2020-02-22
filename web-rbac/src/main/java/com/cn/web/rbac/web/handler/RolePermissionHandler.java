@@ -4,11 +4,9 @@ import com.cn.web.core.platform.exception.HandlerException;
 import com.cn.web.rbac.service.RolePermissionService;
 import com.cn.web.rbac.web.request.RolePermReq;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("rolePermissionHandler")
 public class RolePermissionHandler {
 
     @Autowired

@@ -1,16 +1,13 @@
 package com.cn.web.rbac.web.handler;
 
 import com.cn.web.core.platform.exception.HandlerException;
-import com.cn.web.core.platform.web.DefaultController;
 import com.cn.web.rbac.service.UserRoleService;
 import com.cn.web.rbac.web.request.UserRoleReq;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userRoleHandler")
-public class UserRoleHandler extends DefaultController {
+public class UserRoleHandler {
 
     @Autowired
     UserRoleService userRoleService;

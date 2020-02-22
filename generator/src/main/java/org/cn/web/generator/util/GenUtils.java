@@ -4,7 +4,7 @@ import org.cn.web.generator.domain.Module;
 import org.cn.web.generator.service.impl.GeneratorServiceImpl;
 
 import java.io.*;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +14,16 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class GenUtils {
+    public static final String TEMPLATE_WEB_CONTROLLER = "controller.ftl";
+    public static final String TEMPLATE_WEB_REQ = "request.ftl";
+    public static final String TEMPLATE_WEB_RESP = "response.ftl";
+    public static final String TEMPLATE_WEB_VO = "bean.ftl";
+    public static final String TEMPLATE_SERVICE = "service.ftl";
+    public static final String TEMPLATE_SERVICE_IMPL = "serviceImpl.ftl";
+    public static final String TEMPLATE_REPOSITORY = "repository.ftl";
+    public static final String TEMPLATE_ENTITY = "entity.ftl";
+    public static final String TEMPLATE_DAO = "dao.ftl";
+    public static final String TEMPLATE_DAO_IMPL = "daoImpl.ftl";
 
     private static String uncapitalize(String str) {
         if (str == null || str.length() == 0) {
@@ -62,7 +72,7 @@ public class GenUtils {
         try {
             if (createFile(path)) {
                 FileOutputStream fos = new FileOutputStream(path);
-                OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+                OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
                 BufferedWriter bw = new BufferedWriter(osw);
                 bw.write(content);
                 bw.close();
@@ -77,50 +87,50 @@ public class GenUtils {
 
     private static List<String> getTemplateList(String templateId) {
         List<String> list = new ArrayList<>();
-        list.add("entity.ftl");
-        list.add("dao.ftl");
-        list.add("daoImpl.ftl");
-        list.add("repository.ftl");
-        list.add("service.ftl");
-        list.add("serviceImpl.ftl");
-        list.add("bean.ftl");
-        list.add("request.ftl");
-        list.add("response.ftl");
-        list.add("controller.ftl");
+        list.add(TEMPLATE_ENTITY);
+        list.add(TEMPLATE_DAO);
+        list.add(TEMPLATE_DAO_IMPL);
+        list.add(TEMPLATE_REPOSITORY);
+        list.add(TEMPLATE_SERVICE);
+        list.add(TEMPLATE_SERVICE_IMPL);
+        list.add(TEMPLATE_WEB_VO);
+        list.add(TEMPLATE_WEB_REQ);
+        list.add(TEMPLATE_WEB_RESP);
+        list.add(TEMPLATE_WEB_CONTROLLER);
         return list;
     }
 
     private static String getFilePath(String template, String basePackage, String module, String clazz) {
         String javaPath = ("/src/main/java/" + basePackage).replaceAll("[\\/\\.]", "\\/");
 
-        if (template.endsWith("entity.ftl")) {
+        if (template.endsWith(TEMPLATE_ENTITY)) {
             return javaPath + "/" + module + "/domain/" + clazz + ".java";
         }
-        if (template.endsWith("dao.ftl")) {
+        if (template.endsWith(TEMPLATE_DAO)) {
             return javaPath + "/" + module + "/dao/" + clazz + "Dao.java";
         }
-        if (template.endsWith("daoImpl.ftl")) {
+        if (template.endsWith(TEMPLATE_DAO_IMPL)) {
             return javaPath + "/" + module + "/dao/impl/" + clazz + "DaoImpl.java";
         }
-        if (template.endsWith("repository.ftl")) {
+        if (template.endsWith(TEMPLATE_REPOSITORY)) {
             return javaPath + "/" + module + "/repository/" + clazz + "Repository.java";
         }
-        if (template.endsWith("service.ftl")) {
+        if (template.endsWith(TEMPLATE_SERVICE)) {
             return javaPath + "/" + module + "/service/" + clazz + "Service.java";
         }
-        if (template.endsWith("serviceImpl.ftl")) {
+        if (template.endsWith(TEMPLATE_SERVICE_IMPL)) {
             return javaPath + "/" + module + "/service/impl/" + clazz + "ServiceImpl.java";
         }
-        if (template.endsWith("bean.ftl")) {
+        if (template.endsWith(TEMPLATE_WEB_VO)) {
             return javaPath + "/" + module + "/web/vo/" + clazz + "Bean.java";
         }
-        if (template.endsWith("request.ftl")) {
+        if (template.endsWith(TEMPLATE_WEB_REQ)) {
             return javaPath + "/" + module + "/web/request/" + clazz + "Req.java";
         }
-        if (template.endsWith("response.ftl")) {
+        if (template.endsWith(TEMPLATE_WEB_RESP)) {
             return javaPath + "/" + module + "/web/response/" + clazz + "Resp.java";
         }
-        if (template.endsWith("controller.ftl")) {
+        if (template.endsWith(TEMPLATE_WEB_CONTROLLER)) {
             return javaPath + "/" + module + "/web/controller/" + clazz + "Controller.java";
         }
         return null;
@@ -200,7 +210,7 @@ public class GenUtils {
                 } else {
                     try {
                         zos.putNextEntry(new ZipEntry(path));
-                        zos.write(content.getBytes(Charset.forName("UTF-8")));
+                        zos.write(content.getBytes(StandardCharsets.UTF_8));
                         zos.closeEntry();
                     } catch (IOException e) {
                         e.printStackTrace();

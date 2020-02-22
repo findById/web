@@ -10,7 +10,9 @@ public class FileCryptoUtils {
             return;
         }
         if (!dest.exists()) {
-            dest.createNewFile();
+            if (!dest.createNewFile()) {
+                throw new IOException("can not create file: " + dest.getPath());
+            }
         }
         InputStream is = new FileInputStream(src);
         OutputStream os = new FileOutputStream(dest);

@@ -5,11 +5,12 @@ import java.io.Serializable;
 public class ScheduleJobReq implements Serializable {
     private Long id;
     private Short state;
+    private String group;
     private String name;
     private String method;
     private String params;
     private String cron;
-    private Integer status;
+    private String status;
     private String remark;
 
     public ScheduleJobReq() {
@@ -29,6 +30,14 @@ public class ScheduleJobReq implements Serializable {
 
     public void setState(Short state) {
         this.state = state;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     public String getName() {
@@ -63,11 +72,11 @@ public class ScheduleJobReq implements Serializable {
         this.cron = cron;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

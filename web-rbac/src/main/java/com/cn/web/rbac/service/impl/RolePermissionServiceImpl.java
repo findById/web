@@ -85,6 +85,22 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     }
 
     @Override
+    @Transactional
+    public void deleteByLogic(Serializable[] ids) {
+        if (ids == null || ids.length <= 0) {
+            return;
+        }
+        for (Serializable id : ids) {
+            Optional<RolePermission> optional = rolePermissionDao.findById(String.valueOf(id));
+            RolePermission item = optional.orElse(null);
+            if (item != null) {
+                item.setDelFlg(BaseEntity.FLAG_DELETE);
+                rolePermissionDao.save(item);
+            }
+        }
+    }
+
+    @Override
     public List<String> findPermissionIdListByRoleId(String roleId) {
         return rolePermissionDao.findPermissionIdListByRoleId(roleId);
     }

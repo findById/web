@@ -69,6 +69,22 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
+    @Transactional
+    public void deleteByLogic(Serializable[] ids) {
+        if (ids == null || ids.length <= 0) {
+            return;
+        }
+        for (Serializable id : ids) {
+            Optional<UserRole> optional = userRoleDao.findById(String.valueOf(id));
+            UserRole item = optional.orElse(null);
+            if (item != null) {
+                item.setDelFlg(BaseEntity.FLAG_DELETE);
+                userRoleDao.save(item);
+            }
+        }
+    }
+
+    @Override
     public List<UserRole> list() {
         UserRole item = new UserRole();
         item.setDelFlg(BaseEntity.FLAG_NORMAL);

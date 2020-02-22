@@ -15,7 +15,7 @@ public interface ScheduleJobService {
 
     void delete(Long[] ids);
 
-    void deleteByLogic(Long id);
+    void deleteByLogic(Long[] id);
 
     List<ScheduleJob> list();
 

@@ -58,10 +58,10 @@ public class UserServiceImpl implements UserService {
         }
         for (Serializable id : ids) {
             Optional<User> optional = userDao.findById(String.valueOf(id));
-            User user = optional.orElse(null);
-            if (user != null) {
-                user.setDelFlg(BaseEntity.FLAG_DELETE);
-                userDao.save(user);
+            User item = optional.orElse(null);
+            if (item != null) {
+                item.setDelFlg(BaseEntity.FLAG_DELETE);
+                userDao.save(item);
             }
         }
     }

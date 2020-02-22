@@ -7,14 +7,16 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "permission")
 public class Permission extends BaseEntity {
+    public static final String TYPE_MENU = "menu";
+    public static final String TYPE_PERMISSION = "permission";
 
-    public static final short GONE = 0;
-    public static final short VISIBLE = 1;
+    public static final short VISIBLE_GONE = 0;
+    public static final short VISIBLE_VISIBLE = 1;
 
     @Column(name = "name", length = 20)
     private String name;
     @Column(name = "type", length = 20)
-    private String type;
+    private String type = TYPE_MENU;
     @Column(name = "position")
     private Integer position;
     @Column(name = "link", length = 100)
@@ -26,7 +28,7 @@ public class Permission extends BaseEntity {
     @Column(name = "icon", length = 50)
     private String icon;
     @Column(name = "visible", length = 2)
-    private Short visible = VISIBLE;
+    private Short visible = VISIBLE_VISIBLE;
     @Column(name = "parent_id", length = 50)
     private String parentId;
 
@@ -34,7 +36,7 @@ public class Permission extends BaseEntity {
     }
 
     public Permission(String name, String type, Integer position, String link, String permCode, String parentId, String description) {
-        this(name, type, position, link, permCode, VISIBLE, parentId, description);
+        this(name, type, position, link, permCode, VISIBLE_VISIBLE, parentId, description);
     }
 
     public Permission(String name, String type, Integer position, String link, String permCode, Short visible, String parentId, String description) {

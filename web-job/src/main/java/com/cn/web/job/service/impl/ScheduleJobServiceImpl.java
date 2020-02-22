@@ -5,8 +5,10 @@ import com.cn.web.job.dao.ScheduleJobDao;
 import com.cn.web.job.domain.ScheduleJob;
 import com.cn.web.job.service.ScheduleJobService;
 import com.cn.web.job.util.ScheduleJobUtils;
+import org.quartz.CronExpression;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.quartz.Trigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -35,7 +37,12 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
         for (ScheduleJob item : list) {
             System.out.println("schedule job id: " + item.getId() + ", method: " + item.getMethod() + ", cron: " + item.getCron());
             try {
-                ScheduleJobUtils.createScheduleJob(scheduler, item);
+                Trigger trigger = ScheduleJobUtils.getTrigger(scheduler, item);
+                if (trigger == null) {
+                    ScheduleJobUtils.createScheduleJob(scheduler, item);
+                } else {
+                    ScheduleJobUtils.updateScheduleJob(scheduler, item);
+                }
                 if (ScheduleJob.JOB_STATE_RUNNING.equals(item.getStatus())) {
                     ScheduleJobUtils.startScheduleJob(scheduler, item);
                 }
@@ -61,8 +68,14 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     @Override
     @Transactional
     public ScheduleJob save(ScheduleJob scheduleJob) {
-
+        boolean valid = CronExpression.isValidExpression(scheduleJob.getCron());
+        if (!valid) {
+            throw new IllegalArgumentException("无效的Cron表达式");
+        }
+        scheduleJob.setStatus(ScheduleJob.JOB_STATE_STANDBY);
         scheduleJobDao.save(scheduleJob);
+
+        ScheduleJobUtils.createScheduleJob(scheduler, scheduleJob);
 
         return scheduleJob;
     }
@@ -70,8 +83,19 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
     @Override
     @Transactional
     public ScheduleJob update(ScheduleJob scheduleJob) {
-        // scheduleJobDao.update(scheduleJob);
+        boolean valid = CronExpression.isValidExpression(scheduleJob.getCron());
+        if (!valid) {
+            throw new IllegalArgumentException("无效的Cron表达式");
+        }
+//         scheduleJobDao.update(scheduleJob);
         scheduleJobDao.save(scheduleJob);
+
+        try {
+            ScheduleJobUtils.updateScheduleJob(scheduler, scheduleJob);
+        } catch (SchedulerException e) {
+            throw new RuntimeException(e);
+        }
+
         return scheduleJob;
     }
 
@@ -91,16 +115,18 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 
     @Override
     @Transactional
-    public void deleteByLogic(Long id) {
-        ScheduleJob job = this.get(id);
-        if (job != null) {
-            try {
-                ScheduleJobUtils.deleteScheduleJob(scheduler, job);
-            } catch (SchedulerException e) {
-                e.printStackTrace();
+    public void deleteByLogic(Long[] ids) {
+        for (Long id : ids) {
+            ScheduleJob job = this.get(id);
+            if (job != null) {
+                try {
+                    ScheduleJobUtils.deleteScheduleJob(scheduler, job);
+                } catch (SchedulerException e) {
+                    e.printStackTrace();
+                }
+                job.setDelFlg(ScheduleJob.FLAG_DELETE);
+                scheduleJobDao.save(job);
             }
-            job.setDelFlg(ScheduleJob.FLAG_DELETE);
-            scheduleJobDao.save(job);
         }
     }
 
@@ -140,6 +166,7 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
             ScheduleJob job = get(id);
             switch (state) {
                 case ScheduleJob.JOB_STATE_STANDBY: {
+                    ScheduleJobUtils.pauseScheduleJob(scheduler, job);
                     break;
                 }
                 case ScheduleJob.JOB_STATE_RUNNING: {
@@ -160,6 +187,13 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
             job.setStatus(state);
             scheduleJobDao.save(job);
         }
+
+        try {
+            System.out.println("job: " + JSON.toJSONString(ScheduleJobUtils.getScheduleJob(scheduler)));
+            System.out.println("running job: " + JSON.toJSONString(ScheduleJobUtils.getRunningJob(scheduler)));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -175,6 +209,13 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
                 e.printStackTrace();
                 return false;
             }
+        }
+
+        try {
+            System.out.println("job: " + JSON.toJSONString(ScheduleJobUtils.getScheduleJob(scheduler)));
+            System.out.println("running job: " + JSON.toJSONString(ScheduleJobUtils.getRunningJob(scheduler)));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
         }
         return true;
     }
@@ -193,6 +234,13 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
                 return false;
             }
         }
+
+        try {
+            System.out.println("job: " + JSON.toJSONString(ScheduleJobUtils.getScheduleJob(scheduler)));
+            System.out.println("running job: " + JSON.toJSONString(ScheduleJobUtils.getRunningJob(scheduler)));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
@@ -210,6 +258,13 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
                 return false;
             }
         }
+
+        try {
+            System.out.println("job: " + JSON.toJSONString(ScheduleJobUtils.getScheduleJob(scheduler)));
+            System.out.println("running job: " + JSON.toJSONString(ScheduleJobUtils.getRunningJob(scheduler)));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
@@ -226,6 +281,13 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
                 e.printStackTrace();
                 return false;
             }
+        }
+
+        try {
+            System.out.println("job: " + JSON.toJSONString(ScheduleJobUtils.getScheduleJob(scheduler)));
+            System.out.println("running job: " + JSON.toJSONString(ScheduleJobUtils.getRunningJob(scheduler)));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
         }
         return true;
     }

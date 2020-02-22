@@ -16,6 +16,8 @@ public interface UserRoleService {
 
     void delete(Serializable id);
 
+    void deleteByLogic(Serializable[] ids);
+
     List<UserRole> list();
 
     void deleteByUserIdAndRoleId(String userId, String roleId);

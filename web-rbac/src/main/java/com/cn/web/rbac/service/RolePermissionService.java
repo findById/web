@@ -16,6 +16,8 @@ public interface RolePermissionService {
 
     void delete(Serializable id);
 
+    void deleteByLogic(Serializable[] ids);
+
     List<RolePermission> list();
 
     List<String> findPermissionIdListByRoleId(String roleId);

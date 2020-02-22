@@ -16,6 +16,8 @@ public interface DictService {
 
     void delete(Serializable id);
 
+    void deleteByLogic(Serializable[] ids);
+
     List<Dict> list();
 
     Page<Dict> list(int page, int size);

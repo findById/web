@@ -1,54 +1,26 @@
-buildscript {
-    ext {
-        springBootVersion = '2.0.2.RELEASE'
-    }
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
+plugins {
+    id 'org.springframework.boot' version '2.3.0.M2'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
 }
-
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
 
 group = 'org.cn.web'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 repositories {
     mavenLocal()
     mavenCentral()
-}
-
-
-ext {
-    springBootAdminVersion = '2.0.0'
-}
-
-dependencies {
-    compile('org.springframework.boot:spring-boot-starter-aop')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.springframework.boot:spring-boot-starter-data-rest')
-    compile('org.springframework.boot:spring-boot-starter-freemarker')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('de.codecentric:spring-boot-admin-starter-server')
-    runtime('mysql:mysql-connector-java')
-    compileOnly('org.springframework.boot:spring-boot-configuration-processor')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "de.codecentric:spring-boot-admin-dependencies:${springBootAdminVersion}"
-    }
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
 }
 
 allprojects {
+
+}
+
+subprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
     apply plugin: 'org.springframework.boot'
@@ -56,38 +28,57 @@ allprojects {
 
     group = 'org.cn.web'
     version = '0.0.1-SNAPSHOT'
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-
-    ext {
-        springBootAdminVersion = '2.0.0'
-    }
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
 
     jar {
-        enabled = true // true 多模块依赖项目(打包不会把SpringBoot依赖导入, 只打包源码)
+        enabled = true // （默认false） true 多模块依赖项目(打包不会把SpringBoot依赖导入, 只打包源码), false 加入SpringBoot依赖（可启动模块）
     }
 
     bootJar {
-        // classifier = 'app'
+        enabled = false  // （默认true） true 需要打可执行jar包, false 不需要打可执行jar包
         manifest {
             attributes "Manifest-Version": 1.0, 'Start-Class': '.'
         }
     }
-}
-
-subprojects {
 
     repositories {
         mavenLocal()
         mavenCentral()
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'https://repo.spring.io/snapshot' }
     }
 
-    dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.12'
-        testCompile('org.springframework.boot:spring-boot-starter-test')
+//    configurations {
+//        developmentOnly
+//        runtimeClasspath {
+//            extendsFrom developmentOnly
+//        }
+//        compileOnly {
+//            extendsFrom annotationProcessor
+//        }
+//    }
 
-        compile 'javax.inject:javax.inject:1'
-        compile 'com.alibaba:fastjson:1.2.32'
+    dependencies {
+        implementation('org.springframework.boot:spring-boot-starter-aop')
+        implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+//        implementation('org.springframework.boot:spring-boot-starter-data-rest')
+        implementation('org.springframework.boot:spring-boot-starter-freemarker')
+        implementation('org.springframework.boot:spring-boot-starter-web')
+
+        implementation 'javax.inject:javax.inject:1'
+        implementation 'com.alibaba:fastjson:1.2.62'
+
+        runtimeOnly('mysql:mysql-connector-java')
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
 

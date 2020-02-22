@@ -25,7 +25,7 @@ public class AESUtils {
         return "";
     }
 
-    public static String encrypt(String arg0, String key) {
+    public static String encrypt(String text, String key) {
         try {
             KeyGenerator kGen = KeyGenerator.getInstance(KEY_ALGORITHM);
             SecureRandom sRnd = SecureRandom.getInstance("SHA1PRNG");
@@ -34,7 +34,7 @@ public class AESUtils {
             SecretKey secretKey = kGen.generateKey();
             SecretKeySpec sKeySpec = new SecretKeySpec(secretKey.getEncoded(), KEY_ALGORITHM);
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            byte[] byteContent = arg0.getBytes(Charset.forName("UTF-8"));
+            byte[] byteContent = text.getBytes(Charset.forName("UTF-8"));
             cipher.init(Cipher.ENCRYPT_MODE, sKeySpec);
             byte[] result = cipher.doFinal(byteContent);
             return bytes2Hex(result);
@@ -44,9 +44,9 @@ public class AESUtils {
         return "";
     }
 
-    public static String decrypt(String arg0, String key) {
+    public static String decrypt(String text, String key) {
         try {
-            byte deStr[] = hex2Bytes(arg0);
+            byte bytes[] = hex2Bytes(text);
             KeyGenerator kGen = KeyGenerator.getInstance(KEY_ALGORITHM);
             SecureRandom sRnd = SecureRandom.getInstance("SHA1PRNG");
             sRnd.setSeed(key.getBytes(Charset.forName("UTF-8")));
@@ -55,7 +55,7 @@ public class AESUtils {
             SecretKeySpec sKeySpec = new SecretKeySpec(secretKey.getEncoded(), KEY_ALGORITHM);
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, sKeySpec);
-            byte[] result = cipher.doFinal(deStr);
+            byte[] result = cipher.doFinal(bytes);
             return new String(result, Charset.forName("UTF-8"));
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();

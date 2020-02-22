@@ -9,13 +9,11 @@ import com.cn.web.rbac.web.vo.DictBean;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Service("dictHandler")
 public class DictHandler {
 
     @Autowired

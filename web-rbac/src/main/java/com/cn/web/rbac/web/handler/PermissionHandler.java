@@ -9,12 +9,10 @@ import com.cn.web.rbac.web.request.PermissionReq;
 import com.cn.web.rbac.web.vo.PermissionBean;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("permissionHandler")
 public class PermissionHandler {
 
     @Autowired
@@ -47,7 +45,7 @@ public class PermissionHandler {
         permission.setPermCode(req.getPermCode());
         permission.setMethod(req.getMethod());
         permission.setIcon(req.getIcon());
-        permission.setVisible(req.getVisible() != null ? req.getVisible() : 0);
+        permission.setVisible(req.getVisible() != null ? req.getVisible() : Permission.VISIBLE_GONE);
 
         Permission parent = permissionService.get(req.getParentId());
         if (parent == null) {
