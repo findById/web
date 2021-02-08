@@ -1,6 +1,6 @@
 package com.cn.web.core.platform.exception;
 
-import com.cn.web.core.platform.web.ResponseBuilder;
+import com.cn.web.core.platform.web.Result;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -22,47 +22,37 @@ public class ErrorHandler {
     @ExceptionHandler(Throwable.class)
     @ResponseBody
     public String handler(Throwable ex) {
-        ResponseBuilder builder = ResponseBuilder.newBuilder();
-        builder.statusCode(500);
-        builder.message(ex.getMessage());
-
+        Result result = Result.error(500, ex.getMessage());
         if (ex instanceof HandlerException) {
-            builder.statusCode(((HandlerException) ex).getStatusCode());
+            result.statusCode(((HandlerException) ex).getStatusCode());
         } else {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             ex.printStackTrace(pw);
-            builder.stackTrace(sw.toString());
+            result.stackTrace(sw.toString());
         }
-
-        return builder.buildJSONString();
+        return result.toJSONString();
     }
 
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public String methodArgument(MethodArgumentNotValidException ex) {
-        ResponseBuilder builder = ResponseBuilder.newBuilder();
-        builder.statusCode(400);
-        builder.message(ex.getMessage());
-
-        BindingResult result = ex.getBindingResult();
-        List<FieldError> fieldErrors = result.getFieldErrors();
+        Result result = Result.error(400, ex.getMessage());
+        BindingResult res = ex.getBindingResult();
+        List<FieldError> fieldErrors = res.getFieldErrors();
         StringBuffer msg = new StringBuffer();
         fieldErrors.forEach(fieldError -> {
             msg.append("[").append(fieldError.getField()).append(",").append(fieldError.getDefaultMessage()).append("]");
         });
-        builder.message(msg.toString());
-        return builder.buildJSONString();
+        result.message(msg.toString());
+        return result.toJSONString();
     }
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
     public String notFound(NoHandlerFoundException ex) {
-        ResponseBuilder builder = ResponseBuilder.newBuilder();
-        builder.statusCode(404);
-        builder.message(ex.getMessage());
-        return builder.buildJSONString();
+        return Result.error(404, ex.getMessage()).toJSONString();
     }
 
 }

@@ -1,6 +1,6 @@
 package ${packageName}.${moduleName}.web.controller;
 
-import com.cn.web.core.platform.web.ResponseBuilder;
+import com.cn.web.core.platform.web.Result;
 import ${packageName}.${moduleName}.domain.${ClassName};
 import ${packageName}.${moduleName}.service.${ClassName}Service;
 import ${packageName}.${moduleName}.web.vo.${ClassName}Bean;
@@ -35,12 +35,8 @@ public class ${ClassName}Controller {
     // @PermissionRequired(value = "${moduleName}:${className}:save")
     @RequestMapping(value = "save", method = {RequestMethod.POST})
     public String save(@RequestBody ${ClassName}Req req) {
-        ResponseBuilder builder = ResponseBuilder.newBuilder();
-
         if (req == null) {
-            builder.statusCode(201);
-            builder.message("Request body must not be null.");
-            return builder.buildJSONString();
+            return Result.error(201, "Request body must not be null.").toJSONString();
         }
 
         ${ClassName} ${className} = new ${ClassName}();
@@ -51,48 +47,34 @@ public class ${ClassName}Controller {
         ${ClassName}Resp resp = new ${ClassName}Resp();
         BeanUtils.copyProperties(${className}, resp);
 
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(resp);
-        return builder.buildJSONString();
+        return Result.success(resp).toJSONString();
     }
 
     // @PermissionRequired(value = "${moduleName}:${className}:update")
     @RequestMapping(value = "update", method = {RequestMethod.POST})
     public String update(@RequestBody ${ClassName}Req req) {
-        ResponseBuilder builder = ResponseBuilder.newBuilder();
-
         if (req == null || req.getId() == null) {
-            builder.statusCode(201);
-            builder.message("${ClassName} not exists");
-            return builder.buildJSONString();
+            return Result.error(201, "${ClassName} not exists").toJSONString();
         }
 
         ${ClassName} ${className} = ${className}Service.get(req.getId());
         if (${className} == null) {
-            builder.statusCode(201);
-            builder.message("${ClassName} not exists");
-            return builder.buildJSONString();
+            return Result.error(201, "${ClassName} not exists").toJSONString();
         }
         // TODO copy value
 
         ${className}Service.update(${className});
 
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+        return Result.success().toJSONString();
     }
 
     // @PermissionRequired(value = "${moduleName}:${className}:delete")
     @RequestMapping(value = "delete", method = {RequestMethod.POST})
     public String delete(@RequestBody String[] ids) {
-        ResponseBuilder builder = ResponseBuilder.newBuilder();
 
         ${className}Service.delete(ids);
 
-        builder.statusCode(200);
-        builder.message("success");
-        return builder.buildJSONString();
+        return Result.success().toJSONString();
     }
 
     // @PermissionRequired(value = "${moduleName}:${className}:view")
@@ -102,7 +84,6 @@ public class ${ClassName}Controller {
                        @RequestParam(name = "sort", required = false) String sortBy,
                        @RequestParam(name = "order", required = false) String orderBy,
                        @RequestParam(name = "keywords", required = false) String keywords) {
-        ResponseBuilder builder = ResponseBuilder.newBuilder();
 
         Page<${ClassName}> list;
         if (!StringUtils.isEmpty(keywords)) {
@@ -125,10 +106,7 @@ public class ${ClassName}Controller {
         result.put("total", list.getTotalElements());
         result.put("list", beanList);
 
-        builder.statusCode(200);
-        builder.message("success");
-        builder.result(result);
-        return builder.buildJSONString();
+        return Result.success(result).toJSONString();
     }
 
     // @PermissionRequired(value = "${moduleName}:${className}:view")
